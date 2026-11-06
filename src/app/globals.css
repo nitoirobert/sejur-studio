@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* Modul întunecat: clasa „dark" pe <html> (pusă de butonul soare/lună) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Tokeni de design „soft UI":
+  fundal crem, carduri foarte rotunjite, umbre fine, un singur accent (albastru închis).
+  Orice culoare/umbră nouă se adaugă AICI, nu direct în componente.
+*/
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-dm-serif), ui-serif, Georgia, serif;
+  --font-brand: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  --color-cream: #f3eee5; /* fundalul paginii */
+  --color-cream-50: #fbf8f3; /* carduri */
+  --color-cream-100: #f7f2ea; /* carduri interioare, inputuri */
+  --color-sand: #e7dfd1; /* borduri fine */
+  --color-sand-200: #ddd3c2;
+
+  --color-ink: #1b2a44; /* text principal */
+  --color-ink-soft: #55607a; /* text secundar */
+  --color-muted: #8f8778; /* text discret */
+
+  --color-accent: #1f3d63; /* singurul accent */
+  --color-accent-600: #183252;
+  --color-accent-50: #e7edf5;
+
+  --color-star: #e2ad3f;
+
+  --radius-card: 1.75rem;
+  --radius-inner: 1.25rem;
+
+  --shadow-soft:
+    inset 0 1px 0 rgb(255 255 255 / 0.9), 0 14px 30px -16px rgb(74 58 36 / 0.3),
+    0 2px 6px -2px rgb(74 58 36 / 0.08);
+  --shadow-pill:
+    inset 0 1px 0 rgb(255 255 255 / 0.95), 0 6px 14px -8px rgb(74 58 36 / 0.3),
+    0 1px 3px rgb(74 58 36 / 0.06);
+  --shadow-pressed:
+    inset 0 2px 5px rgb(74 58 36 / 0.12), inset 0 -1px 0 rgb(255 255 255 / 0.8);
+  --shadow-accent: 0 10px 20px -10px rgb(31 61 99 / 0.65);
+}
+
+html {
+  background: var(--color-cream);
+  color-scheme: light;
+}
+
+/*
+  Paleta de noapte: aceleași nume de culori, alte valori.
+  Toate clasele (bg-cream-50, text-ink, shadow-soft...) se schimbă automat.
+*/
+.dark {
+  color-scheme: dark;
+  --color-cream: #0d1626;
+  --color-cream-50: #162236;
+  --color-cream-100: #1c2a41;
+  --color-sand: #2a3a54;
+  --color-sand-200: #354763;
+  --color-ink: #edf1f7;
+  --color-ink-soft: #b6c1d3;
+  --color-muted: #8494ad;
+  --color-accent: #9cc1f0;
+  --color-accent-600: #b9d4f6;
+  --color-accent-50: #213452;
+  --shadow-soft: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 14px 30px -16px rgb(0 0 0 / 0.65),
+    0 2px 6px -2px rgb(0 0 0 / 0.35);
+  --shadow-pill: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 6px 14px -8px rgb(0 0 0 / 0.6),
+    0 1px 3px rgb(0 0 0 / 0.3);
+  --shadow-pressed: inset 0 2px 5px rgb(0 0 0 / 0.35), inset 0 -1px 0 rgb(255 255 255 / 0.04);
+  --shadow-accent: 0 10px 22px -10px rgb(156 193 240 / 0.45);
+}
+
+/* Trecerea lină a culorilor la schimbarea temei (doar culori, nu poziții) */
+html.theme-anim,
+html.theme-anim * {
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease,
+    fill 0.4s ease,
+    box-shadow 0.4s ease !important;
+}
+
+/* Cât rulează videoul de tranziție: fără blur în spate (cel mai scump efect pentru procesor/GPU) */
+html.theme-video *,
+html.theme-video *::before,
+html.theme-video *::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body {
+  color: var(--color-ink);
+}
+
+
+/* Scrollbar discret, în ton cu fundalul */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-sand-200) transparent;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Intrarea panoului din dreapta */
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Pin-urile de pe hartă apar „din nimic", cu un mic salt */
+@keyframes pin-pop {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}

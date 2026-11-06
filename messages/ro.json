@@ -1,0 +1,273 @@
+{
+  "Meta": {
+    "title": "Sejur Studio – rezervă direct, fără comision",
+    "description": "Alege unitatea, vezi prețul total și rezervă direct de la gazdă."
+  },
+  "Header": {
+    "home": "Acasă",
+    "nav": {
+      "location": "Locație",
+      "favorites": "Favorite"
+    },
+    "call": "Sună gazda",
+    "language": "Limba",
+    "login": "Autentificare",
+    "account": "Contul meu",
+    "brand": "Sejur Studio",
+    "darkMode": "Mod noapte",
+    "lightMode": "Mod zi"
+  },
+  "Toolbar": {
+    "dates": "{from} – {to}",
+    "guests": "{count, plural, one {# oaspete} other {# oaspeți}}",
+    "search": "Caută unități după nume sau locație",
+    "filters": "Filtre",
+    "searchPlaceholder": "Caută după nume sau locație",
+    "clearSearch": "Șterge căutarea",
+    "guestsAria": "Oaspeți: {count}",
+    "done": "Gata"
+  },
+  "Filters": {
+    "title": "Filtre",
+    "collapse": "Ascunde filtrele",
+    "close": "Închide",
+    "clear": "Șterge tot",
+    "all": "Toate",
+    "any": "Oricare",
+    "selected": "{count, plural, one {# selectată} other {# selectate}}",
+    "found": "Unități găsite",
+    "offers": {
+      "title": "Doar oferte",
+      "hint": "{count, plural, one {# unitate cu reducere} few {# unități cu reducere} other {# de unități cu reducere}}"
+    },
+    "price": {
+      "title": "Preț pe noapte",
+      "any": "Orice preț",
+      "min": "Minim",
+      "max": "Maxim",
+      "minLabel": "Preț minim pe noapte",
+      "maxLabel": "Preț maxim pe noapte",
+      "shortcuts": {
+        "low": "Sub 250 lei",
+        "mid": "250 – 400 lei",
+        "high": "Peste 400 lei"
+      }
+    },
+    "type": {
+      "title": "Tip unitate"
+    },
+    "rooms": {
+      "title": "Camere",
+      "bedrooms": "Dormitoare",
+      "bathrooms": "Băi",
+      "min": "{count}+",
+      "bedroomsShort": "{count}+ dormitoare",
+      "bathroomsShort": "{count}+ băi"
+    },
+    "rating": {
+      "title": "Rating",
+      "any": "Oricare",
+      "min": "{rating}+ stele"
+    },
+    "amenities": {
+      "title": "Facilități"
+    },
+    "showResults": "{count, plural, =0 {Nicio unitate} one {Vezi # unitate} other {Vezi # unități}}",
+    "location": {
+      "title": "Locație",
+      "anywhere": "Oriunde",
+      "counties": "Județe",
+      "places": "Localități",
+      "county": "jud. {county}",
+      "showMore": "Vezi mai multe ({count})",
+      "showLess": "Arată mai puține"
+    }
+  },
+  "Unit": {
+    "types": {
+      "camera": "Cameră",
+      "apartament": "Apartament",
+      "garsoniera": "Garsonieră",
+      "casuta": "Căsuță"
+    },
+    "perNight": "/ noapte",
+    "rating": "{rating} din 5",
+    "open": "Vezi detalii pentru {name}",
+    "maxGuests": "{count, plural, one {# oaspete} other {până la # oaspeți}}",
+    "favorite": "Adaugă la favorite: {name}",
+    "offers": {
+      "winter": "Ofertă de iarnă",
+      "lastMinute": "Last minute"
+    },
+    "discount": "−{percent}%",
+    "oldPrice": "Preț inițial {price}",
+    "total": "{total} total · {nights}",
+    "totalShort": "total · {nights}",
+    "perNightShort": "pe noapte",
+    "metaPlace": "{type} · {city}",
+    "metaGuests": "{count, plural, one {# oaspete} other {până la # oaspeți}}"
+  },
+  "Results": {
+    "title": "Unități disponibile",
+    "subtitle": "{count, plural, =0 {Nicio unitate nu se potrivește filtrelor.} one {# unitate pentru datele alese} other {# unități pentru datele alese}}",
+    "empty": "Încearcă alte filtre sau alte date.",
+    "reset": "Resetează filtrele"
+  },
+  "Detail": {
+    "tabs": {
+      "overview": "Prezentare",
+      "reviews": "Recenzii",
+      "rules": "Regulile casei"
+    },
+    "space": "Spațiu",
+    "beds": "{count, plural, one {# pat} few {# paturi} other {# de paturi}}",
+    "bathrooms": "{count, plural, one {# baie} other {# băi}}",
+    "area": "{area} m²",
+    "amenities": "Facilități",
+    "location": "Locație",
+    "viewMap": "Vezi pe hartă",
+    "reviewsSoon": "Recenziile oaspeților vor apărea aici.",
+    "rules": {
+      "checkIn": "Check-in de la {time}",
+      "checkOut": "Check-out până la {time}",
+      "noSmoking": "Fumatul interzis în interior",
+      "quiet": "Liniște după ora 22:00"
+    },
+    "booking": {
+      "nights": "{count, plural, one {# noapte} few {# nopți} other {# de nopți}}",
+      "nightsTimesPrice": "{price} × {nights}",
+      "total": "Total",
+      "noFees": "Fără comisioane ascunse",
+      "cta": "Rezervă",
+      "close": "Închide detaliile",
+      "discountRow": "{label} −{percent}%"
+    },
+    "photo": "Fotografie {index} din {total} – {name}"
+  },
+  "Amenities": {
+    "wifi": "Wi-Fi",
+    "parking": "Parcare",
+    "breakfast": "Mic dejun",
+    "kitchen": "Bucătărie",
+    "fireplace": "Șemineu",
+    "pets": "Animale permise",
+    "ac": "Aer condiționat",
+    "view": "Priveliște munte",
+    "sea": "Vedere la mare",
+    "pool": "Piscină"
+  },
+  "Common": {
+    "price": "{price} lei"
+  },
+  "Booking": {
+    "steps": {
+      "details": "Detalii",
+      "guest": "Datele tale",
+      "payment": "Plată"
+    },
+    "stepOf": "Pasul {step} din 3",
+    "back": "Înapoi",
+    "close": "Închide panoul",
+    "checkIn": "Sosire",
+    "checkOut": "Plecare",
+    "guests": "Oaspeți",
+    "guestsCount": "{count, plural, one {# oaspete} other {# oaspeți}}",
+    "fewer": "Mai puțini oaspeți",
+    "more": "Mai mulți oaspeți",
+    "maxGuests": "Maximum {count} oaspeți",
+    "invalidDates": "Data plecării trebuie să fie după data sosirii.",
+    "continueToPayment": "Continuă la plată",
+    "form": {
+      "name": "Nume și prenume",
+      "namePh": "ex. Ana Popescu",
+      "phone": "Telefon",
+      "phonePh": "07xx xxx xxx",
+      "email": "Email",
+      "emailPh": "ana@exemplu.ro",
+      "privacy": "Folosim datele doar pentru această rezervare. Nu ai nevoie de cont."
+    },
+    "summary": "Rezumatul rezervării",
+    "guestLabel": "Oaspete",
+    "hold": "Datele sunt păstrate pentru tine 30 de minute.",
+    "secure": "Plata se face securizat prin Stripe. Nu stocăm datele cardului.",
+    "pay": "Plătește {total}",
+    "paying": "Se procesează plata…",
+    "demo": "Demo: plata este simulată.",
+    "doneTitle": "Rezervare confirmată!",
+    "doneText": "Am trimis confirmarea și instrucțiunile de check-in la {email}.",
+    "code": "Cod rezervare",
+    "doneClose": "Gata",
+    "detailsTitle": "Detalii cazare"
+  },
+  "View": {
+    "label": "Mod de afișare",
+    "grid3": "3 coloane",
+    "grid5": "5 coloane",
+    "list": "Listă",
+    "map": "Hartă"
+  },
+  "Search": {
+    "typePrefix": "Caută ",
+    "recent": "Căutări recente",
+    "clearHistory": "Șterge istoricul",
+    "popular": "Sugestii",
+    "units": "Unități",
+    "places": "Locații",
+    "unitsCount": "{count, plural, one {# unitate} few {# unități} other {# de unități}}",
+    "hint": "Tab sau → completează · ↑↓ alegi · Enter caută"
+  },
+  "Location": {
+    "button": "Locație",
+    "title": "Unde vrei să mergi?",
+    "placeholder": "Scrie un oraș sau o zonă",
+    "results": "Rezultate",
+    "recent": "Recente",
+    "onSite": "Cu cazări pe site",
+    "noUnits": "fără cazări încă",
+    "clear": "Șterge locația",
+    "change": "Schimbă locația: {place}",
+    "none": "Nicio localitate pentru „{query}”"
+  },
+  "Auth": {
+    "close": "Închide",
+    "titleFavorite": "Salvează-ți favoritele",
+    "subFavorite": "Intră în cont sau creează unul ca să păstrezi unitățile care îți plac.",
+    "titleLogin": "Bine ai venit",
+    "subLogin": "Intră în cont sau creează unul nou în câteva secunde.",
+    "tabs": {
+      "login": "Autentificare",
+      "signup": "Cont nou"
+    },
+    "apple": "Continuă cu Apple",
+    "google": "Continuă cu Google",
+    "or": "sau cu email",
+    "name": "Nume",
+    "email": "Email",
+    "password": "Parolă",
+    "forgot": "Ai uitat parola?",
+    "submitLogin": "Intră în cont",
+    "submitSignup": "Creează cont",
+    "demo": "Demo: autentificarea nu este încă activă.",
+    "terms": "Continuând, ești de acord cu Termenii și Politica de confidențialitate."
+  },
+  "Guests": {
+    "guests": "Adulți",
+    "guestsHint": "peste 5 ani",
+    "kids": "Copii",
+    "kidsHint": "2–5 ani",
+    "infants": "Bebeluși",
+    "infantsHint": "0–2 ani",
+    "fewer": "Mai puțin: {label}",
+    "more": "Mai mult: {label}",
+    "capacity": "Capacitate: maxim {count, plural, one {# persoană} other {# persoane}} (bebelușii nu se numără)",
+    "adultsCount": "{count, plural, one {# adult} other {# adulți}}",
+    "kidsCount": "{count, plural, one {# copil} other {# copii}}",
+    "infantsCount": "{count, plural, one {# bebeluș} other {# bebeluși}}",
+    "filterTitle": "Număr de persoane",
+    "filterHint": "Afișăm doar unitățile în care încap {count, plural, one {# persoană} other {# persoane}}. Bebelușii (0–2 ani) nu ocupă loc."
+  },
+  "Map": {
+    "allCounties": "Toate județele",
+    "countyPin": "{county}: {count, plural, one {# cazare} few {# cazări} other {# de cazări}}"
+  }
+}
