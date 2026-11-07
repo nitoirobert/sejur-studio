@@ -1,0 +1,132 @@
+-- Shared pgTAP helpers. Included by every test file with \ir _lib/helpers.psql
+-- right after `begin;`. Everything lives in schema `tests` and is rolled back
+-- with the test transaction, so nothing leaks into the real schema or db:types.
+
+create extension if not exists pgtap with schema extensions;
+set local search_path = public, extensions;
+
+create schema if not exists tests;
+grant usage on schema tests to anon, authenticated;
+-- Functions are no longer executable by PUBLIC by default (0002_rls). Test helpers,
+-- including the ones each test file creates later, stay callable by the test roles.
+-- Rolled back with the test transaction like everything else here.
+alter default privileges in schema tests grant execute on functions to anon, authenticated;
+
+-- Fixed seed ids from the contract (docs/briefs/01-handover-3.md); org ids come from
+-- the signup trigger, so they are resolved through the owners' memberships.
+create table tests.ctx (k text primary key, v uuid);
+insert into tests.ctx values
+  ('user1', '11111111-1111-4111-8111-111111111111'),
+  ('user2', '22222222-2222-4222-8222-222222222222'),
+  ('prop1', 'a1000000-0000-4000-8000-000000000001'),
+  ('prop1b', 'a1000000-0000-4000-8000-000000000002'),
+  ('prop2', 'a2000000-0000-4000-8000-000000000001'),
+  ('unit1', 'b1000000-0000-4000-8000-000000000001'),
+  ('unit1b', 'b1000000-0000-4000-8000-000000000002'),
+  ('unit1_unpub', 'b1000000-0000-4000-8000-000000000006'),
+  ('unit2', 'b2000000-0000-4000-8000-000000000001');
+insert into tests.ctx
+select 'org1', m.organization_id from public.organization_members m
+where m.user_id = '11111111-1111-4111-8111-111111111111' limit 1;
+insert into tests.ctx
+select 'org2', m.organization_id from public.organization_members m
+where m.user_id = '22222222-2222-4222-8222-222222222222' limit 1;
+grant select, insert, update on tests.ctx to anon, authenticated;
+
+create or replace function tests.id(key text) returns uuid
+language sql stable security definer set search_path = '' as
+$$ select v from tests.ctx where k = key $$;
+
+-- Day A of the seed (docs/DB.md): first day of the Bucharest month in which the seed ran.
+-- Taken from the seed accounts' created_at, so it does not drift when tests run later.
+create or replace function tests.day_a() returns date
+language sql stable security definer set search_path = '' as
+$$ select date_trunc('month', (u.created_at at time zone 'Europe/Bucharest'))::date
+   from auth.users u where u.id = '11111111-1111-4111-8111-111111111111' $$;
+
+-- Switch the current role inside the transaction.
+create or replace function tests.login(uid uuid) returns void
+language plpgsql as $$
+begin
+  perform set_config('request.jwt.claims',
+    json_build_object('sub', uid::text, 'role', 'authenticated')::text, true);
+  perform set_config('request.jwt.claim.sub', uid::text, true);
+  perform set_config('role', 'authenticated', true);
+end $$;
+
+create or replace function tests.login_anon() returns void
+language plpgsql as $$
+begin
+  perform set_config('request.jwt.claims', '{"role":"anon"}', true);
+  perform set_config('request.jwt.claim.sub', '', true);
+  perform set_config('role', 'anon', true);
+end $$;
+
+-- Runs a statement and returns its SQLSTATE, or null when it succeeds
+-- (a successful statement is kept).
+create or replace function tests.err(stmt text) returns text
+language plpgsql as $$
+begin
+  execute stmt;
+  return null;
+exception when others then
+  return sqlstate;
+end $$;
+
+-- Runs a statement and returns the affected row count, or -1 on any error.
+create or replace function tests.rows(stmt text) returns bigint
+language plpgsql as $$
+declare n bigint;
+begin
+  execute stmt;
+  get diagnostics n = row_count;
+  return n;
+exception when others then
+  return -1;
+end $$;
+
+-- Count of rows a statement returns, or -1 when it errors (e.g. permission denied).
+create or replace function tests.cnt(stmt text) returns bigint
+language plpgsql as $$
+declare n bigint;
+begin
+  execute format('select count(*) from (%s) q', stmt) into n;
+  return n;
+exception when others then
+  return -1;
+end $$;
+
+-- Base tables of schema public.
+create or replace function tests.public_tables() returns setof text
+language sql stable as $$
+  select c.relname::text from pg_class c join pg_namespace n on n.oid = c.relnamespace
+  where n.nspname = 'public' and c.relkind in ('r', 'p') order by 1
+$$;
+
+-- Public tables having an organization_id column.
+create or replace function tests.org_tables() returns setof text
+language sql stable as $$
+  select t from tests.public_tables() t
+  where exists (select 1 from information_schema.columns
+                where table_schema = 'public' and table_name = t and column_name = 'organization_id')
+$$;
+
+-- Snapshot of the ids visible to the current role, per public table.
+create table tests.seen (tag text, tbl text, id text);
+grant select, insert on tests.seen to anon, authenticated;
+
+create or replace function tests.snapshot(tag text) returns void
+language plpgsql as $$
+declare t text;
+begin
+  for t in select * from tests.public_tables() loop
+    begin
+      execute format('insert into tests.seen select %L, %L, id::text from public.%I', tag, t, t);
+    exception when others then
+      null; -- no access at all counts as "sees nothing"
+    end;
+  end loop;
+end $$;
+
+-- Grant execute on helpers to the test roles.
+grant execute on all functions in schema tests to anon, authenticated;
