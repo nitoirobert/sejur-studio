@@ -33,7 +33,6 @@ export type Database = {
           status: Database["public"]["Enums"]["booking_status"]
           stay: unknown
           stripe_checkout_session_id: string | null
-          stripe_payment_intent_id: string | null
           total_amount: number
           unit_id: string
           updated_at: string
@@ -53,10 +52,9 @@ export type Database = {
           organization_id: string
           public_token?: string
           source?: Database["public"]["Enums"]["booking_source"]
-          status?: Database["public"]["Enums"]["booking_status"]
+          status: Database["public"]["Enums"]["booking_status"]
           stay?: unknown
           stripe_checkout_session_id?: string | null
-          stripe_payment_intent_id?: string | null
           total_amount?: number
           unit_id: string
           updated_at?: string
@@ -79,7 +77,6 @@ export type Database = {
           status?: Database["public"]["Enums"]["booking_status"]
           stay?: unknown
           stripe_checkout_session_id?: string | null
-          stripe_payment_intent_id?: string | null
           total_amount?: number
           unit_id?: string
           updated_at?: string
@@ -87,17 +84,17 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "bookings_guest_id_fkey"
-            columns: ["guest_id"]
+            columns: ["guest_id", "organization_id"]
             isOneToOne: false
             referencedRelation: "guests"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "organization_id"]
           },
           {
             foreignKeyName: "bookings_ical_feed_id_fkey"
-            columns: ["ical_feed_id"]
+            columns: ["ical_feed_id", "unit_id", "source"]
             isOneToOne: false
             referencedRelation: "ical_feeds"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "unit_id", "provider"]
           },
           {
             foreignKeyName: "bookings_organization_id_fkey"
@@ -108,10 +105,10 @@ export type Database = {
           },
           {
             foreignKeyName: "bookings_unit_id_fkey"
-            columns: ["unit_id"]
+            columns: ["unit_id", "organization_id"]
             isOneToOne: false
             referencedRelation: "units"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "organization_id"]
           },
         ]
       }
@@ -196,7 +193,7 @@ export type Database = {
           last_status: string | null
           last_sync_at: string | null
           organization_id: string
-          provider: Database["public"]["Enums"]["ical_provider"]
+          provider: Database["public"]["Enums"]["booking_source"]
           unit_id: string
           updated_at: string
           url: string
@@ -208,7 +205,7 @@ export type Database = {
           last_status?: string | null
           last_sync_at?: string | null
           organization_id: string
-          provider: Database["public"]["Enums"]["ical_provider"]
+          provider: Database["public"]["Enums"]["booking_source"]
           unit_id: string
           updated_at?: string
           url: string
@@ -220,7 +217,7 @@ export type Database = {
           last_status?: string | null
           last_sync_at?: string | null
           organization_id?: string
-          provider?: Database["public"]["Enums"]["ical_provider"]
+          provider?: Database["public"]["Enums"]["booking_source"]
           unit_id?: string
           updated_at?: string
           url?: string
@@ -235,10 +232,10 @@ export type Database = {
           },
           {
             foreignKeyName: "ical_feeds_unit_id_fkey"
-            columns: ["unit_id"]
+            columns: ["unit_id", "organization_id"]
             isOneToOne: false
             referencedRelation: "units"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "organization_id"]
           },
         ]
       }
@@ -365,10 +362,10 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "payments_booking_id_fkey"
-            columns: ["booking_id"]
+            columns: ["booking_id", "organization_id"]
             isOneToOne: false
             referencedRelation: "bookings"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "organization_id"]
           },
           {
             foreignKeyName: "payments_organization_id_fkey"
@@ -426,17 +423,17 @@ export type Database = {
           },
           {
             foreignKeyName: "photos_property_id_fkey"
-            columns: ["property_id"]
+            columns: ["property_id", "organization_id"]
             isOneToOne: false
             referencedRelation: "properties"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "organization_id"]
           },
           {
             foreignKeyName: "photos_unit_id_fkey"
-            columns: ["unit_id"]
+            columns: ["unit_id", "property_id"]
             isOneToOne: false
             referencedRelation: "units"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "property_id"]
           },
         ]
       }
@@ -531,10 +528,10 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "properties_cancellation_policy_id_fkey"
-            columns: ["cancellation_policy_id"]
+            columns: ["cancellation_policy_id", "organization_id"]
             isOneToOne: false
             referencedRelation: "cancellation_policies"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "organization_id"]
           },
           {
             foreignKeyName: "properties_organization_id_fkey"
@@ -554,7 +551,6 @@ export type Database = {
           feed_id: string | null
           id: string
           organization_id: string
-          resolved: boolean
           resolved_at: string | null
           unit_id: string
           updated_at: string
@@ -567,7 +563,6 @@ export type Database = {
           feed_id?: string | null
           id?: string
           organization_id: string
-          resolved?: boolean
           resolved_at?: string | null
           unit_id: string
           updated_at?: string
@@ -580,7 +575,6 @@ export type Database = {
           feed_id?: string | null
           id?: string
           organization_id?: string
-          resolved?: boolean
           resolved_at?: string | null
           unit_id?: string
           updated_at?: string
@@ -588,17 +582,17 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "sync_conflicts_booking_id_fkey"
-            columns: ["booking_id"]
+            columns: ["booking_id", "unit_id"]
             isOneToOne: false
             referencedRelation: "bookings"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "unit_id"]
           },
           {
             foreignKeyName: "sync_conflicts_feed_id_fkey"
-            columns: ["feed_id"]
+            columns: ["feed_id", "unit_id"]
             isOneToOne: false
             referencedRelation: "ical_feeds"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "unit_id"]
           },
           {
             foreignKeyName: "sync_conflicts_organization_id_fkey"
@@ -609,10 +603,10 @@ export type Database = {
           },
           {
             foreignKeyName: "sync_conflicts_unit_id_fkey"
-            columns: ["unit_id"]
+            columns: ["unit_id", "organization_id"]
             isOneToOne: false
             referencedRelation: "units"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "organization_id"]
           },
         ]
       }
@@ -666,10 +660,10 @@ export type Database = {
           },
           {
             foreignKeyName: "unit_prices_unit_id_fkey"
-            columns: ["unit_id"]
+            columns: ["unit_id", "organization_id"]
             isOneToOne: false
             referencedRelation: "units"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "organization_id"]
           },
         ]
       }
@@ -738,10 +732,10 @@ export type Database = {
           },
           {
             foreignKeyName: "units_property_id_fkey"
-            columns: ["property_id"]
+            columns: ["property_id", "organization_id"]
             isOneToOne: false
             referencedRelation: "properties"
-            referencedColumns: ["id"]
+            referencedColumns: ["id", "organization_id"]
           },
         ]
       }
@@ -794,6 +788,14 @@ export type Database = {
           revenue_month: number
         }[]
       }
+      expire_holds: { Args: { p_unit_id?: string }; Returns: number }
+      is_live_booking: {
+        Args: {
+          p_hold_expires_at: string
+          p_status: Database["public"]["Enums"]["booking_status"]
+        }
+        Returns: boolean
+      }
       is_org_member: { Args: { org: string }; Returns: boolean }
       is_own_storage_path: { Args: { path: string }; Returns: boolean }
       public_busy_ranges: {
@@ -815,7 +817,6 @@ export type Database = {
     Enums: {
       booking_source: "direct" | "booking" | "airbnb" | "altul"
       booking_status: "hold" | "confirmed" | "blocked" | "cancelled" | "expired"
-      ical_provider: "booking" | "airbnb" | "altul"
       member_role: "owner"
       payment_status:
         | "pending"
@@ -955,7 +956,6 @@ export const Constants = {
     Enums: {
       booking_source: ["direct", "booking", "airbnb", "altul"],
       booking_status: ["hold", "confirmed", "blocked", "cancelled", "expired"],
-      ical_provider: ["booking", "airbnb", "altul"],
       member_role: ["owner"],
       payment_status: [
         "pending",

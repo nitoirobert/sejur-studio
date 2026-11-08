@@ -20,10 +20,11 @@ $$, 'every public security definer function uses search_path = '''' (qualified n
 create or replace function tests.owner_fns() returns setof regprocedure language sql stable as $$
   select p.oid::regprocedure from pg_proc p join pg_namespace n on n.oid = p.pronamespace
   where n.nspname = 'public'
-    and p.proname in ('create_manual_booking', 'reorder_photos', 'dashboard_chart', 'dashboard_kpis')
+    and p.proname in ('create_manual_booking', 'reorder_photos', 'dashboard_chart', 'dashboard_kpis',
+                      'expire_holds', 'is_live_booking')
 $$;
-select is((select count(distinct pr.proname) from tests.owner_fns() f join pg_proc pr on pr.oid = f), 4::bigint,
-  'exactly the 4 owner functions exist (create_manual_booking, reorder_photos, dashboard_chart, dashboard_kpis)');
+select is((select count(distinct pr.proname) from tests.owner_fns() f join pg_proc pr on pr.oid = f), 6::bigint,
+  'exactly the 6 owner functions exist (create_manual_booking, reorder_photos, dashboard_chart, dashboard_kpis, expire_holds, is_live_booking)');
 select is_empty($$
   select f::text from tests.owner_fns() f join pg_proc p on p.oid = f
   where p.proacl is null
@@ -33,6 +34,56 @@ select is_empty($$ select f::text from tests.owner_fns() f where has_function_pr
   'anon cannot execute owner functions');
 select is_empty($$ select f::text from tests.owner_fns() f where not has_function_privilege('authenticated', f, 'execute') $$,
   'authenticated can execute owner functions');
+
+-- expire_holds / is_live_booking (0008): named one by one, so a rename cannot drop them from the checks above.
+select ok(not exists (select 1 from aclexplode((select proacl from pg_proc where oid = f)) a
+                      where a.grantee = 0 and a.privilege_type = 'EXECUTE'),
+  'PUBLIC has no EXECUTE on ' || f::text)
+from unnest(array['public.expire_holds(uuid)'::regprocedure,
+                  'public.is_live_booking(public.booking_status, timestamptz)'::regprocedure]) f;
+select ok(not has_function_privilege('anon', f, 'execute'), 'anon has no EXECUTE on ' || f::text)
+from unnest(array['public.expire_holds(uuid)'::regprocedure,
+                  'public.is_live_booking(public.booking_status, timestamptz)'::regprocedure]) f;
+-- The Stripe webhook and the cron job run as service_role: explicit grant in 0008.
+select ok(exists (select 1 from aclexplode((select proacl from pg_proc where oid = f)) a
+                  where a.grantee = 'service_role'::regrole and a.privilege_type = 'EXECUTE'),
+  'service_role has an explicit EXECUTE grant on ' || f::text)
+from unnest(array['public.expire_holds(uuid)'::regprocedure,
+                  'public.is_live_booking(public.booking_status, timestamptz)'::regprocedure]) f;
+-- The exact grantees, printed for docs/untangle-db.md.
+select diag(f::text || ' acl: ' || (select proacl::text from pg_proc where oid = f))
+from unnest(array['public.expire_holds(uuid)'::regprocedure,
+                  'public.is_live_booking(public.booking_status, timestamptz)'::regprocedure]) f;
+select is(
+  (select array_agg(distinct r.rolname::text order by r.rolname::text)
+     from pg_proc p cross join lateral aclexplode(p.proacl) a
+     join pg_roles r on r.oid = a.grantee
+    where p.oid = f and a.privilege_type = 'EXECUTE' and a.grantee <> p.proowner),
+  array['authenticated', 'service_role'],
+  f::text || ': EXECUTE grantees besides the owner are exactly authenticated and service_role')
+from unnest(array['public.expire_holds(uuid)'::regprocedure,
+                  'public.is_live_booking(public.booking_status, timestamptz)'::regprocedure]) f;
+
+-- is_live_booking is inlinable: plain SQL, invoker, no SET clause, body bound at creation.
+select ok((select p.prolang = (select oid from pg_language where lanname = 'sql')
+              and not p.prosecdef and p.proconfig is null and p.provolatile = 's'
+              and p.prosqlbody is not null
+             from pg_proc p where p.oid = 'public.is_live_booking(public.booking_status, timestamptz)'::regprocedure),
+  'is_live_booking: language sql, stable, security invoker, no SET, SQL-standard body');
+create or replace function tests.plan_text(stmt text) returns text
+language plpgsql as $$
+declare r record; t text := '';
+begin
+  for r in execute 'explain (verbose, costs off) ' || stmt loop
+    t := t || r."QUERY PLAN" || E'
+';
+  end loop;
+  return t;
+end $$;
+select tests.login(tests.id('user1'));
+select unalike(tests.plan_text('select b.id from public.bookings b where public.is_live_booking(b.status, b.hold_expires_at)'),
+  '%is_live_booking%', 'is_live_booking is inlined into the caller''s plan (authenticated)');
+reset role;
 
 -- trigger function on auth.users is not callable by API roles
 select is_empty($$
@@ -63,6 +114,8 @@ reset role;
 -- anon calls owner functions -> permission denied
 select tests.login_anon();
 select is(tests.err($$select * from public.dashboard_kpis(current_date)$$), '42501', 'anon cannot call dashboard_kpis');
+select is(tests.err($$select public.expire_holds()$$), '42501', 'anon cannot call expire_holds');
+select is(tests.err($$select public.is_live_booking('confirmed', null)$$), '42501', 'anon cannot call is_live_booking');
 reset role;
 
 -- (e) default privileges: future tables and functions created by the migration role

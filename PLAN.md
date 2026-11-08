@@ -91,11 +91,11 @@ Toate tabelele: `id uuid`, `created_at`, `updated_at`, RLS activ.
 | `units` | property_id, name, type (`apartament`/`camera`/`garsoniera`), max_guests, description, amenities (jsonb), photos, is_published |
 | `unit_prices` | unit_id, kind (`base`/`weekend`/`season`), price_per_night (bani), date_from, date_to, min_nights, priority |
 | `guests` | organization_id, full_name, email, phone — **minim de date** |
-| `bookings` | organization_id, unit_id, guest_id, check_in, check_out, `stay daterange` (generat), status, source, adults, children, total_amount, currency, hold_expires_at, stripe_checkout_session_id, stripe_payment_intent_id, public_token |
+| `bookings` | organization_id, unit_id, guest_id, check_in, check_out, `stay daterange` (generat), status, source, adults, children, total_amount, currency, hold_expires_at, stripe_checkout_session_id, public_token (`stripe_payment_intent_id` doar în `payments`) |
 | `payments` | booking_id, amount, status, stripe_ids, refunded_amount |
 | `cancellation_policies` | organization_id, name, reguli (ex. rambursare 100% până la X zile înainte) |
 | `ical_feeds` | unit_id, url, provider (`booking`/`airbnb`/`altul`), last_sync_at, last_status, last_error |
-| `sync_conflicts` | unit_id, feed_id, booking_id, external_uid, interval, rezolvat |
+| `sync_conflicts` | unit_id, feed_id, booking_id, external_uid, conflict_range, resolved_at (rezolvat = `resolved_at` setat) |
 
 ### Anti dublă rezervare (cel mai important lucru din schemă)
 ```sql
