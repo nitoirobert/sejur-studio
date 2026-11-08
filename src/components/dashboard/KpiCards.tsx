@@ -98,7 +98,8 @@ export async function KpiCards() {
                 </span>
               </p>
               {card.meter && <KpiLiveMeter base={base} label={label} />}
-              <p className="mt-2.5 text-[13px] leading-snug text-ink-soft first-letter:uppercase">{card.hint}</p>
+              {/* Subtitlul cardului (ziua / perioada): mai mare și îngroșat, ca să se citească ușor pe sticlă */}
+              <p className="mt-2.5 text-base leading-snug font-bold text-ink first-letter:uppercase">{card.hint}</p>
             </li>
           );
         })}
