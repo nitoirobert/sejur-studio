@@ -2,17 +2,18 @@
 -- Dates in 2031 so they never collide with the seed.
 begin;
 \ir _lib/helpers.psql
-select plan(19);
+select plan(21);
 
 create or replace function tests.bk(unit uuid, ci date, co date, st text default 'confirmed',
                                     amount int default 10000) returns text
 language sql as $$
   select format(
     $f$insert into public.bookings (organization_id, unit_id, check_in, check_out, status, source,
-                                    adults, children, total_amount)
-       select p.organization_id, u.id, %L::date, %L::date, %L, 'direct', 2, 0, %s
+                                    adults, children, total_amount, hold_expires_at)
+       select p.organization_id, u.id, %L::date, %L::date, %L, 'direct', 2, 0, %s,
+              case when %L = 'hold' then now() + interval '1 hour' end
        from public.units u join public.properties p on p.id = u.property_id where u.id = %L$f$,
-    ci, co, st, amount, unit)
+    ci, co, st, amount, st, unit)
 $$;
 
 -- base booking: unit1, [2031-05-10, 2031-05-15)
@@ -55,6 +56,15 @@ select ok(tests.err(replace(tests.bk(tests.id('unit1'), '2031-07-20', '2031-07-2
 -- defaults and generated stay
 select is((select currency::text from public.bookings where unit_id = tests.id('unit1') and check_in = '2031-05-10'),
   'RON', 'currency defaults to RON');
+-- status has no default (0008): every writer states it
+select is((select column_default::text from information_schema.columns
+            where table_schema = 'public' and table_name = 'bookings' and column_name = 'status'),
+  null, 'bookings.status has no default');
+select is(tests.err(format($$insert into public.bookings (organization_id, unit_id, check_in, check_out, source,
+                                                     adults, children, total_amount)
+                            values (%L, %L, '2031-08-10', '2031-08-12', 'direct', 2, 0, 0)$$,
+                           tests.id('org1'), tests.id('unit1'))), '23502',
+  'booking without status refused (23502)');
 select is((select stay from public.bookings where unit_id = tests.id('unit1') and check_in = '2031-05-10'),
   daterange('2031-05-10', '2031-05-15', '[)'), 'stay = daterange(check_in, check_out, ''[)'')');
 select is(tests.err($$update public.bookings set stay = daterange('2031-01-01','2031-01-02')

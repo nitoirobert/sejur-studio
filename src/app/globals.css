@@ -142,3 +142,96 @@ body {
     scale: 1;
   }
 }
+
+/*
+  Panoul proprietarului: sticlă peste plaja din fundal.
+  Tokeni noi, adăugați (nu schimbă nimic de mai sus). Folosiți ca bg-glass, border-glass-line, shadow-glass.
+*/
+@theme {
+  --color-glass: rgb(251 248 243 / 0.6); /* panouri: sidebar, carduri */
+  --color-glass-strong: rgb(251 248 243 / 0.84); /* sertarul de pe telefon, formulare */
+  --color-glass-line: rgb(255 255 255 / 0.7); /* bordura fină a sticlei */
+  --color-danger: #9a3a28; /* erori în formulare (AA pe crem) */
+  --color-veil: rgb(251 248 243 / 0.72); /* fundal sub titlul paginii, ca textul să se citească peste scenă */
+  --shadow-glass:
+    inset 0 1px 0 rgb(255 255 255 / 0.75), 0 24px 48px -24px rgb(74 58 36 / 0.38),
+    0 2px 8px -2px rgb(74 58 36 / 0.08);
+}
+
+.dark {
+  --color-glass: rgb(16 27 46 / 0.6);
+  --color-glass-strong: rgb(16 27 46 / 0.86);
+  --color-glass-line: rgb(255 255 255 / 0.09);
+  --color-danger: #f4b6a8;
+  --color-veil: rgb(11 19 34 / 0.82);
+  --shadow-glass:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 24px 48px -24px rgb(0 0 0 / 0.7),
+    0 2px 8px -2px rgb(0 0 0 / 0.35);
+}
+
+/* Panel primary button: a fuller blue at night, so it never reads as disabled (brief 02). */
+@theme {
+  --color-accent-strong: #1f3d63;
+}
+
+.dark {
+  --color-accent-strong: #6aa3ec;
+}
+
+/* Brief 03: bookings chart */
+
+/* An active hold: hatched, so it reads as "not paid yet" without colour alone. */
+.bar-hold {
+  background-color: var(--color-cream-100);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--color-accent) 22%, transparent) 0 4px,
+    transparent 4px 9px
+  );
+}
+
+/* A bar that is still being saved breathes once in a while. */
+.bar-pending {
+  animation: bar-pending 1.4s ease-in-out infinite;
+}
+@keyframes bar-pending {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* Booking sheet: slides up on a phone, comes in from the right on wider screens. */
+.sheet[open] {
+  animation: sheet-up 220ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.sheet[open]::backdrop {
+  animation: sheet-fade 220ms ease-out;
+}
+@media (min-width: 48rem) {
+  .sheet[open] {
+    animation: sheet-in 220ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+}
+@keyframes sheet-fade {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bar-pending,
+  .sheet[open],
+  .sheet[open]::backdrop {
+    animation: none;
+  }
+}

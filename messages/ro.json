@@ -419,5 +419,211 @@
       "name": "Cameră boemă 2 Mai",
       "description": "Cameră colorată, cu atmosferă boemă, aproape de plaja din 2 Mai."
     }
+  },
+  "Dashboard": {
+    "brand": "Sejur Studio",
+    "brandSub": "Panoul gazdei",
+    "nav": {
+      "label": "Meniul panoului",
+      "overview": "Prezentare",
+      "properties": "Proprietăți",
+      "bookings": "Rezervări",
+      "settings": "Setări",
+      "open": "Deschide meniul",
+      "close": "Închide meniul",
+      "expand": "Extinde meniul",
+      "collapse": "Strânge meniul"
+    },
+    "greeting": "Bună, {name}",
+    "greetingAnon": "Bună",
+    "signOut": "Ieși din cont",
+    "account": "Contul tău",
+    "pages": {
+      "overview": {
+        "title": "Prezentare",
+        "subtitle": "Sosirile, plecările și ocuparea de azi, dintr‑o privire."
+      },
+      "properties": {
+        "title": "Proprietăți",
+        "subtitle": "Locurile pe care le închiriezi, cu unitățile și pozele lor.",
+        "emptyTitle": "Proprietățile vin în pasul următor",
+        "emptyBody": "Aici vei adăuga proprietăți, unități, prețuri și poze, apoi le vei publica pe pagina ta de rezervări."
+      },
+      "bookings": {
+        "title": "Rezervări",
+        "subtitle": "Toate rezervările, filtrate după proprietate și perioadă.",
+        "emptyTitle": "Lista rezervărilor e în lucru",
+        "emptyBody": "Aici vei căuta rezervările după proprietate și interval de date. Până atunci, sosirile și plecările de azi sunt în Prezentare."
+      },
+      "settings": {
+        "title": "Setări",
+        "subtitle": "Profilul tău, parola și datele de facturare.",
+        "emptyTitle": "Setările sunt în lucru",
+        "emptyBody": "Aici îți vei schimba numele, parola și datele firmei care apar pe facturi."
+      }
+    },
+    "soon": "În curând",
+    "backToOverview": "Înapoi la Prezentare",
+    "kpi": {
+      "label": "Indicatorii zilei",
+      "arrivals": "Sosiri azi",
+      "departures": "Plecări azi",
+      "occupancy": "Ocupare",
+      "occupancyHint": "următoarele 30 de zile",
+      "revenue": "Încasări luna aceasta",
+      "revenueHint": "plăți primite, fără rambursări",
+      "todayHint": "{day}",
+      "open": "Vezi în Rezervări: {label}",
+      "currency": "lei"
+    },
+    "chart": {
+      "title": "Graficul rezervărilor",
+      "region": "Graficul rezervărilor, {from} – {to}",
+      "prev": "Perioada anterioară",
+      "next": "Perioada următoare",
+      "today": "Azi",
+      "view": "Câte zile se văd",
+      "days": "{n} zile",
+      "property": "Proprietate",
+      "allProperties": "Toate proprietățile",
+      "unit": "Unitate",
+      "newBooking": "Rezervare nouă",
+      "hintDrag": "Trage peste zilele libere ale unei unități ca să adaugi o rezervare.",
+      "hintTap": "Atinge o zi liberă ca să adaugi o rezervare.",
+      "expand": "Arată unitățile din {name}",
+      "collapse": "Ascunde unitățile din {name}",
+      "units": "{count, plural, one {# unitate} few {# unități} other {# de unități}}",
+      "noUnits": "Încă nu ai unități.",
+      "noUnitsFiltered": "Proprietatea aleasă nu are unități de afișat.",
+      "showAll": "Arată toate proprietățile",
+      "todayLine": "Azi",
+      "noGuest": "Fără nume",
+      "nights": "{count, plural, one {# noapte} few {# nopți} other {# de nopți}}",
+      "bar": "{guest}, {checkIn} – {checkOut}, {nights}, {status}, {source}",
+      "saving": "se salvează",
+      "status": {
+        "confirmed": "confirmată",
+        "hold": "în curs de plată",
+        "blocked": "blocată"
+      },
+      "source": {
+        "direct": "direct",
+        "booking": "Booking.com",
+        "airbnb": "Airbnb",
+        "altul": "alt calendar"
+      },
+      "legend": {
+        "label": "Legendă",
+        "confirmed": "Confirmată",
+        "hold": "În curs de plată",
+        "blocked": "Blocată sau din calendar"
+      },
+      "statusLabel": {
+        "confirmed": "Confirmată",
+        "hold": "În curs de plată",
+        "blocked": "Blocată"
+      },
+      "blockedFrom": "Blocată · {source}",
+      "goProperties": "Adaugă unități în Proprietăți"
+    },
+    "loading": "Se încarcă",
+    "error": {
+      "title": "Panoul nu s-a încărcat",
+      "body": "Ceva n-a mers la citirea datelor. Încearcă din nou; dacă nu merge, reîncarcă pagina.",
+      "retry": "Încearcă din nou"
+    },
+    "auth": {
+      "back": "Înapoi la site",
+      "loginTitle": "Intră în cont",
+      "loginSub": "Rezervările, ocuparea și încasările tale, într‑un singur loc.",
+      "signupTitle": "Cont nou de gazdă",
+      "signupSub": "Un minut, fără card. Intri direct în panou.",
+      "name": "Nume complet",
+      "namePlaceholder": "Ana Popescu",
+      "email": "Email",
+      "emailPlaceholder": "nume@exemplu.ro",
+      "password": "Parolă",
+      "passwordHint": "Cel puțin {min} caractere.",
+      "showPassword": "Arată parola",
+      "hidePassword": "Ascunde parola",
+      "submitLogin": "Intră în cont",
+      "submitSignup": "Creează contul",
+      "pending": "Se verifică",
+      "toSignup": "Nu ai cont?",
+      "toSignupLink": "Creează unul",
+      "toLogin": "Ai deja cont?",
+      "toLoginLink": "Intră în cont"
+    },
+    "errors": {
+      "invalidCredentials": "Email sau parolă greșită",
+      "emailTaken": "Există deja un cont cu acest email. Intră în cont sau folosește alt email.",
+      "passwordShort": "Parola trebuie să aibă cel puțin {min} caractere",
+      "passwordLong": "Parola poate avea cel mult 72 de caractere",
+      "nameEmpty": "Scrie-ți numele",
+      "nameLong": "Numele poate avea cel mult 80 de caractere",
+      "emailInvalid": "Scrie un email valid, de forma nume@exemplu.ro",
+      "rateLimit": "Prea multe încercări într‑un timp scurt. Așteaptă câteva minute și încearcă din nou.",
+      "generic": "Nu am putut termina. Încearcă din nou peste câteva secunde.",
+      "unauthorized": "Sesiunea a expirat. Intră din nou în cont."
+    },
+    "details": {
+      "title": "Detaliile rezervării",
+      "close": "Închide",
+      "property": "Proprietate",
+      "unit": "Unitate",
+      "checkIn": "Sosire",
+      "checkOut": "Plecare",
+      "stay": "Șederea",
+      "guests": "Oaspeți",
+      "adults": "{count, plural, one {# adult} few {# adulți} other {# de adulți}}",
+      "children": "{count, plural, =0 {fără copii} one {# copil} few {# copii} other {# de copii}}",
+      "total": "Sumă",
+      "status": "Stare",
+      "source": "Sursă",
+      "holdUntil": "Locul e ținut până la",
+      "readOnly": "Doar pentru citire. Rezervarea se modifică din pagina Rezervări."
+    },
+    "booking": {
+      "title": "Rezervare nouă",
+      "close": "Închide",
+      "unit": "Unitate",
+      "checkIn": "Sosire",
+      "checkOut": "Plecare",
+      "name": "Numele oaspetelui",
+      "namePlaceholder": "Ana Popescu",
+      "email": "Email",
+      "phone": "Telefon",
+      "optional": "opțional",
+      "adults": "Adulți",
+      "children": "Copii",
+      "amount": "Sumă totală",
+      "amountHint": "În lei, de exemplu 450,50.",
+      "submit": "Salvează rezervarea",
+      "pending": "Se salvează",
+      "cancel": "Renunță",
+      "saved": "Rezervarea pentru {guest} a fost salvată.",
+      "errors": {
+        "invalid_input": "Formularul are date pe care nu le recunoaștem. Reîncarcă pagina și încearcă din nou.",
+        "invalid_dates": "Alege o plecare după sosire, cel mult 366 de nopți.",
+        "invalid_guest": "Verifică oaspetele: un nume de cel mult 80 de caractere, cel puțin un adult, emailul și telefonul.",
+        "invalid_amount": "Scrie suma în lei, de exemplu 450,50: fără minus, cu cel mult două zecimale.",
+        "unit_not_found": "Unitatea nu există în contul tău.",
+        "booking_overlap": "Unitatea are deja o rezervare în aceste zile. Alege alte zile.",
+        "unauthorized": "Sesiunea a expirat. Intră din nou în cont.",
+        "generic": "Nu am putut salva rezervarea. Datele au rămas în formular; încearcă din nou."
+      }
+    },
+    "arrivals": {
+      "title": "Sosiri următoare",
+      "hint": "din intervalul afișat",
+      "empty": "Nicio sosire în intervalul afișat.",
+      "goToday": "Mergi la azi"
+    },
+    "occupancy": {
+      "title": "Ocupare pe proprietăți",
+      "hint": "nopți ocupate în intervalul afișat",
+      "empty": "Nicio proprietate de afișat.",
+      "value": "{pct}%"
+    }
   }
 }

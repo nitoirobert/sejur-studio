@@ -110,26 +110,26 @@ select tests.login(tests.id('user1'));
 select is_empty($$select * from tests.move_to(tests.id('org2'))$$,
   'user1 update moving own rows to org2 refused (42501) on every table');
 
--- 3f. children under an org2 parent refused even with own organization_id
+-- 3f. children under an org2 parent refused even with own organization_id (composite foreign key, 23503)
 select is(tests.err(format(
   $$insert into public.units (organization_id, property_id, name, type, max_guests)
-    values (%L, %L, 'x', 'apartament', 2)$$, tests.id('org1'), tests.id('prop2'))), '42501',
+    values (%L, %L, 'x', 'apartament', 2)$$, tests.id('org1'), tests.id('prop2'))), '23503',
   'unit under org2 property refused');
 select is(tests.err(format(
-  $$update public.units set property_id = %L where id = %L$$, tests.id('prop2'), tests.id('unit1'))), '42501',
+  $$update public.units set property_id = %L where id = %L$$, tests.id('prop2'), tests.id('unit1'))), '23503',
   'moving own unit under org2 property refused');
 select is(tests.err(format(
-  $$insert into public.unit_prices (organization_id, unit_id, kind, price_per_night)
-    values (%L, %L, 'base', 100)$$, tests.id('org1'), tests.id('unit2'))), '42501',
+  $$insert into public.unit_prices (organization_id, unit_id, kind, price_per_night, date_from, date_to)
+    values (%L, %L, 'season', 100, '2031-07-01', '2031-08-01')$$, tests.id('org1'), tests.id('unit2'))), '23503',
   'unit_price on org2 unit refused');
 select is(tests.err(format(
   $$insert into public.photos (organization_id, property_id, storage_path, position, is_cover)
     values (%L, %L, %L, 0, false)$$, tests.id('org1'), tests.id('prop2'),
-    tests.id('org1') || '/' || tests.id('prop2') || '/y.webp')), '42501',
+    tests.id('org1') || '/' || tests.id('prop2') || '/y.webp')), '23503',
   'photo on org2 property refused');
 select is(tests.err(format(
   $$insert into public.bookings (organization_id, unit_id, check_in, check_out, status, source, adults, children, total_amount)
-    values (%L, %L, '2031-09-01', '2031-09-02', 'confirmed', 'direct', 1, 0, 0)$$, tests.id('org1'), tests.id('unit2'))), '42501',
+    values (%L, %L, '2031-09-01', '2031-09-02', 'confirmed', 'direct', 1, 0, 0)$$, tests.id('org1'), tests.id('unit2'))), '23503',
   'booking on org2 unit refused');
 
 -- own writes still work (policies are not deny-all)
