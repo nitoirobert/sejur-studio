@@ -3,6 +3,8 @@ begin;
 \ir _lib/helpers.psql
 select plan(8);
 
+create temp table _orgs_before as select count(*) as n from public.organizations;
+
 insert into auth.users (id, instance_id, aud, role, email, raw_user_meta_data, raw_app_meta_data, created_at, updated_at)
 values
   -- client cu email (popup-ul de pe site)
@@ -36,7 +38,7 @@ select is((select count(*) from public.organization_members where user_id = '000
   0::bigint, 'guest metadata cannot join an existing org');
 select is((select count(*) from public.organization_members where organization_id = tests.id('org1')),
   1::bigint, 'org1 still has only its original member');
-select is((select count(*) from public.organizations), 3::bigint, '2 seed orgs + 1 new host org');
+select is((select count(*) from public.organizations) - (select n from _orgs_before), 1::bigint, 'only the new host account gets an org');
 
 select * from finish();
 rollback;

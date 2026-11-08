@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { defineConfig, devices } from "@playwright/test";
@@ -9,6 +10,30 @@ loadTestEnv();
 export const OUT_DIR = process.env.E2E_OUT_DIR ?? path.join(os.tmpdir(), "sejur-e2e");
 const BASE_URL = process.env.E2E_BASE_URL ?? "http://localhost:3100";
 const PORT = new URL(BASE_URL).port || "3100";
+
+// Robert's cookie dialog (src/components/CookieConsent.tsx) dims the page 2 s after load and catches clicks.
+// Every context starts with the "necessary only" choice, same shape as saveConsent() in src/lib/consent.ts.
+// The setup project inherits it, so the owner session files carry it too.
+const CONSENT_STATE = path.join(OUT_DIR, "consent-state.json");
+fs.mkdirSync(OUT_DIR, { recursive: true });
+fs.writeFileSync(
+  CONSENT_STATE,
+  JSON.stringify({
+    cookies: [
+      {
+        name: "sejur_consent",
+        value: encodeURIComponent(JSON.stringify({ analytics: false, marketing: false, date: "2026-11-09T00:00:00.000Z", v: 1 })),
+        domain: new URL(BASE_URL).hostname,
+        path: "/",
+        expires: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 182,
+        httpOnly: false,
+        secure: false,
+        sameSite: "Lax",
+      },
+    ],
+    origins: [],
+  }),
+);
 
 export default defineConfig({
   testDir: "./e2e",
@@ -24,6 +49,7 @@ export default defineConfig({
   use: {
     baseURL: BASE_URL,
     locale: "ro-RO",
+    storageState: CONSENT_STATE,
     timezoneId: "Europe/Bucharest",
     viewport: { width: 1440, height: 900 },
     trace: "retain-on-failure",

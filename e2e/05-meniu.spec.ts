@@ -81,7 +81,9 @@ test.describe("390: sertar", () => {
   test("Esc închide, focusul revine pe ☰", async ({ page }) => {
     await page.goto("/dashboard");
     const { burger, drawer } = await open(page);
-    await expect(drawer.locator("nav").getByRole("link")).toHaveText(ITEMS);
+    // Robert's "Înapoi la site" (Sidebar.tsx, d5d824b) closes the list and leads to the public site.
+    await expect(drawer.locator("nav").getByRole("link")).toHaveText([...ITEMS, "Înapoi la site"]);
+    await expect(drawer.locator("nav").getByRole("link", { name: "Înapoi la site" })).toHaveAttribute("href", "/");
     await expect(drawer.locator('[aria-current="page"]')).toHaveText("Prezentare");
     await page.keyboard.press("Escape");
     await expect(drawer).not.toBeInViewport();

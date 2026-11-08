@@ -64,6 +64,11 @@ test("pachetele trimise browserului nu conțin cheia admin; env public = doar UR
     for (const m of fs.readFileSync(f, "utf8").matchAll(/NEXT_PUBLIC_[A-Z0-9_]+/g)) names.add(m[0]);
   }
   expect([...names].sort()).toEqual(
-    [...names].filter((n) => ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "NEXT_PUBLIC_SITE_URL"].includes(n)).sort(),
+    // NEXT_PUBLIC_HOST_SIGNUP_URL: Robert's optional public link override (src/lib/links.ts), not a secret.
+    [...names]
+      .filter((n) =>
+        ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "NEXT_PUBLIC_SITE_URL", "NEXT_PUBLIC_HOST_SIGNUP_URL"].includes(n),
+      )
+      .sort(),
   );
 });

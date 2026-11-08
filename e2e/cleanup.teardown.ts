@@ -18,8 +18,9 @@ teardown("șterge conturile e2e + firmele lor; membru/profil/firmă dispar; owne
     users.push(...data.users);
     if (data.users.length < 1000) break;
   }
-  // Also the stray e2e+ui-<n>@example.com accounts left by manual UI checks (brief 04).
-  const e2e = users.filter((u) => /^e2e\+(\d+|ui-[a-z0-9-]+)@example\.com$/.test(u.email ?? ""));
+  // Also the stray e2e+ui-<n> / e2e+guest-<n>@example.com accounts left by manual UI checks
+  // (brief 04, guest accounts from the site popup): every e2e+ address, as the final check below expects.
+  const e2e = users.filter((u) => /^e2e\+[a-z0-9-]+@example\.com$/.test(u.email ?? ""));
   const seedOrgs = new Set<string>();
   for (const who of ["owner1", "owner2"] as const) {
     const u = users.find((x) => x.email === SEED[who].email);
