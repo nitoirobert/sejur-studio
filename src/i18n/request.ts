@@ -1,11 +1,13 @@
+import { cookies, headers } from "next/headers";
 import { getRequestConfig } from "next-intl/server";
+import { defaultLocale, isLocale, localeCookie, matchLocale } from "./config";
 
-// Deocamdată avem o singură limbă (ro). Când adăugăm "en",
-// aici citim limba din URL sau din cookie.
-export const defaultLocale = "ro";
+export { defaultLocale };
 
+// Limba: cookie-ul ales de vizitator, altfel limba browserului, altfel română.
 export default getRequestConfig(async () => {
-  const locale = defaultLocale;
+  const saved = (await cookies()).get(localeCookie)?.value;
+  const locale = isLocale(saved) ? saved : matchLocale((await headers()).get("accept-language"));
   return {
     locale,
     timeZone: "Europe/Bucharest",

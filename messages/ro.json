@@ -15,7 +15,8 @@
     "account": "Contul meu",
     "brand": "Sejur Studio",
     "darkMode": "Mod noapte",
-    "lightMode": "Mod zi"
+    "lightMode": "Mod zi",
+    "hostSignup": "Cont nou de gazdă"
   },
   "Toolbar": {
     "dates": "{from} – {to}",
@@ -248,7 +249,8 @@
     "submitLogin": "Intră în cont",
     "submitSignup": "Creează cont",
     "demo": "Demo: autentificarea nu este încă activă.",
-    "terms": "Continuând, ești de acord cu Termenii și Politica de confidențialitate."
+    "terms": "Continuând, ești de acord cu Termenii și Politica de confidențialitate.",
+    "hostQuestion": "Ai o cazare de închiriat?"
   },
   "Guests": {
     "guests": "Adulți",
@@ -269,5 +271,153 @@
   "Map": {
     "allCounties": "Toate județele",
     "countyPin": "{county}: {count, plural, one {# cazare} few {# cazări} other {# de cazări}}"
+  },
+  "Property": {
+    "back": "Înapoi la cazări",
+    "book": "Rezervă această cazare",
+    "photos": "{count, plural, one {# fotografie} few {# fotografii} other {# de fotografii}}",
+    "showAll": "Vezi toate pozele",
+    "openPhoto": "Deschide fotografia {index} pe tot ecranul",
+    "about": "Despre cazare",
+    "rules": "Regulile casei",
+    "perNight": "pe noapte",
+    "notFound": "Cazarea nu există",
+    "share": "Distribuie",
+    "copied": "Link copiat",
+    "tabs": {
+      "amenities": "Facilități",
+      "rules": "Reguli",
+      "location": "Locație"
+    },
+    "stay": "Sejur",
+    "editStay": "Schimbă datele și oaspeții",
+    "fees": "Detalii preț",
+    "host": "Gazda"
+  },
+  "Gallery": {
+    "label": "Galerie foto – {name}",
+    "prev": "Fotografia anterioară",
+    "next": "Fotografia următoare",
+    "close": "Închide galeria",
+    "counter": "{index} / {total}",
+    "thumb": "Mergi la fotografia {index}"
+  },
+  "UnitText": {
+    "casuta-brazi": {
+      "name": "Căsuța din Brazi",
+      "description": "Căsuță din lemn la marginea pădurii, cu șemineu, terasă și priveliște spre Piatra Craiului. Ideală pentru familii sau prieteni care vor liniște."
+    },
+    "camera-balcon": {
+      "name": "Cameră dublă cu balcon",
+      "description": "Cameră luminoasă cu pat matrimonial și balcon spre munte. Micul dejun cu produse locale este inclus."
+    },
+    "apartament-panoramic": {
+      "name": "Apartament Panoramic",
+      "description": "Apartament cu două dormitoare, living deschis și ferestre mari spre vale. Bucătărie complet utilată."
+    },
+    "garsoniera-cires": {
+      "name": "Garsoniera Cireș",
+      "description": "Garsonieră modernă, compactă, cu chicinetă și spațiu de lucru. Potrivită pentru cupluri sau călătorii scurte."
+    },
+    "camera-familie": {
+      "name": "Cameră de familie",
+      "description": "Cameră spațioasă cu un pat matrimonial și o canapea extensibilă. Copiii sub 6 ani stau gratuit."
+    },
+    "casuta-rosie": {
+      "name": "Căsuța Roșie",
+      "description": "Căsuță izolată pe deal, cu grădină proprie și grătar. Drum de pământ ultimii 300 m."
+    },
+    "apartament-lac": {
+      "name": "Apartament Lângă Lac",
+      "description": "Apartament mare, cu două băi și living cu canapea extensibilă. La 5 minute de mers până la lac."
+    },
+    "camera-mansarda": {
+      "name": "Cameră la mansardă",
+      "description": "Cameră cozy sub acoperiș, cu grinzi de lemn și fereastră spre pădure."
+    },
+    "garsoniera-brad": {
+      "name": "Garsoniera Brad",
+      "description": "Garsonieră nouă, într-o casă din lemn și sticlă, cu terasă proprie și vedere spre pădure."
+    },
+    "olimp-panorama": {
+      "name": "Apartament Panorama Mării",
+      "description": "Apartament la etajul 6, cu terasă mare și vedere directă spre mare. La 2 minute de plajă."
+    },
+    "olimp-studio": {
+      "name": "Studio Faleză",
+      "description": "Studio luminos chiar pe faleză, cu balcon spre răsărit."
+    },
+    "neptun-pescarusul": {
+      "name": "Căsuța Pescărușul",
+      "description": "Casă cu piscină proprie și grădină, la 300 m de plajă. Ideală pentru două familii."
+    },
+    "neptun-lac": {
+      "name": "Apartament Lacul Neptun",
+      "description": "Apartament liniștit, cu vedere spre lacul Neptun și pădurea Comorova."
+    },
+    "neptun-park": {
+      "name": "Cameră dublă Neptun Park",
+      "description": "Cameră într-un complex cu piscină, mic dejun inclus."
+    },
+    "jupiter-balcon": {
+      "name": "Cameră cu balcon Jupiter",
+      "description": "Cameră simplă și curată, aproape de centrul stațiunii."
+    },
+    "jupiter-aurora": {
+      "name": "Apartament Aurora Beach",
+      "description": "Apartament cu două camere, la primul rând la mare."
+    },
+    "capaurora-garsoniera": {
+      "name": "Garsoniera Cap Aurora",
+      "description": "Garsonieră renovată, cu chicinetă și balcon cu vedere laterală la mare."
+    },
+    "capaurora-lumina": {
+      "name": "Vila Lumina",
+      "description": "Vilă cu patru dormitoare, piscină încălzită și terasă pe acoperiș."
+    },
+    "venus-garden": {
+      "name": "Cameră Venus Garden",
+      "description": "Cameră într-o pensiune cu grădină, la 5 minute de plajă."
+    },
+    "venus-mirage": {
+      "name": "Studio Mirage",
+      "description": "Studio modern cu bucătărie, într-o zonă liniștită."
+    },
+    "venus-ana": {
+      "name": "Apartament Ana",
+      "description": "Apartament prietenos cu animalele, cu curte comună și loc de parcare."
+    },
+    "saturn-familie": {
+      "name": "Cameră familie Saturn",
+      "description": "Cameră mare pentru familii, în hotel cu piscină pentru copii."
+    },
+    "saturn-delfinul": {
+      "name": "Apartament Delfinul",
+      "description": "Apartament cu vedere la mare, la câțiva pași de plajă."
+    },
+    "saturn-dune": {
+      "name": "Căsuța de lângă dune",
+      "description": "Căsuță din lemn, cu foișor și grătar, chiar lângă dunele de nisip."
+    },
+    "mangalia-port": {
+      "name": "Apartament Port Mangalia",
+      "description": "Apartament cu vedere spre portul turistic și faleză."
+    },
+    "mangalia-callatis": {
+      "name": "Cameră Callatis",
+      "description": "Cameră în centrul vechi, lângă situl arheologic Callatis."
+    },
+    "mangalia-faleza": {
+      "name": "Garsoniera Faleza Nord",
+      "description": "Garsonieră pe Faleza Nord, cu plaja la 100 m."
+    },
+    "2mai-pescari": {
+      "name": "Căsuța Pescarilor",
+      "description": "Casă tradițională dobrogeană, cu curte cu viță-de-vie."
+    },
+    "2mai-boema": {
+      "name": "Cameră boemă 2 Mai",
+      "description": "Cameră colorată, cu atmosferă boemă, aproape de plaja din 2 Mai."
+    }
   }
 }

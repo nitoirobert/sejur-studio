@@ -26,6 +26,9 @@ const sans = Plus_Jakarta_Sans({
   subsets: ["latin", "latin-ext"],
 });
 
+// Limba vine din cookie / browser (citită la fiecare cerere), deci paginile se randează pe server, nu static.
+export const instant = false;
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Meta");
   return { title: t("title"), description: t("description") };

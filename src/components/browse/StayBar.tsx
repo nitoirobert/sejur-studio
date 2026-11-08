@@ -1,12 +1,12 @@
 "use client";
 
 import { Baby, CalendarDays, History, MapPin, Search, User, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useFormatter, useTranslations } from "next-intl";
 import { primaryButton } from "@/components/ui/soft";
 import { popover } from "@/components/ui/motion";
-import { units } from "@/lib/mock-units";
+import { useUnits } from "@/lib/use-units";
 import { matchScore, sitePlaces, suggestUnits, typewriterWords } from "@/lib/search/catalog";
 import { clearRecent, rankRecent, recordRecent, useRecent } from "@/lib/search/recent";
 import { nightsBetween } from "./UnitPanel";
@@ -42,7 +42,9 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
   const [now, setNow] = useState(0); // momentul deschiderii – pentru ordonarea căutărilor recente
   const ref = useRef<HTMLDivElement>(null);
   const recent = useRecent("search");
-  const typed = useTypewriter(typewriterWords, focused || query.length > 0);
+  const units = useUnits();
+  const words = useMemo(() => typewriterWords(units), [units]);
+  const typed = useTypewriter(words, focused || query.length > 0);
 
   useDismiss(ref, open !== null, () => setOpen(null));
 
@@ -104,7 +106,7 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
     groups.push({
       id: "units",
       title: tSearch("units"),
-      items: suggestUnits(query, recent, now).map((u) => ({
+      items: suggestUnits(query, recent, now, 5, units).map((u) => ({
         id: `u-${u.id}`,
         label: u.name,
         sublabel: u.location,

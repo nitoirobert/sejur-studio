@@ -3,13 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Heart, Phone, User } from "lucide-react";
+import { Heart, HousePlus, Phone, User } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { iconButton, pill } from "@/components/ui/soft";
+import { iconButton, pill, pillActive } from "@/components/ui/soft";
+import { hostSignupUrl } from "@/lib/links";
 import { spring } from "@/components/ui/motion";
 import { StayBar } from "./StayBar";
 import { LocationPicker } from "./LocationPicker";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import type { Stay } from "./PropertyBrowser";
 
 type Props = {
@@ -80,12 +82,20 @@ export function SiteHeader({ place, onPlaceChange, onFavorites, onLogin, onHome,
         <motion.a {...tap} href="tel:+40700000000" className={`${iconButton} size-12 max-sm:hidden`} aria-label={t("call")}>
           <Phone className="size-5" />
         </motion.a>
-        <motion.button {...tap} type="button" className={`${pill} h-12 px-5 text-base max-sm:hidden`} aria-label={t("language")}>
-          RO
-        </motion.button>
+        <LanguageSwitcher />
 
         {/* Cont: autentificare + avatar (deschid popup-ul de login, deocamdată de fațadă) */}
         <span className="mx-1 h-8 w-px bg-sand-200 max-sm:hidden" aria-hidden />
+        {/* Pentru proprietari: duce la crearea contului de gazdă (panoul de administrare).
+            Pe telefon nu încape în antet; acolo linkul e în fereastra de autentificare. */}
+        <a
+          href={hostSignupUrl}
+          className={`${pillActive} h-12 px-5 text-base max-lg:size-12 max-lg:justify-center max-lg:px-0 max-sm:hidden`}
+          aria-label={t("hostSignup")}
+        >
+          <HousePlus className="size-5 shrink-0" />
+          <span className="max-lg:hidden">{t("hostSignup")}</span>
+        </a>
         <motion.button
           {...tap}
           type="button"

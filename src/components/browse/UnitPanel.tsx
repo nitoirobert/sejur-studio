@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -255,6 +256,7 @@ function DetailsView({ unit, onClose }: { unit: Unit; onClose: () => void }) {
   const tUnit = useTranslations("Unit");
   const tAmenity = useTranslations("Amenities");
   const tBooking = useTranslations("Booking");
+  const tProperty = useTranslations("Property");
   const price = usePrice();
   const [tab, setTab] = useState<Tab>("overview");
   const locationRef = useRef<HTMLElement>(null);
@@ -306,21 +308,28 @@ function DetailsView({ unit, onClose }: { unit: Unit; onClose: () => void }) {
   return (
     <>
       <div className="relative grid h-60 grid-cols-3 grid-rows-2 gap-2">
+        {/* Click pe o poză → pagina dedicată a cazării, cu galeria deschisă pe tot ecranul la poza aleasă */}
         {unit.photos.slice(0, 3).map((src, i) => (
           <motion.div
-            key={src}
+            key={i}
             initial={{ opacity: 0, scale: 1.08, filter: "blur(10px)" }}
             animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
             transition={{ type: "spring", stiffness: 200, damping: 26, delay: 0.08 + i * 0.07 }}
             className={`relative overflow-hidden rounded-inner ${i === 0 ? "col-span-2 row-span-2" : ""}`}
           >
-            <Image
-              src={src}
-              alt={t("photo", { index: i + 1, total: unit.photos.length, name: unit.name })}
-              fill
-              sizes={i === 0 ? "320px" : "160px"}
-              className="object-cover"
-            />
+            <Link
+              href={`/cazare/${unit.id}?foto=${i}`}
+              aria-label={tProperty("openPhoto", { index: i + 1 })}
+              className="group absolute inset-0 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
+            >
+              <Image
+                src={src}
+                alt={t("photo", { index: i + 1, total: unit.photos.length, name: unit.name })}
+                fill
+                sizes={i === 0 ? "320px" : "160px"}
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+            </Link>
           </motion.div>
         ))}
         <button

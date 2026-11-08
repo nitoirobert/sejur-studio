@@ -67,17 +67,18 @@ export const siteCounties: { county: string; count: number }[] = (() => {
     .sort((a, b) => b.count - a.count);
 })();
 
-// Cuvintele pentru efectul de tastare din căutare: locații de pe site și nume de unități, alternativ
-export const typewriterWords: string[] = (() => {
+// Cuvintele pentru efectul de tastare din căutare: locații de pe site și nume de unități, alternativ.
+// Primește unitățile deja traduse, ca numele să fie în limba curentă.
+export function typewriterWords(list: Unit[] = units): string[] {
   const cities = sitePlaces.map((p) => p.city);
-  const names = units.map((u) => u.name);
+  const names = list.map((u) => u.name);
   const out: string[] = [];
   for (let i = 0; i < Math.max(cities.length, names.length); i++) {
     if (names[i]) out.push(names[i]);
     if (cities[i]) out.push(cities[i]);
   }
   return out;
-})();
+}
 
 /*
   Cât de bine se potrivește un text cu ce s-a tastat:
@@ -109,8 +110,14 @@ export function suggestPlaces(query: string, recent: RecentEntry[], now: number,
     .map((x) => x.p);
 }
 
-export function suggestUnits(query: string, recent: RecentEntry[], now: number, limit = 5): Unit[] {
-  return units
+export function suggestUnits(
+  query: string,
+  recent: RecentEntry[],
+  now: number,
+  limit = 5,
+  list: Unit[] = units, // unitățile în limba curentă
+): Unit[] {
+  return list
     .map((u) => ({ u, s: matchScore(u.name, query) }))
     .filter((x) => x.s > 0)
     .map((x) => ({ ...x, s: x.s + recentBoost(x.u.name, recent, now) + x.u.rating / 10 }))

@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useTranslations } from "next-intl";
-import { defaultStay, units } from "@/lib/mock-units";
+import { defaultStay, units as allUnits } from "@/lib/mock-units";
+import { useUnits } from "@/lib/use-units";
 import { useTheme } from "@/lib/theme";
 import { occupancy } from "@/lib/guests";
 import { backdrop, spring } from "@/components/ui/motion";
@@ -61,15 +62,29 @@ export function PropertyBrowser() {
     infants: 0,
   });
 
+  const units = useUnits(); // numele și descrierile în limba aleasă
   const results = useMemo(
     () =>
       applyFilters(units, filters).filter(
         (u) => matchesQuery(u, query) && matchesPlace(u, place) && u.maxGuests >= occupancy(stay),
       ),
-    [filters, query, place, stay],
+    [units, filters, query, place, stay],
   );
   const selected = units.find((u) => u.id === selectedId) ?? null;
   const close = () => setSelectedId(null);
+
+  // Venit de pe pagina unei cazări (/?cazare=<id>): redeschidem panoul ei, apoi curățăm adresa
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get("cazare");
+    if (!id) return;
+    // Adresa e o sursă externă, citită o singură dată după hidratare (pe server nu există),
+    // deci setState aici e intenționat; pagina de start rămâne statică.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (allUnits.some((u) => u.id === id)) setSelectedId(id);
+    url.searchParams.delete("cazare");
+    window.history.replaceState(null, "", url);
+  }, []);
 
   // Escape închide panoul (dacă nu e deschis popup-ul de autentificare)
   useEffect(() => {

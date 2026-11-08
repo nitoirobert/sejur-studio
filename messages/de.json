@@ -1,0 +1,423 @@
+{
+  "Meta": {
+    "title": "Sejur Studio – direkt buchen, ohne Provision",
+    "description": "Unterkunft wählen, Gesamtpreis sehen und direkt beim Gastgeber buchen."
+  },
+  "Header": {
+    "home": "Startseite",
+    "nav": {
+      "location": "Ort",
+      "favorites": "Favoriten"
+    },
+    "call": "Gastgeber anrufen",
+    "language": "Sprache",
+    "login": "Anmelden",
+    "account": "Mein Konto",
+    "brand": "Sejur Studio",
+    "darkMode": "Nachtmodus",
+    "lightMode": "Tagmodus",
+    "hostSignup": "Gastgeber werden"
+  },
+  "Toolbar": {
+    "dates": "{from} – {to}",
+    "guests": "{count, plural, one {# Gast} other {# Gäste}}",
+    "search": "Unterkünfte nach Name oder Ort suchen",
+    "filters": "Filter",
+    "searchPlaceholder": "Nach Name oder Ort suchen",
+    "clearSearch": "Suche löschen",
+    "guestsAria": "Gäste: {count}",
+    "done": "Fertig"
+  },
+  "Filters": {
+    "title": "Filter",
+    "collapse": "Filter ausblenden",
+    "close": "Schließen",
+    "clear": "Alle löschen",
+    "all": "Alle",
+    "any": "Beliebig",
+    "selected": "{count, plural, one {# ausgewählt} other {# ausgewählt}}",
+    "found": "Gefundene Unterkünfte",
+    "offers": {
+      "title": "Nur Angebote",
+      "hint": "{count, plural, one {# reduzierte Unterkunft} other {# reduzierte Unterkünfte}}"
+    },
+    "price": {
+      "title": "Preis pro Nacht",
+      "any": "Beliebiger Preis",
+      "min": "Minimum",
+      "max": "Maximum",
+      "minLabel": "Mindestpreis pro Nacht",
+      "maxLabel": "Höchstpreis pro Nacht",
+      "shortcuts": {
+        "low": "Unter 250 RON",
+        "mid": "250 – 400 RON",
+        "high": "Über 400 RON"
+      }
+    },
+    "type": {
+      "title": "Unterkunftsart"
+    },
+    "rooms": {
+      "title": "Zimmer",
+      "bedrooms": "Schlafzimmer",
+      "bathrooms": "Badezimmer",
+      "min": "{count}+",
+      "bedroomsShort": "{count}+ Schlafzimmer",
+      "bathroomsShort": "{count}+ Badezimmer"
+    },
+    "rating": {
+      "title": "Bewertung",
+      "any": "Beliebig",
+      "min": "{rating}+ Sterne"
+    },
+    "amenities": {
+      "title": "Ausstattung"
+    },
+    "showResults": "{count, plural, =0 {Keine Unterkunft} one {# Unterkunft anzeigen} other {# Unterkünfte anzeigen}}",
+    "location": {
+      "title": "Ort",
+      "anywhere": "Überall",
+      "counties": "Kreise",
+      "places": "Orte",
+      "county": "Kreis {county}",
+      "showMore": "Mehr anzeigen ({count})",
+      "showLess": "Weniger anzeigen"
+    }
+  },
+  "Unit": {
+    "types": {
+      "camera": "Zimmer",
+      "apartament": "Apartment",
+      "garsoniera": "Studio",
+      "casuta": "Hütte"
+    },
+    "perNight": "/ Nacht",
+    "rating": "{rating} von 5",
+    "open": "Details zu {name} ansehen",
+    "maxGuests": "{count, plural, one {# Gast} other {bis zu # Gäste}}",
+    "favorite": "Zu Favoriten hinzufügen: {name}",
+    "offers": {
+      "winter": "Winterangebot",
+      "lastMinute": "Last Minute"
+    },
+    "discount": "−{percent} %",
+    "oldPrice": "Ursprünglicher Preis {price}",
+    "total": "{total} gesamt · {nights}",
+    "totalShort": "gesamt · {nights}",
+    "perNightShort": "pro Nacht",
+    "metaPlace": "{type} · {city}",
+    "metaGuests": "{count, plural, one {# Gast} other {bis zu # Gäste}}"
+  },
+  "Results": {
+    "title": "Verfügbare Unterkünfte",
+    "subtitle": "{count, plural, =0 {Keine Unterkunft passt zu deinen Filtern.} one {# Unterkunft für die gewählten Daten} other {# Unterkünfte für die gewählten Daten}}",
+    "empty": "Probiere andere Filter oder andere Daten.",
+    "reset": "Filter zurücksetzen"
+  },
+  "Detail": {
+    "tabs": {
+      "overview": "Überblick",
+      "reviews": "Bewertungen",
+      "rules": "Hausregeln"
+    },
+    "space": "Raum",
+    "beds": "{count, plural, one {# Bett} other {# Betten}}",
+    "bathrooms": "{count, plural, one {# Badezimmer} other {# Badezimmer}}",
+    "area": "{area} m²",
+    "amenities": "Ausstattung",
+    "location": "Lage",
+    "viewMap": "Auf der Karte ansehen",
+    "reviewsSoon": "Hier erscheinen die Bewertungen der Gäste.",
+    "rules": {
+      "checkIn": "Check-in ab {time}",
+      "checkOut": "Check-out bis {time}",
+      "noSmoking": "Rauchen im Innenbereich verboten",
+      "quiet": "Ruhezeit ab 22:00 Uhr"
+    },
+    "booking": {
+      "nights": "{count, plural, one {# Nacht} other {# Nächte}}",
+      "nightsTimesPrice": "{price} × {nights}",
+      "total": "Gesamt",
+      "noFees": "Keine versteckten Gebühren",
+      "cta": "Buchen",
+      "close": "Details schließen",
+      "discountRow": "{label} −{percent} %"
+    },
+    "photo": "Foto {index} von {total} – {name}"
+  },
+  "Amenities": {
+    "wifi": "WLAN",
+    "parking": "Parkplatz",
+    "breakfast": "Frühstück",
+    "kitchen": "Küche",
+    "fireplace": "Kamin",
+    "pets": "Haustiere erlaubt",
+    "ac": "Klimaanlage",
+    "view": "Bergblick",
+    "sea": "Meerblick",
+    "pool": "Pool"
+  },
+  "Common": {
+    "price": "{price} RON"
+  },
+  "Booking": {
+    "steps": {
+      "details": "Details",
+      "guest": "Deine Daten",
+      "payment": "Zahlung"
+    },
+    "stepOf": "Schritt {step} von 3",
+    "back": "Zurück",
+    "close": "Fenster schließen",
+    "checkIn": "Anreise",
+    "checkOut": "Abreise",
+    "guests": "Gäste",
+    "guestsCount": "{count, plural, one {# Gast} other {# Gäste}}",
+    "fewer": "Weniger Gäste",
+    "more": "Mehr Gäste",
+    "maxGuests": "Maximal {count} Gäste",
+    "invalidDates": "Das Abreisedatum muss nach dem Anreisedatum liegen.",
+    "continueToPayment": "Weiter zur Zahlung",
+    "form": {
+      "name": "Vor- und Nachname",
+      "namePh": "z. B. Anna Müller",
+      "phone": "Telefon",
+      "phonePh": "+49 xxx xxxxxxx",
+      "email": "E-Mail",
+      "emailPh": "anna@beispiel.de",
+      "privacy": "Wir verwenden deine Daten nur für diese Buchung. Du brauchst kein Konto."
+    },
+    "summary": "Buchungsübersicht",
+    "guestLabel": "Gast",
+    "hold": "Deine Daten werden 30 Minuten lang für dich reserviert.",
+    "secure": "Die Zahlung erfolgt sicher über Stripe. Wir speichern keine Kartendaten.",
+    "pay": "{total} bezahlen",
+    "paying": "Zahlung wird verarbeitet…",
+    "demo": "Demo: Die Zahlung ist simuliert.",
+    "doneTitle": "Buchung bestätigt!",
+    "doneText": "Wir haben die Bestätigung und die Check-in-Hinweise an {email} gesendet.",
+    "code": "Buchungscode",
+    "doneClose": "Fertig",
+    "detailsTitle": "Unterkunftsdetails"
+  },
+  "View": {
+    "label": "Anzeigemodus",
+    "grid3": "3 Spalten",
+    "grid5": "5 Spalten",
+    "list": "Liste",
+    "map": "Karte"
+  },
+  "Search": {
+    "typePrefix": "Suche nach ",
+    "recent": "Letzte Suchen",
+    "clearHistory": "Verlauf löschen",
+    "popular": "Vorschläge",
+    "units": "Unterkünfte",
+    "places": "Orte",
+    "unitsCount": "{count, plural, one {# Unterkunft} other {# Unterkünfte}}",
+    "hint": "Tab oder → vervollständigt · ↑↓ auswählen · Enter sucht"
+  },
+  "Location": {
+    "button": "Ort",
+    "title": "Wohin möchtest du?",
+    "placeholder": "Stadt oder Gegend eingeben",
+    "results": "Ergebnisse",
+    "recent": "Zuletzt",
+    "onSite": "Mit Unterkünften auf der Seite",
+    "noUnits": "noch keine Unterkünfte",
+    "clear": "Ort entfernen",
+    "change": "Ort ändern: {place}",
+    "none": "Kein Ort für „{query}“ gefunden"
+  },
+  "Auth": {
+    "close": "Schließen",
+    "titleFavorite": "Speichere deine Favoriten",
+    "subFavorite": "Melde dich an oder erstelle ein Konto, um deine Lieblingsunterkünfte zu behalten.",
+    "titleLogin": "Willkommen",
+    "subLogin": "Melde dich an oder erstelle in wenigen Sekunden ein neues Konto.",
+    "tabs": {
+      "login": "Anmelden",
+      "signup": "Neues Konto"
+    },
+    "apple": "Weiter mit Apple",
+    "google": "Weiter mit Google",
+    "or": "oder per E-Mail",
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "forgot": "Passwort vergessen?",
+    "submitLogin": "Anmelden",
+    "submitSignup": "Konto erstellen",
+    "demo": "Demo: Die Anmeldung ist noch nicht aktiv.",
+    "terms": "Wenn du fortfährst, stimmst du den Nutzungsbedingungen und der Datenschutzerklärung zu.",
+    "hostQuestion": "Sie vermieten eine Unterkunft?"
+  },
+  "Guests": {
+    "guests": "Erwachsene",
+    "guestsHint": "ab 5 Jahren",
+    "kids": "Kinder",
+    "kidsHint": "2–5 Jahre",
+    "infants": "Babys",
+    "infantsHint": "0–2 Jahre",
+    "fewer": "Weniger: {label}",
+    "more": "Mehr: {label}",
+    "capacity": "Kapazität: maximal {count, plural, one {# Person} other {# Personen}} (Babys zählen nicht mit)",
+    "adultsCount": "{count, plural, one {# Erwachsener} other {# Erwachsene}}",
+    "kidsCount": "{count, plural, one {# Kind} other {# Kinder}}",
+    "infantsCount": "{count, plural, one {# Baby} other {# Babys}}",
+    "filterTitle": "Anzahl der Personen",
+    "filterHint": "Wir zeigen nur Unterkünfte, in die {count, plural, one {# Person} other {# Personen}} passen. Babys (0–2 Jahre) brauchen keinen Platz."
+  },
+  "Map": {
+    "allCounties": "Alle Kreise",
+    "countyPin": "{county}: {count, plural, one {# Unterkunft} other {# Unterkünfte}}"
+  },
+  "Property": {
+    "back": "Zurück zu den Unterkünften",
+    "book": "Diese Unterkunft buchen",
+    "photos": "{count, plural, one {# Foto} other {# Fotos}}",
+    "showAll": "Alle Fotos ansehen",
+    "openPhoto": "Foto {index} im Vollbild öffnen",
+    "about": "Über die Unterkunft",
+    "rules": "Hausregeln",
+    "perNight": "pro Nacht",
+    "notFound": "Diese Unterkunft existiert nicht",
+    "share": "Teilen",
+    "copied": "Link kopiert",
+    "tabs": {
+      "amenities": "Ausstattung",
+      "rules": "Regeln",
+      "location": "Lage"
+    },
+    "stay": "Aufenthalt",
+    "editStay": "Daten und Gäste ändern",
+    "fees": "Preisdetails",
+    "host": "Gastgeber"
+  },
+  "Gallery": {
+    "label": "Fotogalerie – {name}",
+    "prev": "Vorheriges Foto",
+    "next": "Nächstes Foto",
+    "close": "Galerie schließen",
+    "counter": "{index} / {total}",
+    "thumb": "Zu Foto {index} springen"
+  },
+  "UnitText": {
+    "casuta-brazi": {
+      "name": "Tannenhütte",
+      "description": "Holzhütte am Waldrand mit Kamin, Terrasse und Blick auf das Piatra-Craiului-Gebirge. Ideal für Familien oder Freunde, die Ruhe suchen."
+    },
+    "camera-balcon": {
+      "name": "Doppelzimmer mit Balkon",
+      "description": "Helles Zimmer mit Doppelbett und Balkon mit Bergblick. Frühstück mit regionalen Produkten ist inklusive."
+    },
+    "apartament-panoramic": {
+      "name": "Panorama-Apartment",
+      "description": "Apartment mit zwei Schlafzimmern, offenem Wohnbereich und großen Fenstern zum Tal. Voll ausgestattete Küche."
+    },
+    "garsoniera-cires": {
+      "name": "Studio Kirschbaum",
+      "description": "Modernes, kompaktes Studio mit Kochnische und Arbeitsplatz. Passend für Paare oder Kurzreisen."
+    },
+    "camera-familie": {
+      "name": "Familienzimmer",
+      "description": "Geräumiges Zimmer mit Doppelbett und Schlafsofa. Kinder unter 6 Jahren übernachten kostenlos."
+    },
+    "casuta-rosie": {
+      "name": "Rotes Häuschen",
+      "description": "Abgelegenes Häuschen auf einem Hügel mit eigenem Garten und Grill. Die letzten 300 m sind unbefestigt."
+    },
+    "apartament-lac": {
+      "name": "Apartment am See",
+      "description": "Großes Apartment mit zwei Bädern und Wohnzimmer mit Schlafsofa. 5 Gehminuten zum See."
+    },
+    "camera-mansarda": {
+      "name": "Dachzimmer",
+      "description": "Gemütliches Zimmer unterm Dach mit Holzbalken und Fenster zum Wald."
+    },
+    "garsoniera-brad": {
+      "name": "Studio Tanne",
+      "description": "Neues Studio in einem Haus aus Holz und Glas, mit eigener Terrasse und Waldblick."
+    },
+    "olimp-panorama": {
+      "name": "Apartment Meerespanorama",
+      "description": "Apartment im 6. Stock mit großer Terrasse und direktem Meerblick. 2 Minuten zum Strand."
+    },
+    "olimp-studio": {
+      "name": "Studio an der Promenade",
+      "description": "Helles Studio direkt an der Promenade, mit Balkon Richtung Sonnenaufgang."
+    },
+    "neptun-pescarusul": {
+      "name": "Haus Möwe",
+      "description": "Haus mit eigenem Pool und Garten, 300 m vom Strand. Ideal für zwei Familien."
+    },
+    "neptun-lac": {
+      "name": "Apartment Neptun-See",
+      "description": "Ruhiges Apartment mit Blick auf den Neptun-See und den Comorova-Wald."
+    },
+    "neptun-park": {
+      "name": "Doppelzimmer Neptun Park",
+      "description": "Zimmer in einer Anlage mit Pool, Frühstück inklusive."
+    },
+    "jupiter-balcon": {
+      "name": "Zimmer mit Balkon Jupiter",
+      "description": "Einfaches, sauberes Zimmer nahe dem Ortszentrum."
+    },
+    "jupiter-aurora": {
+      "name": "Apartment Aurora Beach",
+      "description": "Zweizimmer-Apartment in erster Reihe am Meer."
+    },
+    "capaurora-garsoniera": {
+      "name": "Studio Cap Aurora",
+      "description": "Renoviertes Studio mit Kochnische und Balkon mit seitlichem Meerblick."
+    },
+    "capaurora-lumina": {
+      "name": "Villa Lumina",
+      "description": "Villa mit vier Schlafzimmern, beheiztem Pool und Dachterrasse."
+    },
+    "venus-garden": {
+      "name": "Zimmer Venus Garden",
+      "description": "Zimmer in einer Pension mit Garten, 5 Minuten vom Strand."
+    },
+    "venus-mirage": {
+      "name": "Studio Mirage",
+      "description": "Modernes Studio mit Küche in ruhiger Lage."
+    },
+    "venus-ana": {
+      "name": "Apartment Ana",
+      "description": "Haustierfreundliches Apartment mit Gemeinschaftshof und Parkplatz."
+    },
+    "saturn-familie": {
+      "name": "Familienzimmer Saturn",
+      "description": "Großes Familienzimmer in einem Hotel mit Kinderpool."
+    },
+    "saturn-delfinul": {
+      "name": "Apartment Delfin",
+      "description": "Apartment mit Meerblick, wenige Schritte vom Strand."
+    },
+    "saturn-dune": {
+      "name": "Häuschen an den Dünen",
+      "description": "Holzhäuschen mit Pavillon und Grill, direkt an den Sanddünen."
+    },
+    "mangalia-port": {
+      "name": "Apartment Hafen Mangalia",
+      "description": "Apartment mit Blick auf den Jachthafen und die Promenade."
+    },
+    "mangalia-callatis": {
+      "name": "Zimmer Callatis",
+      "description": "Zimmer in der Altstadt, neben der Ausgrabungsstätte Callatis."
+    },
+    "mangalia-faleza": {
+      "name": "Studio Nordpromenade",
+      "description": "Studio an der Nordpromenade, 100 m vom Strand."
+    },
+    "2mai-pescari": {
+      "name": "Fischerhäuschen",
+      "description": "Traditionelles Haus aus der Dobrudscha mit weinberanktem Hof."
+    },
+    "2mai-boema": {
+      "name": "Boheme-Zimmer 2 Mai",
+      "description": "Farbenfrohes Zimmer mit Boheme-Flair, nahe dem Strand von 2 Mai."
+    }
+  }
+}

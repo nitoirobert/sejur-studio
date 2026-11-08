@@ -1,0 +1,423 @@
+{
+  "Meta": {
+    "title": "Sejur Studio – book direct, no commission",
+    "description": "Pick your stay, see the total price and book directly with the host."
+  },
+  "Header": {
+    "home": "Home",
+    "nav": {
+      "location": "Location",
+      "favorites": "Favorites"
+    },
+    "call": "Call the host",
+    "language": "Language",
+    "login": "Log in",
+    "account": "My account",
+    "brand": "Sejur Studio",
+    "darkMode": "Night mode",
+    "lightMode": "Day mode",
+    "hostSignup": "Become a host"
+  },
+  "Toolbar": {
+    "dates": "{from} – {to}",
+    "guests": "{count, plural, one {# guest} other {# guests}}",
+    "search": "Search stays by name or location",
+    "filters": "Filters",
+    "searchPlaceholder": "Search by name or location",
+    "clearSearch": "Clear search",
+    "guestsAria": "Guests: {count}",
+    "done": "Done"
+  },
+  "Filters": {
+    "title": "Filters",
+    "collapse": "Hide filters",
+    "close": "Close",
+    "clear": "Clear all",
+    "all": "All",
+    "any": "Any",
+    "selected": "{count, plural, one {# selected} other {# selected}}",
+    "found": "Stays found",
+    "offers": {
+      "title": "Offers only",
+      "hint": "{count, plural, one {# discounted stay} other {# discounted stays}}"
+    },
+    "price": {
+      "title": "Price per night",
+      "any": "Any price",
+      "min": "Minimum",
+      "max": "Maximum",
+      "minLabel": "Minimum price per night",
+      "maxLabel": "Maximum price per night",
+      "shortcuts": {
+        "low": "Under 250 RON",
+        "mid": "250 – 400 RON",
+        "high": "Over 400 RON"
+      }
+    },
+    "type": {
+      "title": "Stay type"
+    },
+    "rooms": {
+      "title": "Rooms",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "min": "{count}+",
+      "bedroomsShort": "{count}+ bedrooms",
+      "bathroomsShort": "{count}+ bathrooms"
+    },
+    "rating": {
+      "title": "Rating",
+      "any": "Any",
+      "min": "{rating}+ stars"
+    },
+    "amenities": {
+      "title": "Amenities"
+    },
+    "showResults": "{count, plural, =0 {No stays} one {Show # stay} other {Show # stays}}",
+    "location": {
+      "title": "Location",
+      "anywhere": "Anywhere",
+      "counties": "Counties",
+      "places": "Towns",
+      "county": "{county} county",
+      "showMore": "Show more ({count})",
+      "showLess": "Show less"
+    }
+  },
+  "Unit": {
+    "types": {
+      "camera": "Room",
+      "apartament": "Apartment",
+      "garsoniera": "Studio",
+      "casuta": "Cabin"
+    },
+    "perNight": "/ night",
+    "rating": "{rating} out of 5",
+    "open": "View details for {name}",
+    "maxGuests": "{count, plural, one {# guest} other {up to # guests}}",
+    "favorite": "Add to favorites: {name}",
+    "offers": {
+      "winter": "Winter offer",
+      "lastMinute": "Last minute"
+    },
+    "discount": "−{percent}%",
+    "oldPrice": "Original price {price}",
+    "total": "{total} total · {nights}",
+    "totalShort": "total · {nights}",
+    "perNightShort": "per night",
+    "metaPlace": "{type} · {city}",
+    "metaGuests": "{count, plural, one {# guest} other {up to # guests}}"
+  },
+  "Results": {
+    "title": "Available stays",
+    "subtitle": "{count, plural, =0 {No stays match your filters.} one {# stay for the chosen dates} other {# stays for the chosen dates}}",
+    "empty": "Try other filters or other dates.",
+    "reset": "Reset filters"
+  },
+  "Detail": {
+    "tabs": {
+      "overview": "Overview",
+      "reviews": "Reviews",
+      "rules": "House rules"
+    },
+    "space": "Space",
+    "beds": "{count, plural, one {# bed} other {# beds}}",
+    "bathrooms": "{count, plural, one {# bathroom} other {# bathrooms}}",
+    "area": "{area} m²",
+    "amenities": "Amenities",
+    "location": "Location",
+    "viewMap": "View on map",
+    "reviewsSoon": "Guest reviews will appear here.",
+    "rules": {
+      "checkIn": "Check-in from {time}",
+      "checkOut": "Check-out until {time}",
+      "noSmoking": "No smoking indoors",
+      "quiet": "Quiet hours after 10:00 PM"
+    },
+    "booking": {
+      "nights": "{count, plural, one {# night} other {# nights}}",
+      "nightsTimesPrice": "{price} × {nights}",
+      "total": "Total",
+      "noFees": "No hidden fees",
+      "cta": "Book",
+      "close": "Close details",
+      "discountRow": "{label} −{percent}%"
+    },
+    "photo": "Photo {index} of {total} – {name}"
+  },
+  "Amenities": {
+    "wifi": "Wi-Fi",
+    "parking": "Parking",
+    "breakfast": "Breakfast",
+    "kitchen": "Kitchen",
+    "fireplace": "Fireplace",
+    "pets": "Pets allowed",
+    "ac": "Air conditioning",
+    "view": "Mountain view",
+    "sea": "Sea view",
+    "pool": "Pool"
+  },
+  "Common": {
+    "price": "{price} RON"
+  },
+  "Booking": {
+    "steps": {
+      "details": "Details",
+      "guest": "Your details",
+      "payment": "Payment"
+    },
+    "stepOf": "Step {step} of 3",
+    "back": "Back",
+    "close": "Close panel",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "guests": "Guests",
+    "guestsCount": "{count, plural, one {# guest} other {# guests}}",
+    "fewer": "Fewer guests",
+    "more": "More guests",
+    "maxGuests": "Maximum {count} guests",
+    "invalidDates": "The check-out date must be after the check-in date.",
+    "continueToPayment": "Continue to payment",
+    "form": {
+      "name": "Full name",
+      "namePh": "e.g. Anna Smith",
+      "phone": "Phone",
+      "phonePh": "+40 7xx xxx xxx",
+      "email": "Email",
+      "emailPh": "anna@example.com",
+      "privacy": "We only use your details for this booking. You don't need an account."
+    },
+    "summary": "Booking summary",
+    "guestLabel": "Guest",
+    "hold": "Your dates are held for 30 minutes.",
+    "secure": "Payment is processed securely by Stripe. We don't store card details.",
+    "pay": "Pay {total}",
+    "paying": "Processing payment…",
+    "demo": "Demo: payment is simulated.",
+    "doneTitle": "Booking confirmed!",
+    "doneText": "We sent the confirmation and check-in instructions to {email}.",
+    "code": "Booking code",
+    "doneClose": "Done",
+    "detailsTitle": "Stay details"
+  },
+  "View": {
+    "label": "Display mode",
+    "grid3": "3 columns",
+    "grid5": "5 columns",
+    "list": "List",
+    "map": "Map"
+  },
+  "Search": {
+    "typePrefix": "Search ",
+    "recent": "Recent searches",
+    "clearHistory": "Clear history",
+    "popular": "Suggestions",
+    "units": "Stays",
+    "places": "Places",
+    "unitsCount": "{count, plural, one {# stay} other {# stays}}",
+    "hint": "Tab or → to complete · ↑↓ to choose · Enter to search"
+  },
+  "Location": {
+    "button": "Location",
+    "title": "Where do you want to go?",
+    "placeholder": "Type a town or area",
+    "results": "Results",
+    "recent": "Recent",
+    "onSite": "With stays on the site",
+    "noUnits": "no stays yet",
+    "clear": "Clear location",
+    "change": "Change location: {place}",
+    "none": "No place found for “{query}”"
+  },
+  "Auth": {
+    "close": "Close",
+    "titleFavorite": "Save your favorites",
+    "subFavorite": "Log in or create an account to keep the stays you like.",
+    "titleLogin": "Welcome",
+    "subLogin": "Log in or create a new account in seconds.",
+    "tabs": {
+      "login": "Log in",
+      "signup": "New account"
+    },
+    "apple": "Continue with Apple",
+    "google": "Continue with Google",
+    "or": "or with email",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "forgot": "Forgot your password?",
+    "submitLogin": "Log in",
+    "submitSignup": "Create account",
+    "demo": "Demo: sign-in is not active yet.",
+    "terms": "By continuing, you agree to the Terms and the Privacy Policy.",
+    "hostQuestion": "Have a place to rent out?"
+  },
+  "Guests": {
+    "guests": "Adults",
+    "guestsHint": "over 5 years",
+    "kids": "Children",
+    "kidsHint": "2–5 years",
+    "infants": "Infants",
+    "infantsHint": "0–2 years",
+    "fewer": "Fewer: {label}",
+    "more": "More: {label}",
+    "capacity": "Capacity: maximum {count, plural, one {# person} other {# people}} (infants don't count)",
+    "adultsCount": "{count, plural, one {# adult} other {# adults}}",
+    "kidsCount": "{count, plural, one {# child} other {# children}}",
+    "infantsCount": "{count, plural, one {# infant} other {# infants}}",
+    "filterTitle": "Number of people",
+    "filterHint": "We only show stays that fit {count, plural, one {# person} other {# people}}. Infants (0–2 years) don't take up space."
+  },
+  "Map": {
+    "allCounties": "All counties",
+    "countyPin": "{county}: {count, plural, one {# stay} other {# stays}}"
+  },
+  "Property": {
+    "back": "Back to stays",
+    "book": "Book this stay",
+    "photos": "{count, plural, one {# photo} other {# photos}}",
+    "showAll": "Show all photos",
+    "openPhoto": "Open photo {index} in full screen",
+    "about": "About this stay",
+    "rules": "House rules",
+    "perNight": "per night",
+    "notFound": "This stay doesn't exist",
+    "share": "Share",
+    "copied": "Link copied",
+    "tabs": {
+      "amenities": "Amenities",
+      "rules": "Rules",
+      "location": "Location"
+    },
+    "stay": "Stay",
+    "editStay": "Change dates and guests",
+    "fees": "Price details",
+    "host": "Host"
+  },
+  "Gallery": {
+    "label": "Photo gallery – {name}",
+    "prev": "Previous photo",
+    "next": "Next photo",
+    "close": "Close gallery",
+    "counter": "{index} / {total}",
+    "thumb": "Go to photo {index}"
+  },
+  "UnitText": {
+    "casuta-brazi": {
+      "name": "Fir Tree Cabin",
+      "description": "Wooden cabin at the edge of the forest, with a fireplace, terrace and views of Piatra Craiului. Ideal for families or friends looking for peace and quiet."
+    },
+    "camera-balcon": {
+      "name": "Double Room with Balcony",
+      "description": "Bright room with a double bed and a balcony facing the mountains. Breakfast with local produce is included."
+    },
+    "apartament-panoramic": {
+      "name": "Panoramic Apartment",
+      "description": "Two-bedroom apartment with an open-plan living room and large windows overlooking the valley. Fully equipped kitchen."
+    },
+    "garsoniera-cires": {
+      "name": "Cherry Tree Studio",
+      "description": "Modern, compact studio with a kitchenette and a workspace. Suited to couples or short trips."
+    },
+    "camera-familie": {
+      "name": "Family Room",
+      "description": "Spacious room with a double bed and a sofa bed. Children under 6 stay free."
+    },
+    "casuta-rosie": {
+      "name": "Little Red Cabin",
+      "description": "Secluded cabin on a hill, with its own garden and barbecue. Dirt road for the last 300 m."
+    },
+    "apartament-lac": {
+      "name": "Lakeside Apartment",
+      "description": "Large apartment with two bathrooms and a living room with a sofa bed. A 5-minute walk to the lake."
+    },
+    "camera-mansarda": {
+      "name": "Attic Room",
+      "description": "Cosy room under the roof, with wooden beams and a window facing the forest."
+    },
+    "garsoniera-brad": {
+      "name": "Fir Studio",
+      "description": "New studio in a wood-and-glass house, with a private terrace and forest views."
+    },
+    "olimp-panorama": {
+      "name": "Sea Panorama Apartment",
+      "description": "6th-floor apartment with a large terrace and a direct sea view. 2 minutes from the beach."
+    },
+    "olimp-studio": {
+      "name": "Seafront Studio",
+      "description": "Bright studio right on the promenade, with a balcony facing the sunrise."
+    },
+    "neptun-pescarusul": {
+      "name": "Seagull Cottage",
+      "description": "House with a private pool and garden, 300 m from the beach. Ideal for two families."
+    },
+    "neptun-lac": {
+      "name": "Lake Neptun Apartment",
+      "description": "Quiet apartment overlooking Lake Neptun and the Comorova forest."
+    },
+    "neptun-park": {
+      "name": "Neptun Park Double Room",
+      "description": "Room in a complex with a pool, breakfast included."
+    },
+    "jupiter-balcon": {
+      "name": "Jupiter Room with Balcony",
+      "description": "Simple, clean room close to the resort centre."
+    },
+    "jupiter-aurora": {
+      "name": "Aurora Beach Apartment",
+      "description": "Two-room apartment on the seafront."
+    },
+    "capaurora-garsoniera": {
+      "name": "Cap Aurora Studio",
+      "description": "Renovated studio with a kitchenette and a balcony with a side sea view."
+    },
+    "capaurora-lumina": {
+      "name": "Villa Lumina",
+      "description": "Four-bedroom villa with a heated pool and a rooftop terrace."
+    },
+    "venus-garden": {
+      "name": "Venus Garden Room",
+      "description": "Room in a guesthouse with a garden, 5 minutes from the beach."
+    },
+    "venus-mirage": {
+      "name": "Mirage Studio",
+      "description": "Modern studio with a kitchen, in a quiet area."
+    },
+    "venus-ana": {
+      "name": "Ana Apartment",
+      "description": "Pet-friendly apartment with a shared yard and a parking space."
+    },
+    "saturn-familie": {
+      "name": "Saturn Family Room",
+      "description": "Large family room in a hotel with a children's pool."
+    },
+    "saturn-delfinul": {
+      "name": "Dolphin Apartment",
+      "description": "Sea-view apartment, a few steps from the beach."
+    },
+    "saturn-dune": {
+      "name": "Cabin by the Dunes",
+      "description": "Wooden cabin with a gazebo and barbecue, right next to the sand dunes."
+    },
+    "mangalia-port": {
+      "name": "Mangalia Harbour Apartment",
+      "description": "Apartment overlooking the marina and the promenade."
+    },
+    "mangalia-callatis": {
+      "name": "Callatis Room",
+      "description": "Room in the old town, next to the Callatis archaeological site."
+    },
+    "mangalia-faleza": {
+      "name": "North Promenade Studio",
+      "description": "Studio on the North Promenade, 100 m from the beach."
+    },
+    "2mai-pescari": {
+      "name": "Fishermen's Cottage",
+      "description": "Traditional Dobrujan house with a vine-covered yard."
+    },
+    "2mai-boema": {
+      "name": "Bohemian Room 2 Mai",
+      "description": "Colourful room with a bohemian vibe, close to the beach in 2 Mai."
+    }
+  }
+}
