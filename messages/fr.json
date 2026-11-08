@@ -249,9 +249,47 @@
     "forgot": "Mot de passe oublié ?",
     "submitLogin": "Se connecter",
     "submitSignup": "Créer un compte",
-    "demo": "Démo : la connexion n'est pas encore active.",
     "terms": "En continuant, vous acceptez les Conditions d'utilisation et la Politique de confidentialité.",
-    "hostQuestion": "Vous avez un logement à louer ?"
+    "hostQuestion": "Vous avez un logement à louer ?",
+    "soon": "Bientôt",
+    "forgotTitle": "Réinitialiser le mot de passe",
+    "forgotSub": "Nous t'envoyons par e-mail un lien pour un nouveau mot de passe.",
+    "forgotSubmit": "Envoyer le lien",
+    "backToLogin": "Retour à la connexion",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
+    "passwordHint": "Au moins {min} caractères",
+    "errors": {
+      "invalidCredentials": "E-mail ou mot de passe incorrect.",
+      "emailTaken": "Un compte existe déjà avec cet e-mail. Connecte-toi ou utilise un autre e-mail.",
+      "rateLimit": "Trop de tentatives en peu de temps. Attends quelques minutes et réessaie.",
+      "generic": "Une erreur est survenue. Réessaie dans quelques secondes.",
+      "linkExpired": "Le lien a expiré ou a déjà été utilisé. Réessaie.",
+      "nameEmpty": "Indique ton nom",
+      "nameLong": "Le nom peut contenir au maximum 80 caractères",
+      "emailInvalid": "Indique un e-mail valide, par ex. nom@exemple.fr",
+      "passwordShort": "Le mot de passe doit contenir au moins {min} caractères",
+      "passwordLong": "Le mot de passe peut contenir au maximum 72 caractères"
+    },
+    "notices": {
+      "confirmEmail": "Nous t'avons envoyé un e-mail de confirmation. Ouvre le lien pour te connecter.",
+      "resetSent": "Si un compte existe avec cet e-mail, nous t'avons envoyé le lien."
+    },
+    "account": {
+      "title": "Ton compte",
+      "sub": "Tu es connecté à Sejur Studio.",
+      "host": "Compte hôte",
+      "guest": "Compte voyageur",
+      "signOut": "Se déconnecter"
+    },
+    "newPassword": {
+      "title": "Nouveau mot de passe",
+      "sub": "Lien expiré ? Demandes-en un autre via « Mot de passe oublié ? ».",
+      "label": "Nouveau mot de passe",
+      "submit": "Enregistrer le mot de passe",
+      "done": "Ton mot de passe a été modifié. Tu es connecté.",
+      "backToSite": "Retour au site"
+    }
   },
   "Guests": {
     "guests": "Adultes",

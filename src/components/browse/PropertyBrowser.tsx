@@ -73,16 +73,20 @@ export function PropertyBrowser() {
   const selected = units.find((u) => u.id === selectedId) ?? null;
   const close = () => setSelectedId(null);
 
-  // Venit de pe pagina unei cazări (/?cazare=<id>): redeschidem panoul ei, apoi curățăm adresa
+  // Parametri din adresă, citiți o singură dată după hidratare, apoi șterși:
+  //  - /?cazare=<id> (venit de pe pagina unei cazări): redeschidem panoul ei;
+  //  - /?auth=eroare (link din email expirat / Google anulat): deschidem popup-ul cu mesajul.
+  // Adresa e o sursă externă (pe server nu există), deci setState aici e intenționat.
   useEffect(() => {
     const url = new URL(window.location.href);
     const id = url.searchParams.get("cazare");
-    if (!id) return;
-    // Adresa e o sursă externă, citită o singură dată după hidratare (pe server nu există),
-    // deci setState aici e intenționat; pagina de start rămâne statică.
+    const authError = url.searchParams.get("auth") === "eroare";
+    if (!id && !authError) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (allUnits.some((u) => u.id === id)) setSelectedId(id);
+    if (id && allUnits.some((u) => u.id === id)) setSelectedId(id);
+    if (authError) setAuth("linkError");
     url.searchParams.delete("cazare");
+    url.searchParams.delete("auth");
     window.history.replaceState(null, "", url);
   }, []);
 

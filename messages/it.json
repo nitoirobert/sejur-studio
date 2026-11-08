@@ -249,9 +249,47 @@
     "forgot": "Hai dimenticato la password?",
     "submitLogin": "Accedi",
     "submitSignup": "Crea account",
-    "demo": "Demo: l'accesso non è ancora attivo.",
     "terms": "Continuando, accetti i Termini e l'Informativa sulla privacy.",
-    "hostQuestion": "Hai un alloggio da affittare?"
+    "hostQuestion": "Hai un alloggio da affittare?",
+    "soon": "In arrivo",
+    "forgotTitle": "Reimposta la password",
+    "forgotSub": "Ti inviamo via email un link per una nuova password.",
+    "forgotSubmit": "Invia il link",
+    "backToLogin": "Torna all'accesso",
+    "showPassword": "Mostra password",
+    "hidePassword": "Nascondi password",
+    "passwordHint": "Almeno {min} caratteri",
+    "errors": {
+      "invalidCredentials": "Email o password errata.",
+      "emailTaken": "Esiste già un account con questa email. Accedi o usa un'altra email.",
+      "rateLimit": "Troppi tentativi in poco tempo. Attendi qualche minuto e riprova.",
+      "generic": "Non è stato possibile completare. Riprova tra qualche secondo.",
+      "linkExpired": "Il link è scaduto o è già stato usato. Riprova.",
+      "nameEmpty": "Scrivi il tuo nome",
+      "nameLong": "Il nome può avere al massimo 80 caratteri",
+      "emailInvalid": "Scrivi un'email valida, ad es. nome@esempio.it",
+      "passwordShort": "La password deve avere almeno {min} caratteri",
+      "passwordLong": "La password può avere al massimo 72 caratteri"
+    },
+    "notices": {
+      "confirmEmail": "Ti abbiamo inviato un'email di conferma. Apri il link per accedere.",
+      "resetSent": "Se esiste un account con questa email, ti abbiamo inviato il link."
+    },
+    "account": {
+      "title": "Il tuo account",
+      "sub": "Hai effettuato l'accesso a Sejur Studio.",
+      "host": "Account host",
+      "guest": "Account ospite",
+      "signOut": "Esci"
+    },
+    "newPassword": {
+      "title": "Nuova password",
+      "sub": "Link scaduto? Richiedine un altro da «Password dimenticata?».",
+      "label": "Nuova password",
+      "submit": "Salva la password",
+      "done": "La password è stata cambiata. Hai effettuato l'accesso.",
+      "backToSite": "Torna al sito"
+    }
   },
   "Guests": {
     "guests": "Adulti",

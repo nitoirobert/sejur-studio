@@ -249,9 +249,47 @@
     "forgot": "¿Olvidaste tu contraseña?",
     "submitLogin": "Entrar",
     "submitSignup": "Crear cuenta",
-    "demo": "Demo: el inicio de sesión aún no está activo.",
     "terms": "Al continuar, aceptas los Términos y la Política de privacidad.",
-    "hostQuestion": "¿Tienes un alojamiento para alquilar?"
+    "hostQuestion": "¿Tienes un alojamiento para alquilar?",
+    "soon": "Próximamente",
+    "forgotTitle": "Restablecer la contraseña",
+    "forgotSub": "Te enviaremos por email un enlace para crear una contraseña nueva.",
+    "forgotSubmit": "Enviar el enlace",
+    "backToLogin": "Volver a iniciar sesión",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "passwordHint": "Al menos {min} caracteres",
+    "errors": {
+      "invalidCredentials": "Email o contraseña incorrectos.",
+      "emailTaken": "Ya existe una cuenta con este email. Inicia sesión o usa otro email.",
+      "rateLimit": "Demasiados intentos en poco tiempo. Espera unos minutos y vuelve a intentarlo.",
+      "generic": "No se ha podido completar. Inténtalo de nuevo en unos segundos.",
+      "linkExpired": "El enlace ha caducado o ya se usó. Vuelve a intentarlo.",
+      "nameEmpty": "Escribe tu nombre",
+      "nameLong": "El nombre puede tener como máximo 80 caracteres",
+      "emailInvalid": "Escribe un email válido, como nombre@ejemplo.es",
+      "passwordShort": "La contraseña debe tener al menos {min} caracteres",
+      "passwordLong": "La contraseña puede tener como máximo 72 caracteres"
+    },
+    "notices": {
+      "confirmEmail": "Te hemos enviado un email de confirmación. Abre el enlace para iniciar sesión.",
+      "resetSent": "Si existe una cuenta con este email, te hemos enviado el enlace."
+    },
+    "account": {
+      "title": "Tu cuenta",
+      "sub": "Has iniciado sesión en Sejur Studio.",
+      "host": "Cuenta de anfitrión",
+      "guest": "Cuenta de huésped",
+      "signOut": "Cerrar sesión"
+    },
+    "newPassword": {
+      "title": "Contraseña nueva",
+      "sub": "¿Ha caducado el enlace? Pide otro en «¿Olvidaste la contraseña?».",
+      "label": "Contraseña nueva",
+      "submit": "Guardar contraseña",
+      "done": "Tu contraseña se ha cambiado. Has iniciado sesión.",
+      "backToSite": "Volver al sitio"
+    }
   },
   "Guests": {
     "guests": "Adultos",

@@ -249,9 +249,47 @@
     "forgot": "Ai uitat parola?",
     "submitLogin": "Intră în cont",
     "submitSignup": "Creează cont",
-    "demo": "Demo: autentificarea nu este încă activă.",
     "terms": "Continuând, ești de acord cu Termenii și Politica de confidențialitate.",
-    "hostQuestion": "Ai o cazare de închiriat?"
+    "hostQuestion": "Ai o cazare de închiriat?",
+    "soon": "În curând",
+    "forgotTitle": "Resetează parola",
+    "forgotSub": "Îți trimitem pe email un link pentru o parolă nouă.",
+    "forgotSubmit": "Trimite linkul",
+    "backToLogin": "Înapoi la autentificare",
+    "showPassword": "Arată parola",
+    "hidePassword": "Ascunde parola",
+    "passwordHint": "Cel puțin {min} caractere",
+    "errors": {
+      "invalidCredentials": "Email sau parolă greșită.",
+      "emailTaken": "Există deja un cont cu acest email. Intră în cont sau folosește alt email.",
+      "rateLimit": "Prea multe încercări într-un timp scurt. Așteaptă câteva minute și încearcă din nou.",
+      "generic": "Nu am putut termina. Încearcă din nou peste câteva secunde.",
+      "linkExpired": "Linkul a expirat sau a fost deja folosit. Încearcă din nou.",
+      "nameEmpty": "Scrie-ți numele",
+      "nameLong": "Numele poate avea cel mult 80 de caractere",
+      "emailInvalid": "Scrie un email valid, de forma nume@exemplu.ro",
+      "passwordShort": "Parola trebuie să aibă cel puțin {min} caractere",
+      "passwordLong": "Parola poate avea cel mult 72 de caractere"
+    },
+    "notices": {
+      "confirmEmail": "Ți-am trimis un email de confirmare. Deschide linkul din el ca să intri în cont.",
+      "resetSent": "Dacă există un cont cu acest email, ți-am trimis linkul de resetare."
+    },
+    "account": {
+      "title": "Contul tău",
+      "sub": "Ești conectat pe Sejur Studio.",
+      "host": "Cont de gazdă",
+      "guest": "Cont de client",
+      "signOut": "Ieși din cont"
+    },
+    "newPassword": {
+      "title": "Parolă nouă",
+      "sub": "Linkul a expirat? Cere altul din „Ai uitat parola?”.",
+      "label": "Parola nouă",
+      "submit": "Salvează parola",
+      "done": "Parola a fost schimbată. Ești conectat.",
+      "backToSite": "Înapoi la site"
+    }
   },
   "Guests": {
     "guests": "Adulți",

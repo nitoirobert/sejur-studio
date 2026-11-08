@@ -7,7 +7,7 @@ import { Heart, House, HousePlus, Phone, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { iconButton, pill, pillActive } from "@/components/ui/soft";
 import { hostDashboardUrl, hostSignupUrl } from "@/lib/links";
-import { useHostSignedIn } from "@/lib/use-host-session";
+import { useAccount } from "@/lib/use-host-session";
 import { spring } from "@/components/ui/motion";
 import { StayBar } from "./StayBar";
 import { LocationPicker } from "./LocationPicker";
@@ -29,13 +29,28 @@ type Props = {
 };
 
 // Antetul: logo | Favorite + bară de căutare + Locație (centru, ecrane ≥1536px) | contact + cont
-export function SiteHeader({ place, onPlaceChange, onFavorites, onLogin, onHome, ...bar }: Props) {
+export function SiteHeader({
+  place,
+  onPlaceChange,
+  onFavorites,
+  onLogin,
+  onHome,
+  ...bar
+}: Props) {
   const t = useTranslations("Header");
-  // Gazdă logată: butonul devine „Contul tău de gazdă" și duce în panou; altfel „Cont nou de gazdă".
-  const hostSignedIn = useHostSignedIn();
+  // Cine e logat (doar pentru afișare). Gazdă: „Contul tău de gazdă" duce în panou.
+  // Client: butonul de gazdă dispare, iar în locul lui „Autentificare" apare numele lui.
+  const account = useAccount();
+  const hostSignedIn = account?.kind === "host";
+  const firstName =
+    (account?.name ?? account?.email ?? "").trim().split(/[\s@]+/)[0] || null;
   const hostLabel = t(hostSignedIn ? "hostAccount" : "hostSignup");
   const HostIcon = hostSignedIn ? House : HousePlus;
-  const tap = { whileHover: { y: -2 }, whileTap: { scale: 0.96 }, transition: spring };
+  const tap = {
+    whileHover: { y: -2 },
+    whileTap: { scale: 0.96 },
+    transition: spring,
+  };
 
   return (
     <motion.header
@@ -53,7 +68,11 @@ export function SiteHeader({ place, onPlaceChange, onFavorites, onLogin, onHome,
         className="flex shrink-0 items-center gap-3 2xl:gap-4"
         aria-label={t("home")}
       >
-        <motion.span whileHover={{ rotate: -8, scale: 1.05 }} transition={spring} className="shrink-0">
+        <motion.span
+          whileHover={{ rotate: -8, scale: 1.05 }}
+          transition={spring}
+          className="shrink-0"
+        >
           <Image
             src="/logo.png"
             alt={t("brand")}
@@ -64,7 +83,9 @@ export function SiteHeader({ place, onPlaceChange, onFavorites, onLogin, onHome,
           />
         </motion.span>
         {/* Scris real (nu imagine): același font și stil ca titlul „Unități disponibile" */}
-        <span className="font-brand text-2xl font-bold tracking-tight text-ink sm:text-3xl">{t("brand")}</span>
+        <span className="font-brand text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+          {t("brand")}
+        </span>
       </Link>
 
       {/* Centru (doar ≥1536px): Favorite – bară de căutare – Locație */}
@@ -84,30 +105,37 @@ export function SiteHeader({ place, onPlaceChange, onFavorites, onLogin, onHome,
 
       <div className="ml-auto flex shrink-0 items-center gap-2.5 2xl:ml-0">
         <ThemeToggle />
-        <motion.a {...tap} href="tel:+40700000000" className={`${iconButton} size-12 max-sm:hidden`} aria-label={t("call")}>
+        <motion.a
+          {...tap}
+          href="tel:+40700000000"
+          className={`${iconButton} size-12 max-sm:hidden`}
+          aria-label={t("call")}
+        >
           <Phone className="size-5" />
         </motion.a>
         <LanguageSwitcher />
 
-        {/* Cont: autentificare + avatar (deschid popup-ul de login, deocamdată de fațadă) */}
+        {/* Cont: autentificare + avatar (deschid popup-ul de cont) */}
         <span className="mx-1 h-8 w-px bg-sand-200 max-sm:hidden" aria-hidden />
         {/* Pentru proprietari: duce la crearea contului de gazdă (panoul de administrare).
             Pe telefon nu încape în antet; acolo linkul e în fereastra de autentificare. */}
-        <a
-          href={hostSignedIn ? hostDashboardUrl : hostSignupUrl}
-          className={`${pillActive} h-12 px-5 text-base max-lg:size-12 max-lg:justify-center max-lg:px-0 max-sm:hidden`}
-          aria-label={hostLabel}
-        >
-          <HostIcon className="size-5 shrink-0" />
-          <span className="max-lg:hidden">{hostLabel}</span>
-        </a>
+        {account?.kind !== "guest" && (
+          <a
+            href={hostSignedIn ? hostDashboardUrl : hostSignupUrl}
+            className={`${pillActive} h-12 px-5 text-base max-lg:size-12 max-lg:justify-center max-lg:px-0 max-sm:hidden`}
+            aria-label={hostLabel}
+          >
+            <HostIcon className="size-5 shrink-0" />
+            <span className="max-lg:hidden">{hostLabel}</span>
+          </a>
+        )}
         <motion.button
           {...tap}
           type="button"
           onClick={onLogin}
-          className={`${pill} h-12 px-6 text-base font-semibold max-sm:hidden`}
+          className={`${pill} h-12 max-w-48 px-6 text-base font-semibold max-sm:hidden`}
         >
-          {t("login")}
+          <span className="truncate">{firstName ?? t("login")}</span>
         </motion.button>
         <motion.button
           {...tap}
@@ -116,7 +144,13 @@ export function SiteHeader({ place, onPlaceChange, onFavorites, onLogin, onHome,
           className="grid size-12 shrink-0 place-items-center rounded-full bg-accent-50 text-accent shadow-pill ring-2 ring-cream-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           aria-label={t("account")}
         >
-          <User className="size-6" />
+          {firstName ? (
+            <span className="text-lg font-bold">
+              {firstName.charAt(0).toUpperCase()}
+            </span>
+          ) : (
+            <User className="size-6" />
+          )}
         </motion.button>
       </div>
     </motion.header>

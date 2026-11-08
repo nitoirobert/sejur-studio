@@ -249,9 +249,47 @@
     "forgot": "Forgot your password?",
     "submitLogin": "Log in",
     "submitSignup": "Create account",
-    "demo": "Demo: sign-in is not active yet.",
     "terms": "By continuing, you agree to the Terms and the Privacy Policy.",
-    "hostQuestion": "Have a place to rent out?"
+    "hostQuestion": "Have a place to rent out?",
+    "soon": "Coming soon",
+    "forgotTitle": "Reset your password",
+    "forgotSub": "We'll email you a link to set a new password.",
+    "forgotSubmit": "Send the link",
+    "backToLogin": "Back to sign in",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "passwordHint": "At least {min} characters",
+    "errors": {
+      "invalidCredentials": "Wrong email or password.",
+      "emailTaken": "An account with this email already exists. Sign in or use another email.",
+      "rateLimit": "Too many attempts in a short time. Wait a few minutes and try again.",
+      "generic": "Something went wrong. Try again in a few seconds.",
+      "linkExpired": "The link has expired or was already used. Please try again.",
+      "nameEmpty": "Enter your name",
+      "nameLong": "Your name can be at most 80 characters",
+      "emailInvalid": "Enter a valid email, like name@example.com",
+      "passwordShort": "The password must have at least {min} characters",
+      "passwordLong": "The password can have at most 72 characters"
+    },
+    "notices": {
+      "confirmEmail": "We sent you a confirmation email. Open the link in it to sign in.",
+      "resetSent": "If an account exists for this email, we sent you the reset link."
+    },
+    "account": {
+      "title": "Your account",
+      "sub": "You're signed in to Sejur Studio.",
+      "host": "Host account",
+      "guest": "Guest account",
+      "signOut": "Sign out"
+    },
+    "newPassword": {
+      "title": "New password",
+      "sub": "Link expired? Request another one from “Forgot password?”.",
+      "label": "New password",
+      "submit": "Save password",
+      "done": "Your password was changed. You're signed in.",
+      "backToSite": "Back to the site"
+    }
   },
   "Guests": {
     "guests": "Adults",

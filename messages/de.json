@@ -249,9 +249,47 @@
     "forgot": "Passwort vergessen?",
     "submitLogin": "Anmelden",
     "submitSignup": "Konto erstellen",
-    "demo": "Demo: Die Anmeldung ist noch nicht aktiv.",
     "terms": "Wenn du fortfährst, stimmst du den Nutzungsbedingungen und der Datenschutzerklärung zu.",
-    "hostQuestion": "Sie vermieten eine Unterkunft?"
+    "hostQuestion": "Sie vermieten eine Unterkunft?",
+    "soon": "Demnächst",
+    "forgotTitle": "Passwort zurücksetzen",
+    "forgotSub": "Wir senden dir per E-Mail einen Link für ein neues Passwort.",
+    "forgotSubmit": "Link senden",
+    "backToLogin": "Zurück zur Anmeldung",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen",
+    "passwordHint": "Mindestens {min} Zeichen",
+    "errors": {
+      "invalidCredentials": "E-Mail oder Passwort falsch.",
+      "emailTaken": "Mit dieser E-Mail gibt es bereits ein Konto. Melde dich an oder nutze eine andere E-Mail.",
+      "rateLimit": "Zu viele Versuche in kurzer Zeit. Warte ein paar Minuten und versuche es erneut.",
+      "generic": "Das hat nicht geklappt. Versuche es in ein paar Sekunden erneut.",
+      "linkExpired": "Der Link ist abgelaufen oder wurde schon verwendet. Bitte versuche es erneut.",
+      "nameEmpty": "Gib deinen Namen ein",
+      "nameLong": "Der Name darf höchstens 80 Zeichen haben",
+      "emailInvalid": "Gib eine gültige E-Mail ein, z. B. name@beispiel.de",
+      "passwordShort": "Das Passwort muss mindestens {min} Zeichen haben",
+      "passwordLong": "Das Passwort darf höchstens 72 Zeichen haben"
+    },
+    "notices": {
+      "confirmEmail": "Wir haben dir eine Bestätigungs-E-Mail geschickt. Öffne den Link darin, um dich anzumelden.",
+      "resetSent": "Falls es ein Konto mit dieser E-Mail gibt, haben wir dir den Link geschickt."
+    },
+    "account": {
+      "title": "Dein Konto",
+      "sub": "Du bist bei Sejur Studio angemeldet.",
+      "host": "Gastgeberkonto",
+      "guest": "Gästekonto",
+      "signOut": "Abmelden"
+    },
+    "newPassword": {
+      "title": "Neues Passwort",
+      "sub": "Link abgelaufen? Fordere über „Passwort vergessen?“ einen neuen an.",
+      "label": "Neues Passwort",
+      "submit": "Passwort speichern",
+      "done": "Dein Passwort wurde geändert. Du bist angemeldet.",
+      "backToSite": "Zurück zur Website"
+    }
   },
   "Guests": {
     "guests": "Erwachsene",
