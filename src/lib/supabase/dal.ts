@@ -12,7 +12,7 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
   const [{ data: profile }, { count }] = await Promise.all([
     supabase.from("profiles").select("full_name").eq("user_id", data.user.id).maybeSingle(),
     // Host = member of an organization (RLS returns only the user's own memberships).
-    // Guest accounts (0010_guest_accounts) have none.
+    // Guest accounts (0012_guest_accounts) have none.
     supabase.from("organization_members").select("organization_id", { count: "exact", head: true }).eq("user_id", data.user.id),
   ]);
   const firstName = profile?.full_name?.trim().split(/\s+/)[0] || null;

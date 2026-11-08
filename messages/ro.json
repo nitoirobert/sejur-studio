@@ -1,7 +1,8 @@
 {
   "Meta": {
-    "title": "Sejur Studio – rezervă direct, fără comision",
-    "description": "Alege unitatea, vezi prețul total și rezervă direct de la gazdă."
+    "title": "Sejur Studio – cazare la mare și la munte, rezervare directă fără comision",
+    "description": "Cazare în Mamaia, Neptun, Saturn, Mangalia, 2 Mai și Bran: vile, apartamente și camere. Vezi prețul final și rezervă direct la gazdă, fără comision.",
+    "unitTitle": "{name} – cazare în {place}"
   },
   "Header": {
     "home": "Acasă",
@@ -289,7 +290,8 @@
       "submit": "Salvează parola",
       "done": "Parola a fost schimbată. Ești conectat.",
       "backToSite": "Înapoi la site"
-    }
+    },
+    "cookieSettings": "Setări cookie-uri"
   },
   "Guests": {
     "guests": "Adulți",
@@ -664,6 +666,28 @@
       "hint": "nopți ocupate în intervalul afișat",
       "empty": "Nicio proprietate de afișat.",
       "value": "{pct}%"
+    }
+  },
+  "Cookies": {
+    "title": "Folosim cookie-uri",
+    "text": "Unele sunt necesare ca site-ul să meargă. Cu acordul tău, folosim și cookie-uri ca să înțelegem ce caută vizitatorii și să-ți arătăm oferte potrivite.",
+    "acceptAll": "Accept toate",
+    "necessaryOnly": "Doar necesare",
+    "customize": "Alege ce accepți",
+    "save": "Salvează alegerea",
+    "close": "Închide (doar necesare)",
+    "alwaysOn": "Mereu active",
+    "necessary": {
+      "title": "Necesare",
+      "text": "Contul, limba și tema alese. Fără ele site-ul nu funcționează."
+    },
+    "analytics": {
+      "title": "Statistici",
+      "text": "Ne arată ce pagini și cazări sunt căutate, anonim, ca să îmbunătățim site-ul."
+    },
+    "marketing": {
+      "title": "Marketing",
+      "text": "Ne ajută să-ți arătăm oferte Sejur Studio pe Facebook, Instagram, TikTok și Google."
     }
   }
 }

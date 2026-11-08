@@ -1,4 +1,4 @@
--- Check 14 (0010): conturile de client nu primesc organizație; gazdele rămân ca înainte.
+-- Check 16 (0012): conturile de client nu primesc organizație; gazdele rămân ca înainte.
 begin;
 \ir _lib/helpers.psql
 select plan(8);

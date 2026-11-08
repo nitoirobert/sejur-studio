@@ -1,4 +1,4 @@
--- 0010: conturi de client (oaspeți) pe lângă conturile de gazdă.
+-- 0012: conturi de client (oaspeți) pe lângă conturile de gazdă.
 --
 -- Până acum orice cont nou primea o organizație + rolul owner (= gazdă cu panou).
 -- Un client care își face cont pe site (favorite, rezervările lui) NU trebuie să primească organizație.

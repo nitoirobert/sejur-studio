@@ -8,7 +8,7 @@ import { loginSchema, signupSchema } from "@/lib/supabase/validation";
   Conturile de CLIENT (popup-ul de pe site). Gazdele au formularele lor în /login și /cont-nou.
   Rulează în browser, nu pe server: Supabase limitează înscrierile per IP, iar prin server toți
   clienții ar avea același IP. Sesiunea ajunge direct în cookie, iar useAccount() o vede imediat.
-  account_type: "guest" -> trigger-ul din 0010_guest_accounts nu creează organizație.
+  account_type: "guest" -> trigger-ul din 0012_guest_accounts nu creează organizație.
   Toate mesajele sunt chei sub Auth.errors / Auth.notices (traduse în toate limbile).
 */
 

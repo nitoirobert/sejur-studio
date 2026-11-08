@@ -1,7 +1,8 @@
 {
   "Meta": {
-    "title": "Sejur Studio – book direct, no commission",
-    "description": "Pick your stay, see the total price and book directly with the host."
+    "title": "Sejur Studio – seaside and mountain stays in Romania, book direct with no commission",
+    "description": "Stays in Mamaia, Neptun, Saturn, Mangalia, 2 Mai and Bran: villas, apartments and rooms. See the final price and book directly with the host, no commission.",
+    "unitTitle": "{name} – stay in {place}, Romania"
   },
   "Header": {
     "home": "Home",
@@ -289,7 +290,8 @@
       "submit": "Save password",
       "done": "Your password was changed. You're signed in.",
       "backToSite": "Back to the site"
-    }
+    },
+    "cookieSettings": "Cookie settings"
   },
   "Guests": {
     "guests": "Adults",
@@ -457,6 +459,28 @@
     "2mai-boema": {
       "name": "Bohemian Room 2 Mai",
       "description": "Colourful room with a bohemian vibe, close to the beach in 2 Mai."
+    }
+  },
+  "Cookies": {
+    "title": "We use cookies",
+    "text": "Some are needed for the site to work. With your consent, we also use cookies to understand what visitors look for and show you relevant offers.",
+    "acceptAll": "Accept all",
+    "necessaryOnly": "Necessary only",
+    "customize": "Choose what to accept",
+    "save": "Save my choice",
+    "close": "Close (necessary only)",
+    "alwaysOn": "Always on",
+    "necessary": {
+      "title": "Necessary",
+      "text": "Your account, language and theme. The site doesn't work without them."
+    },
+    "analytics": {
+      "title": "Statistics",
+      "text": "Shows us, anonymously, which pages and stays people look for, so we can improve the site."
+    },
+    "marketing": {
+      "title": "Marketing",
+      "text": "Helps us show you Sejur Studio offers on Facebook, Instagram, TikTok and Google."
     }
   }
 }

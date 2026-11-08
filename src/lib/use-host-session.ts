@@ -10,7 +10,7 @@ import { createClient } from "@/lib/supabase/client";
 
 export type Account = { kind: "host" | "guest"; name: string | null; email: string | null } | null;
 
-// Aceeași regulă ca trigger-ul din supabase/migrations/0010_guest_accounts.sql
+// Aceeași regulă ca trigger-ul din supabase/migrations/0012_guest_accounts.sql
 function toAccount(session: Session | null): Account {
   const user = session?.user;
   if (!user) return null;

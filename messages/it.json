@@ -1,7 +1,8 @@
 {
   "Meta": {
-    "title": "Sejur Studio – prenota direttamente, senza commissioni",
-    "description": "Scegli l'alloggio, guarda il prezzo totale e prenota direttamente dall'host."
+    "title": "Sejur Studio – alloggi al mare e in montagna in Romania, prenotazione diretta senza commissioni",
+    "description": "Alloggi a Mamaia, Neptun, Saturn, Mangalia, 2 Mai e Bran: ville, appartamenti e camere. Prezzo finale e prenotazione diretta con l'host, senza commissioni.",
+    "unitTitle": "{name} – alloggio a {place}, Romania"
   },
   "Header": {
     "home": "Home",
@@ -289,7 +290,8 @@
       "submit": "Salva la password",
       "done": "La password è stata cambiata. Hai effettuato l'accesso.",
       "backToSite": "Torna al sito"
-    }
+    },
+    "cookieSettings": "Impostazioni cookie"
   },
   "Guests": {
     "guests": "Adulti",
@@ -457,6 +459,28 @@
     "2mai-boema": {
       "name": "Camera bohémien 2 Mai",
       "description": "Camera colorata dall'atmosfera bohémien, vicino alla spiaggia di 2 Mai."
+    }
+  },
+  "Cookies": {
+    "title": "Usiamo i cookie",
+    "text": "Alcuni servono al funzionamento del sito. Con il tuo consenso, li usiamo anche per capire cosa cercano i visitatori e mostrarti offerte adatte.",
+    "acceptAll": "Accetta tutti",
+    "necessaryOnly": "Solo necessari",
+    "customize": "Scegli",
+    "save": "Salva la scelta",
+    "close": "Chiudi (solo necessari)",
+    "alwaysOn": "Sempre attivi",
+    "necessary": {
+      "title": "Necessari",
+      "text": "Il tuo account, la lingua e il tema scelti. Senza di essi il sito non funziona."
+    },
+    "analytics": {
+      "title": "Statistiche",
+      "text": "Ci mostrano in modo anonimo quali pagine e alloggi vengono cercati, per migliorare il sito."
+    },
+    "marketing": {
+      "title": "Marketing",
+      "text": "Ci aiutano a mostrarti le offerte Sejur Studio su Facebook, Instagram, TikTok e Google."
     }
   }
 }

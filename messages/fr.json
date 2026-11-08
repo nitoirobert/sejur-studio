@@ -1,7 +1,8 @@
 {
   "Meta": {
-    "title": "Sejur Studio – réservez en direct, sans commission",
-    "description": "Choisissez votre hébergement, voyez le prix total et réservez directement auprès de l'hôte."
+    "title": "Sejur Studio – séjours à la mer et à la montagne en Roumanie, réservation directe sans commission",
+    "description": "Logements à Mamaia, Neptun, Saturn, Mangalia, 2 Mai et Bran : villas, appartements et chambres. Prix final affiché, réservation directe chez l'hôte, sans commission.",
+    "unitTitle": "{name} – logement à {place}, Roumanie"
   },
   "Header": {
     "home": "Accueil",
@@ -289,7 +290,8 @@
       "submit": "Enregistrer le mot de passe",
       "done": "Ton mot de passe a été modifié. Tu es connecté.",
       "backToSite": "Retour au site"
-    }
+    },
+    "cookieSettings": "Paramètres des cookies"
   },
   "Guests": {
     "guests": "Adultes",
@@ -457,6 +459,28 @@
     "2mai-boema": {
       "name": "Chambre bohème 2 Mai",
       "description": "Chambre colorée à l'ambiance bohème, près de la plage de 2 Mai."
+    }
+  },
+  "Cookies": {
+    "title": "Nous utilisons des cookies",
+    "text": "Certains sont nécessaires au fonctionnement du site. Avec ton accord, nous les utilisons aussi pour comprendre ce que cherchent les visiteurs et te montrer des offres adaptées.",
+    "acceptAll": "Tout accepter",
+    "necessaryOnly": "Nécessaires uniquement",
+    "customize": "Choisir",
+    "save": "Enregistrer mon choix",
+    "close": "Fermer (nécessaires uniquement)",
+    "alwaysOn": "Toujours actifs",
+    "necessary": {
+      "title": "Nécessaires",
+      "text": "Ton compte, la langue et le thème choisis. Le site ne fonctionne pas sans eux."
+    },
+    "analytics": {
+      "title": "Statistiques",
+      "text": "Nous montrent, de façon anonyme, les pages et logements recherchés pour améliorer le site."
+    },
+    "marketing": {
+      "title": "Marketing",
+      "text": "Nous aident à te montrer les offres Sejur Studio sur Facebook, Instagram, TikTok et Google."
     }
   }
 }

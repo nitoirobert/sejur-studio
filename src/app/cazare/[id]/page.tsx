@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { units } from "@/lib/mock-units";
 import { PropertyView } from "@/components/property/PropertyView";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { unitJsonLd } from "@/lib/seo/structured-data";
+import { SITE_NAME } from "@/lib/site";
 
 // Pagina dedicată unei cazări: /cazare/<id>. Cu ?foto=<n> se deschide direct galeria pe tot ecranul,
 // la poza n (așa ajunge clientul când dă click pe o poză din panoul din dreapta).
@@ -19,9 +22,25 @@ export async function generateMetadata({ params }: PageProps<"/cazare/[id]">): P
     const t = await getTranslations("Property");
     return { title: t("notFound") };
   }
-  const tMeta = await getTranslations("Meta");
-  const tUnit = await getTranslations("UnitText");
-  return { title: `${tUnit(`${id}.name`)} – ${tMeta("title")}`, description: tUnit(`${id}.description`) };
+  const [tMeta, tUnit] = await Promise.all([getTranslations("Meta"), getTranslations("UnitText")]);
+  // Titlu cu cuvintele căutate: „Căsuța din Brazi – cazare în Bran, Brașov – Sejur Studio"
+  const title = tMeta("unitTitle", { name: tUnit(`${id}.name`), place: unit.location });
+  const description = tUnit(`${id}.description`);
+  const url = `/cazare/${id}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    // openGraph se scrie complet aici: Next nu îl combină cu cel din layout
+    openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
+      title: `${title} – ${SITE_NAME}`,
+      description,
+      url,
+      images: unit.photos.slice(0, 1).map((src) => ({ url: `${src}?w=1200&h=630&fit=crop&q=75`, width: 1200, height: 630 })),
+    },
+  };
 }
 
 // Pagina e statică (o variantă per cazare, din generateStaticParams). ?foto=n se citește în browser.
@@ -39,7 +58,12 @@ async function Cazare({ params }: { params: PageProps<"/cazare/[id]">["params"] 
   const { id } = await params;
   const unit = units.find((u) => u.id === id);
   if (!unit) notFound();
-  return <PropertyView unit={unit} />;
+  return (
+    <>
+      <JsonLd data={unitJsonLd(unit)} />
+      <PropertyView unit={unit} />
+    </>
+  );
 }
 
 function PropertySkeleton() {

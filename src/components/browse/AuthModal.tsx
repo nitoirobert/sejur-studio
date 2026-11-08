@@ -27,6 +27,7 @@ import {
   type GuestAuthResult,
 } from "@/lib/auth/guest";
 import { PASSWORD_MIN } from "@/lib/supabase/validation";
+import { openCookieSettings } from "@/lib/consent";
 import { iconButton, primaryButton } from "@/components/ui/soft";
 import { backdrop, spring } from "@/components/ui/motion";
 
@@ -40,7 +41,7 @@ type Result = GuestAuthResult | { error: "linkExpired" };
   - Google: redirecționare la Google și înapoi pe /auth/callback.
   - Apple: „În curând".
   - Logat: arată contul și „Ieși din cont".
-  Conturile de client nu primesc panou de gazdă (vezi supabase/migrations/0010_guest_accounts.sql).
+  Conturile de client nu primesc panou de gazdă (vezi supabase/migrations/0012_guest_accounts.sql).
 */
 export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: () => void }) {
   const t = useTranslations("Auth");
@@ -359,7 +360,12 @@ export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: ()
           </p>
         )}
 
-        <p className="mt-5 text-center text-[11px] leading-relaxed text-muted">{t("terms")}</p>
+        <p className="mt-5 text-center text-[11px] leading-relaxed text-muted">
+          {t("terms")}{" "}
+          <button type="button" onClick={openCookieSettings} className="font-semibold underline-offset-2 hover:text-ink hover:underline">
+            {t("cookieSettings")}
+          </button>
+        </p>
       </motion.div>
     </div>
   );
