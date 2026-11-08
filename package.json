@@ -9,6 +9,7 @@
     "lint": "eslint",
     "postinstall": "node -e \"require('fs').copyFileSync('node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs','public/maplibre-gl-worker.mjs')\"",
     "test": "vitest run",
+    "test:e2e": "playwright test",
     "typecheck": "next typegen && tsc --noEmit",
     "db:reset:dev": "node -e \"const r=require('fs').readFileSync('supabase/.temp/project-ref','utf8').trim();if(r!=='enqnxbktjwcqydghvenu'){console.error('db:reset:dev refused: linked project is '+r+', not the dev project enqnxbktjwcqydghvenu');process.exit(1)}\" && npx supabase db reset --remote --yes",
     "db:test": "npx supabase test db --remote --yes",
