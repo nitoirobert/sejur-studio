@@ -16,7 +16,8 @@
     "brand": "Sejur Studio",
     "darkMode": "Mod noapte",
     "lightMode": "Mod zi",
-    "hostSignup": "Cont nou de gazdă"
+    "hostSignup": "Cont nou de gazdă",
+    "hostAccount": "Contul tău de gazdă"
   },
   "Toolbar": {
     "dates": "{from} – {to}",
@@ -432,7 +433,8 @@
       "open": "Deschide meniul",
       "close": "Închide meniul",
       "expand": "Extinde meniul",
-      "collapse": "Strânge meniul"
+      "collapse": "Strânge meniul",
+      "site": "Înapoi la site"
     },
     "greeting": "Bună, {name}",
     "greetingAnon": "Bună",

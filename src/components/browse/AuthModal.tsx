@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { HousePlus, Info, X } from "lucide-react";
-import { hostSignupUrl } from "@/lib/links";
+import { House, HousePlus, Info, X } from "lucide-react";
+import { hostDashboardUrl, hostSignupUrl } from "@/lib/links";
+import { useHostSignedIn } from "@/lib/use-host-session";
 import { useTranslations } from "next-intl";
 import { iconButton, primaryButton } from "@/components/ui/soft";
 import { backdrop, spring } from "@/components/ui/motion";
@@ -20,6 +21,7 @@ type Mode = "login" | "signup";
 export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: () => void }) {
   const t = useTranslations("Auth");
   const tHeader = useTranslations("Header");
+  const hostSignedIn = useHostSignedIn();
   const [mode, setMode] = useState<Mode>("login");
   const [notice, setNotice] = useState(false);
 
@@ -184,10 +186,13 @@ export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: ()
 
         {/* Pentru proprietari (pe telefon e singurul loc, fiindcă antetul nu are spațiu pentru buton) */}
         <p className="mt-5 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-2xl bg-cream-100 px-4 py-3 text-sm text-ink-soft shadow-pressed">
-          {t("hostQuestion")}
-          <a href={hostSignupUrl} className="inline-flex items-center gap-1.5 font-semibold text-accent hover:underline">
-            <HousePlus className="size-4" />
-            {tHeader("hostSignup")}
+          {!hostSignedIn && t("hostQuestion")}
+          <a
+            href={hostSignedIn ? hostDashboardUrl : hostSignupUrl}
+            className="inline-flex items-center gap-1.5 font-semibold text-accent hover:underline"
+          >
+            {hostSignedIn ? <House className="size-4" /> : <HousePlus className="size-4" />}
+            {tHeader(hostSignedIn ? "hostAccount" : "hostSignup")}
           </a>
         </p>
 

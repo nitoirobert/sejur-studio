@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { createContext, use, useCallback, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useTranslations } from "next-intl";
-import { LogOut, Menu, X } from "lucide-react";
+import { Globe, LogOut, Menu, X } from "lucide-react";
 import { iconButton } from "@/components/ui/soft";
 import { NAV, isActive } from "./nav";
 
@@ -144,6 +144,27 @@ function NavList({ variant, onNavigate }: { variant: "rail" | "full"; onNavigate
   );
 }
 
+// „Înapoi la site": duce la pagina publică (cazările), ca pentru un vizitator.
+function BackToSite({ compact }: { compact: boolean }) {
+  const t = useTranslations("Dashboard.nav");
+  return (
+    <div className="mt-4 border-t border-sand/70 pt-4">
+      <Link
+        href="/"
+        title={compact ? t("site") : undefined}
+        className={`group flex items-center gap-3 rounded-[1.1rem] p-1.5 text-[15px] font-medium text-ink-soft transition-[background-color,color] duration-200 hover:bg-cream-50/60 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+          compact ? "max-xl:justify-center xl:pr-4" : "pr-4"
+        }`}
+      >
+        <span className="grid size-11 shrink-0 place-items-center rounded-[0.95rem] bg-cream-50/80 text-ink shadow-pill transition-[scale] duration-200 group-active:scale-[0.96]">
+          <Globe className="size-[19px]" strokeWidth={1.9} aria-hidden />
+        </span>
+        <span className={compact ? "max-xl:sr-only" : undefined}>{t("site")}</span>
+      </Link>
+    </div>
+  );
+}
+
 function SignOutButton({ signOut, compact }: { signOut: Slots["signOut"]; compact: boolean }) {
   const t = useTranslations("Dashboard");
   // Plain server-action form (works before hydration too); the action redirects to /login.
@@ -204,6 +225,7 @@ function Rail({ account, signOut }: Slots) {
       </div>
       <div className="mt-9 flex-1">
         <NavList variant="rail" />
+        <BackToSite compact />
       </div>
       <div className="space-y-1 border-t border-sand/70 pt-3">
         <div className="max-xl:[&_[data-account-name]]:sr-only max-xl:[&>*]:justify-center">{account}</div>
@@ -283,6 +305,7 @@ function Drawer({ account, signOut }: Slots) {
         </div>
         <nav aria-label={t("label")} className="mt-8 flex-1">
           <NavList variant="full" onNavigate={(href) => (href === pathname ? setOpen(false) : closeForNavigation())} />
+          <BackToSite compact={false} />
         </nav>
         <div className="space-y-1 border-t border-sand/70 pt-3">
           {account}

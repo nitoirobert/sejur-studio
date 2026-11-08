@@ -16,7 +16,8 @@
     "brand": "Sejur Studio",
     "darkMode": "Nachtmodus",
     "lightMode": "Tagmodus",
-    "hostSignup": "Gastgeber werden"
+    "hostSignup": "Gastgeber werden",
+    "hostAccount": "Ihr Gastgeberkonto"
   },
   "Toolbar": {
     "dates": "{from} – {to}",

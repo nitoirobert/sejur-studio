@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Heart, HousePlus, Phone, User } from "lucide-react";
+import { Heart, House, HousePlus, Phone, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { iconButton, pill, pillActive } from "@/components/ui/soft";
-import { hostSignupUrl } from "@/lib/links";
+import { hostDashboardUrl, hostSignupUrl } from "@/lib/links";
+import { useHostSignedIn } from "@/lib/use-host-session";
 import { spring } from "@/components/ui/motion";
 import { StayBar } from "./StayBar";
 import { LocationPicker } from "./LocationPicker";
@@ -30,6 +31,10 @@ type Props = {
 // Antetul: logo | Favorite + bară de căutare + Locație (centru, ecrane ≥1536px) | contact + cont
 export function SiteHeader({ place, onPlaceChange, onFavorites, onLogin, onHome, ...bar }: Props) {
   const t = useTranslations("Header");
+  // Gazdă logată: butonul devine „Contul tău de gazdă" și duce în panou; altfel „Cont nou de gazdă".
+  const hostSignedIn = useHostSignedIn();
+  const hostLabel = t(hostSignedIn ? "hostAccount" : "hostSignup");
+  const HostIcon = hostSignedIn ? House : HousePlus;
   const tap = { whileHover: { y: -2 }, whileTap: { scale: 0.96 }, transition: spring };
 
   return (
@@ -89,12 +94,12 @@ export function SiteHeader({ place, onPlaceChange, onFavorites, onLogin, onHome,
         {/* Pentru proprietari: duce la crearea contului de gazdă (panoul de administrare).
             Pe telefon nu încape în antet; acolo linkul e în fereastra de autentificare. */}
         <a
-          href={hostSignupUrl}
+          href={hostSignedIn ? hostDashboardUrl : hostSignupUrl}
           className={`${pillActive} h-12 px-5 text-base max-lg:size-12 max-lg:justify-center max-lg:px-0 max-sm:hidden`}
-          aria-label={t("hostSignup")}
+          aria-label={hostLabel}
         >
-          <HousePlus className="size-5 shrink-0" />
-          <span className="max-lg:hidden">{t("hostSignup")}</span>
+          <HostIcon className="size-5 shrink-0" />
+          <span className="max-lg:hidden">{hostLabel}</span>
         </a>
         <motion.button
           {...tap}
