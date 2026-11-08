@@ -1,6 +1,6 @@
 # Baza de date (Supabase) — pe scurt
 
-Migrații: `supabase/migrations/0001_core.sql` (tabele), `0002_rls.sql` (securitate), `0003_storage.sql` (poze), `0004_functions.sql` (funcții), `0005`–`0009` (curățare: vezi `docs/untangle-db.md`). Date de test: `supabase/seed.sql`.
+Migrații: `supabase/migrations/0001_core.sql` (tabele), `0002_rls.sql` (securitate), `0003_storage.sql` (poze), `0004_functions.sql` (funcții), `0005`–`0009` (curățare: vezi `docs/untangle-db.md`), `0010_public_booking.sql` (rezervare publică, unități, pg_cron), `0011_photos_hardening.sql` (poze doar WebP cu nume uuid, un singur preț de weekend pe unitate). Date de test: `supabase/seed.sql`.
 Reguli: fiecare tabel are `id uuid`, `created_at`, `updated_at` (se schimbă singur la update) și RLS. Banii sunt **întregi în bani** (1 leu = 100), cu `check (>= 0)`, moneda implicită `RON`. Datele sunt `date`; o rezervare ocupă `[check_in, check_out)` (ziua plecării e liberă).
 
 ## Tabele
@@ -12,7 +12,7 @@ Reguli: fiecare tabel are `id uuid`, `created_at`, `updated_at` (se schimbă sin
 | `profiles` | profilul contului: full_name, phone |
 | `properties` | proprietatea: nume, slug (unic), descriere, adresă, oraș, lat/lng, ore check-in/out, `checkin_instructions` (privat), politică de anulare, facilități (`amenities` jsonb), `status` `activa` / `ascunsa` |
 | `units` | unitatea: tip (`camera`, `apartament`, `garsoniera`, `casuta` — ca în `mock-units.ts`), max_guests, bedrooms, beds, bathrooms, area_m2, descriere, facilități, position, `is_published` |
-| `unit_prices` | prețuri pe noapte (bani): `base` (una pe unitate), `weekend`, `season` (cu date_from/date_to), min_nights, priority |
+| `unit_prices` | prețuri pe noapte (bani): `base` (una pe unitate), `weekend` (una pe unitate, din 0011: index unic `unit_prices_one_weekend_idx`, a doua dă 23505), `season` (oricâte) (cu date_from/date_to), min_nights, priority |
 | `photos` | poze: property_id, unit_id (opțional), storage_path (obligatoriu `<organization_id>/<property_id>/<fișier>` al aceluiași rând), position (0..n-1), is_cover (max una pe proprietate), alt |
 | `guests` | oaspete, GDPR minim: doar full_name, email, phone |
 | `bookings` | rezervarea: unit, guest (se pune null dacă oaspetele e șters), check_in/check_out, `stay` (generat), status, source, adulți, copii, total_amount, hold_expires_at (obligatoriu la `hold`), `stripe_checkout_session_id`, public_token; o rezervare importată are `ical_feed_id` + `external_uid` (unice împreună) |
@@ -31,8 +31,11 @@ Reguli: fiecare tabel are `id uuid`, `created_at`, `updated_at` (se schimbă sin
 
 | Funcție | Cine | Ce face |
 |---|---|---|
-| `create_manual_booking(p_unit_id, p_check_in, p_check_out, p_full_name, p_email, p_phone, p_adults, p_children, p_total_amount) → uuid` | proprietar | oaspete + rezervare `confirmed` / `direct` într-o tranzacție; întâi trece în `expired` hold-urile expirate ale unității. Erori (mesaj): `unit_not_found`, `invalid_dates`, `invalid_guest`, `invalid_amount`, `booking_overlap` (cod 23P01) |
+| `create_manual_booking(p_unit_id, p_check_in, p_check_out, p_full_name, p_email, p_phone, p_adults, p_children, p_total_amount) → uuid` | proprietar | oaspete + rezervare `confirmed` / `direct` într-o tranzacție; întâi trece în `expired` hold-urile expirate ale unității. Limite (0010): date finite (fără `infinity`), max 366 nopți, nume 1–80, email ≤ 254, telefon ≤ 32, adulți 1–20, copii 0–20. Erori (mesaj): `unit_not_found`, `invalid_dates`, `invalid_guest`, `invalid_amount`, `booking_overlap` (cod 23P01) |
 | `reorder_photos(p_property_id, p_photo_ids, p_cover_id default null)` | proprietar | lista trebuie să conțină exact toate pozele proprietății; poziții 0..n-1; opțional coperta. Erori: `property_not_found`, `photo_set_mismatch` |
+| `reorder_units(p_property_id, p_unit_ids)` | proprietar | ca `reorder_photos`: exact toate unitățile proprietății, poziții 0..n-1. Erori: `property_not_found`, `unit_set_mismatch` |
+| `save_unit(...) → uuid` | proprietar | creează sau editează unitatea și prețul ei de bază, într-o tranzacție (vezi „Rezervare publică”) |
+| `public_quote`, `create_public_booking`, `public_booking_status`, `confirm_booking`, `decline_booking` | vezi „Rezervare publică” | contractul cu site-ul public |
 | `dashboard_chart(p_from, p_to, p_property_id default null)` | proprietar | rezervările (confirmed, blocked, hold neexpirat) care se suprapun cu `[from, to)`, inclusiv cele începute înainte; max 366 zile. Coloane: booking_id, unit_id, property_id, check_in, check_out, status, source, guest_name, adults, children, total_amount, currency, hold_expires_at |
 | `dashboard_kpis(p_day default null)` | proprietar | kpi_day, arrivals_today, departures_today, occupancy_pct, revenue_month, currency (vezi regulile mai jos) |
 | `bucharest_today(p_now default now())` | proprietar | data de azi în `Europe/Bucharest` |
@@ -58,7 +61,7 @@ arrivals_today **3**, departures_today **1**, occupancy_pct **31.7** (57 nopți 
 - Pagina publică folosește un client **fără sesiune** (cheia anon, fără cookie-uri): un proprietar logat vede, ca `authenticated`, doar datele firmei lui.
 
 ## Poze (Storage)
-Bucket privat `photos`, max 10 MB, doar `image/jpeg`, `image/png`, `image/webp`, `image/avif` (fără SVG). Calea: `<organization_id>/<property_id>/<fișier>`; un rând din `photos` nu poate indica folderul altei firme sau altei proprietăți (constraint `photos_storage_path_owner`). Proprietarul citește/scrie/șterge doar în folderul firmei lui. Anon poate citi (URL semnat) doar fișierele înregistrate în `photos` pentru proprietăți active.
+Bucket privat `photos`, max 10 MB, doar `image/webp` (din 0011; panoul convertește orice poză în WebP). Calea: `<organization_id>/<property_id>/<uuid>.webp`; un rând din `photos` nu poate indica folderul altei firme sau altei proprietăți (constraint `photos_storage_path_owner`). Proprietarul citește/scrie/șterge doar în folderul firmei lui. Anon poate citi (URL semnat) doar fișierele înregistrate în `photos` pentru proprietăți active.
 
 ## Conturi de test (seed, doar local / proiect de dev)
 `owner1@example.com` (org 1: 2 proprietăți, 6 unități, 22 rezervări pe 60 de zile) și `owner2@example.com` (org 2: 1 proprietate ascunsă). Parola: `Parola-Test-123`.
@@ -69,8 +72,62 @@ Bucket privat `photos`, max 10 MB, doar `image/jpeg`, `image/png`, `image/webp`,
 ## Drepturi pe funcții
 `0002_rls.sql` revocă global (pentru toate schemele) dreptul implicit EXECUTE de la `PUBLIC`. Orice funcție nouă, inclusiv cele adăugate de o extensie, are nevoie de un `grant execute` explicit către `anon` și/sau `authenticated`, altfel nu poate fi apelată. `expire_holds` și `is_live_booking` au EXECUTE explicit pentru `authenticated` și `service_role`, niciodată pentru `PUBLIC` sau `anon`.
 
+## Rezervare publică
+
+Site-ul public rezervă **doar** prin funcțiile de mai jos (client fără sesiune, cheia anon) și nu scrie direct în tabele. Prețul se calculează doar în bază; clientul nu trimite nicio sumă. Toate funcțiile din 0010 au `set search_path = ''` și `grant execute` explicit. Erorile aruncate au ca mesaj doar codul (de ex. `invalid_guest`), fără text Postgres; aplicația citește `error.message`.
+
+### `public_quote(p_unit_id uuid, p_check_in date, p_check_out date, p_adults int default 1, p_children int default 0)`
+`anon`, `authenticated`; `security definer`, `stable`. Întoarce **un rând**: `nights int`, `total bigint` (bani), `currency text` (`RON`), `nightly jsonb` (`{"2027-06-04": 32000, ...}`, o cheie `YYYY-MM-DD` pe noapte, indiferent de `DateStyle`), `ok boolean`, `reason text`. La refuz: `ok = false`, `reason` setat, `nights`/`total`/`nightly` = null. Nu aruncă erori pentru date greșite.
+
+**Ordinea motivelor (fixă, primul care se potrivește câștigă):**
+1. `unit_not_found`: unitate inexistentă, nepublicată, dintr-o proprietate `ascunsa`, sau `p_unit_id` null. Același răspuns pentru toate (nu se poate afla dacă unitatea există).
+2. `invalid_dates`: check-in sau check-out null sau infinit (`infinity`), `check_out <= check_in`, check-in înainte de azi (`Europe/Bucharest`; azi e acceptat), check-in peste 2 ani (după azi + 730 zile), peste 366 de nopți.
+3. `invalid_guest`: adulți null sau în afara 1–20, copii null sau în afara 0–20.
+4. `too_many_guests`: adulți + copii > `units.max_guests`.
+5. `no_price`: unitatea nu are preț de bază > 0, sau o noapte iese cu preț 0.
+6. `min_nights`: nopțile sunt sub cel mai mare `min_nights` dintre regulile aplicate efectiv nopților.
+7. `invalid_amount`: totalul depășește 2.147.483.647 bani (nu încape în `bookings.total_amount`); calculat în bigint, fără eroarea 22003.
+8. `unavailable`: zilele se suprapun cu o rezervare care ocupă acum calendarul (`is_live_booking`: `confirmed`, `blocked`, `hold` neexpirat). Un hold trecut de `hold_expires_at`, încă nemăturat, nu blochează.
+
+**Prețul pe noapte** (noaptea D = de la D la D+1): sezonul cu `date_from <= D < date_to` (`date_to` e exclusiv: noaptea `date_to` are deja prețul normal), altfel weekendul (nopțile de **vineri și sâmbătă**, `isodow` 5 și 6), altfel baza. `date_from`/`date_to` contează doar la `season`. **La egalitate** (două sezoane pe aceeași noapte; o regulă weekend e cel mult una pe unitate, din 0011): câștigă `priority` mai mare, apoi `created_at` cel mai nou, apoi `id` mai mare, deci rezultatul e determinist.
+
+### `create_public_booking(p_unit_id uuid, p_check_in date, p_check_out date, p_full_name text, p_email text, p_phone text, p_adults int default 1, p_children int default 0)`
+`anon`, `authenticated`; `security definer`. Întoarce un rând: `booking_id uuid`, `public_token uuid`, `total bigint`, `hold_expires_at timestamptz`. Creează în aceeași tranzacție oaspetele (în firma unității) și rezervarea: `hold`, sursa `direct`, `total_amount` = totalul din `public_quote`, `hold_expires_at = now() + 24h`.
+
+Ordinea verificărilor:
+1. motivele lui `public_quote`, în ordinea de mai sus (aceleași coduri, `unit_not_found` primul);
+2. `invalid_dates` dacă sunt peste **30 de nopți** (limita hold-ului public);
+3. `invalid_guest`: nume 1–80 după trim; email obligatoriu, ≤ 254, de forma `x@y.z` fără spații; telefon obligatoriu, ≤ 32, doar cifre, spații și `+ ( ) . -`, cel puțin 6 caractere;
+4. `expire_holds(p_unit_id)`, apoi limitele anti-abuz → `too_many_requests`: cel mult **3** hold-uri vii pe același email (pe toate unitățile; comparat după `trim`, fără diferență între litere mari și mici) și cel mult **20** hold-uri vii pe unitate;
+5. o suprapunere apărută între timp → `unavailable`.
+
+Numele, emailul și telefonul se salvează după `trim` (emailul își păstrează literele). Coduri SQLSTATE: `unit_not_found` P0002, `unavailable` 23P01, `too_many_requests` P0001, restul 22023. Două cereri simultane pe aceeași unitate sau același email se așteaptă una pe alta (advisory lock în tranzacție). Limita pe IP și Turnstile stau în server action (baza vede doar IP-ul serverului).
+
+### `public_booking_status(p_token text)`
+`anon`, `authenticated`; `security definer`. Coloane: `status booking_status`, `check_in date`, `check_out date`, `property_name text`, `unit_name text`, `total_amount int`, `currency text`. **Fără** email, telefon, nume oaspete, `checkin_instructions`, `organization_id`, `guest_id`. Un `hold` trecut de `hold_expires_at` apare ca `expired`, chiar dacă jobul nu l-a mutat încă. Token greșit, malformat (nu e uuid canonic) sau null: zero rânduri, fără eroare (niciodată 22P02).
+
+### `confirm_booking(p_booking_id uuid)` și `decline_booking(p_booking_id uuid)` → void
+Doar `authenticated`, pe rezervările firmei lui (`security definer` cu verificare `is_org_member`). Rezervare inexistentă sau a altei firme: `booking_not_found` (P0002).
+- `confirm_booking`: `hold` viu → `confirmed`, `hold_expires_at = null`. Hold expirat (mutat sau nu în `expired`) → `hold_expired`; orice altă stare → `invalid_status` (22023).
+- `decline_booking`: doar `hold` → `cancelled`; orice altă stare → `invalid_status`.
+- Webhook-ul Stripe (brief 07, `service_role`) nu e membru de firmă: va avea nevoie de o funcție proprie sau de o extindere a acesteia.
+
+### Panou: unități (brief 04)
+- `save_unit(p_property_id uuid, p_name text, p_type text, p_max_guests int, p_bedrooms int, p_beds int, p_bathrooms int, p_area_m2 int, p_description text, p_amenities jsonb, p_is_published boolean, p_base_price int, p_unit_id uuid default null) → uuid` (id-ul unității). `authenticated`, `security invoker`. Fără `p_unit_id` creează unitatea la final (`position` = max + 1); cu el o editează. Scrie unitatea și prețul de bază (unul pe unitate, upsert) în aceeași tranzacție. Erori: `property_not_found` / `unit_not_found` (P0002); `invalid_unit` (22023: nume 1–80, tip din enum, max_guests 1–50, bedrooms 0–50, beds 0–100, bathrooms 0–50, area_m2 null sau 1–10000, descriere ≤ 4000 și goală → null, amenities listă de texte ≤ 50 și null → `[]`, is_published obligatoriu); `invalid_price` (22023: preț de bază 1–2.100.000.000 bani).
+- `reorder_units(p_property_id uuid, p_unit_ids uuid[])`: vezi tabelul de funcții.
+- **O unitate publicată are mereu preț de bază > 0** (triggere de constraint, verificate la commit): publicarea fără preț, sau un preț de bază pus pe 0 sau șters la o unitate publicată → `no_price` (23514). „Unitate, apoi preț” în aceeași tranzacție e acceptat. Rândurile existente nu sunt reverificate.
+- Storage (`photos`): scrierea cere calea `<organization_id al firmei tale>/<id-ul unei proprietăți a acelei firme>/<uuid>.webp`, toate trei uuid canonice cu litere mici (din 0011; `poza-mea.webp` sau `.jpg` sunt refuzate cu 42501). Citirea și ștergerea rămân pe tot folderul firmei.
+
+### Job pg_cron
+`pg_cron` e disponibil pe planul gratuit. Un singur job, `expire-holds`, la `*/5 * * * *`, rulează `select public.expire_holds()`. `cron.schedule` actualizează jobul după nume, deci migrația rulată din nou nu îl dublează. Funcțiile `cron.*` păstrează EXECUTE pentru `PUBLIC`, dat de `supabase_admin` (nu-l putem revoca), dar `anon` și `authenticated` nu au USAGE pe schema `cron`, deci nu le pot apela (42501).
+
+### Drepturi (0010)
+- `anon` are EXECUTE pe exact 4 funcții: `public_quote`, `create_public_booking`, `public_booking_status`, `public_busy_ranges`.
+- Doar `authenticated`: `confirm_booking`, `decline_booking`, `save_unit`, `reorder_units` (plus cele de dinainte).
+- `PUBLIC`: nimic. Anon nu citește și nu scrie direct în `bookings` sau `guests`.
+
 ## Mai târziu
 - `public_busy_ranges`: `busy_from` poate dezvălui check-in-ul original al unui sejur lung; de tăiat la începutul ferestrei.
 - `cancellation_policies` nu e încă citibil de anon (pagina publică nu poate afișa politica).
-- Hold-urile trecute de `hold_expires_at` blochează zilele (constraint-ul nu poate folosi `now()`) până rulează `expire_holds()`; de programat jobul pg_cron (PLAN.md D6). Cititorii (`dashboard_chart`, `public_busy_ranges`) le ignoră deja.
+- Hold-urile trecute de `hold_expires_at` blochează zilele (constraint-ul nu poate folosi `now()`) până rulează `expire_holds()`; de programat jobul pg_cron (PLAN.md D6). Cititorii (`dashboard_chart`, `public_busy_ranges`, `public_quote`) le ignoră deja. **Rezolvat în 0010:** jobul pg_cron `expire-holds` rulează la 5 minute, iar `create_public_booking` cheamă întâi `expire_holds(unit)`.
 - `public_busy_ranges` e `security definer`: regula „unitate publicată dintr-o proprietate activă” e repetată acolo; de ținut la fel cu `properties_public` / `units_public`.

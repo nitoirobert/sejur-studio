@@ -36,8 +36,17 @@ export async function loadChart(raw: Raw): Promise<ChartData & { unitsTotal: num
     return { today, params, from, chart };
   })();
 
-  const [, units, { today, params, from, chart }] = await Promise.all([loadKpis(), unitsQuery, chartQuery]);
+  // Properties on their own too: one without units yet still belongs in the filter (brief 04).
+  const propertiesQuery = supabase.from("properties").select("id, name").limit(500);
+
+  const [, units, { today, params, from, chart }, props] = await Promise.all([
+    loadKpis(),
+    unitsQuery,
+    chartQuery,
+    propertiesQuery,
+  ]);
   if (units.error) throw new Error("units query failed");
+  if (props.error) throw new Error("properties query failed");
 
   // Group units under their property; properties sorted by name (ro collation).
   const byProperty = new Map<string, ChartProperty>();
@@ -52,6 +61,9 @@ export async function loadChart(raw: Raw): Promise<ChartData & { unitsTotal: num
   }
   const all = [...byProperty.values()].sort((a, b) => a.name.localeCompare(b.name, "ro"));
   const properties = params.property ? all.filter((p) => p.id === params.property) : all;
+  const filterOptions = props.data
+    .map(({ id, name }) => ({ id, name }))
+    .sort((a, b) => a.name.localeCompare(b.name, "ro"));
 
   return {
     today,
@@ -59,7 +71,7 @@ export async function loadChart(raw: Raw): Promise<ChartData & { unitsTotal: num
     days: params.days,
     property: params.property,
     properties,
-    allProperties: all.map(({ id, name }) => ({ id, name })),
+    allProperties: filterOptions,
     unitsTotal: units.data.length,
     bookings: (chart.data ?? []).map((r) => ({
       id: r.booking_id,

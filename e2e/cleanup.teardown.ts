@@ -2,6 +2,7 @@ import fs from "node:fs";
 import { expect, test as teardown } from "@playwright/test";
 import { SEED, SEED_SNAPSHOT, admin } from "./support/helpers";
 import { GUEST_PREFIX, deleteE2EBookings } from "./support/chart";
+import { PROP_PREFIX, deleteE2EProperties } from "./support/props";
 
 // Check 13: every e2e+<timestamp>@example.com account is deleted (admin API, key only in
 // .env.test.local). Deleting the auth user cascades to organization_members and profiles
@@ -17,7 +18,8 @@ teardown("șterge conturile e2e + firmele lor; membru/profil/firmă dispar; owne
     users.push(...data.users);
     if (data.users.length < 1000) break;
   }
-  const e2e = users.filter((u) => /^e2e\+\d+@example\.com$/.test(u.email ?? ""));
+  // Also the stray e2e+ui-<n>@example.com accounts left by manual UI checks (brief 04).
+  const e2e = users.filter((u) => /^e2e\+(\d+|ui-[a-z0-9-]+)@example\.com$/.test(u.email ?? ""));
   const seedOrgs = new Set<string>();
   for (const who of ["owner1", "owner2"] as const) {
     const u = users.find((x) => x.email === SEED[who].email);
@@ -69,6 +71,15 @@ teardown("șterge conturile e2e + firmele lor; membru/profil/firmă dispar; owne
       expect(members, `${who} membership`).toEqual(before[who].members);
     }
   }
+});
+
+// Brief 04: safety net for the property specs (each also cleans in afterAll): every "E2E ..." property
+// goes, with its units, prices, photo rows, files and bookings. Seed properties are never named "E2E ".
+teardown("șterge proprietățile e2e („E2E …”) cu unități, prețuri, poze și fișiere", async () => {
+  const n = await deleteE2EProperties();
+  console.log(`e2e properties deleted: ${n}`);
+  const { data } = await admin().from("properties").select("id").like("name", `${PROP_PREFIX}%`);
+  expect(data).toEqual([]);
 });
 
 // Brief 03: every booking the chart specs create (guest name "E2E ...") is deleted with the admin
