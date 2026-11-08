@@ -19,7 +19,8 @@ const PAGES = [
   { name: "login", path: "/login", auth: false, ready: "Intră în cont" },
   { name: "cont-nou", path: "/cont-nou", auth: false, ready: "Cont nou de gazdă" },
   { name: "prezentare", path: "/dashboard", auth: true, ready: "booking-chart" },
-  { name: "proprietati", path: "/dashboard/proprietati", auth: true, ready: "empty-state" },
+  // owner1 has properties after brief 04 (or none, after cleanup): the list or its empty state.
+  { name: "proprietati", path: "/dashboard/proprietati", auth: true, ready: "property-list|property-empty" },
   { name: "rezervari", path: "/dashboard/rezervari", auth: true, ready: "empty-state" },
   { name: "setari", path: "/dashboard/setari", auth: true, ready: "empty-state" },
 ] as const;
@@ -69,7 +70,8 @@ for (const p of PAGES) {
           const errors = watchConsole(page);
           await setTheme(context, theme);
           await page.goto(p.path);
-          if (p.ready.includes("-")) await expect(page.getByTestId(p.ready)).toBeVisible();
+          if (p.ready.includes("-"))
+            await expect(page.locator(p.ready.split("|").map((id) => `[data-testid="${id}"]`).join(", ")).first()).toBeVisible();
           else await expect(page.getByRole("heading", { level: 1, name: p.ready })).toBeVisible();
           if (p.name === "prezentare") {
             await expect(page.getByTestId("kpi-revenue-value")).toBeVisible();

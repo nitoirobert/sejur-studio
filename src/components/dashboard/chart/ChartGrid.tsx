@@ -399,6 +399,8 @@ function Bar({
     source: t(`source.${b.source}`),
   });
   const Icon = SOURCE_ICON[b.source];
+  // A short calendar import (under 3 shown nights) has no room for its source name: icon only.
+  const iconOnly = Boolean(Icon) && kind === "blocked" && b.source !== "direct" && end - start < 3;
 
   return (
     <button
@@ -416,11 +418,12 @@ function Bar({
       data-optimistic={b.optimistic ? "" : undefined}
       data-clip-start={clipStart ? "" : undefined}
       data-clip-end={clipEnd ? "" : undefined}
+      data-icon-only={iconOnly ? "" : undefined}
       aria-label={label}
       title={label}
       disabled={b.optimistic}
       onClick={() => onOpen(b.id)}
-      className={`bar absolute inset-y-1.5 z-[5] flex min-w-0 items-center gap-1 overflow-hidden px-2 text-left text-xs font-semibold shadow-sm transition-[filter,opacity] duration-150 hover:brightness-110 focus-visible:z-[6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-progress ${
+      className={`bar absolute inset-y-1.5 z-[5] flex min-w-0 items-center gap-1 overflow-hidden text-left text-xs font-semibold shadow-sm transition-[filter,opacity] duration-150 ${iconOnly ? "justify-center px-0" : "px-2"} hover:brightness-110 focus-visible:z-[6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-progress ${
         clipStart ? "rounded-l-none" : "rounded-l-lg"
       } ${clipEnd ? "rounded-r-none" : "rounded-r-lg"} ${
         kind === "confirmed"
@@ -433,7 +436,9 @@ function Bar({
     >
       {Icon && <Icon aria-hidden className="size-3.5 shrink-0 opacity-75" />}
       {/* On the hatched hold the name sits on a solid chip, so it stays readable (AA) over the stripes. */}
-      <span className={kind === "hold" ? "min-w-0 truncate rounded bg-cream-50 px-1 py-px" : "truncate"}>{text}</span>
+      {!iconOnly && (
+        <span className={kind === "hold" ? "min-w-0 truncate rounded bg-cream-50 px-1 py-px" : "truncate"}>{text}</span>
+      )}
     </button>
   );
 }

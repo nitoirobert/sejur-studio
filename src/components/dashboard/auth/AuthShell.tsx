@@ -26,10 +26,10 @@ export async function AuthShell({
         <ThemeToggle />
       </div>
 
-      <main className="flex flex-1 items-center py-8 lg:pl-[6vw]">
+      <main className="flex flex-1 items-center justify-center py-8">
         <section
           aria-labelledby="auth-title"
-          className="w-full max-w-[27rem] rounded-card border border-glass-line bg-glass-strong p-6 shadow-glass backdrop-blur-2xl backdrop-saturate-150 sm:p-9 max-sm:mx-auto"
+          className="w-full max-w-[27rem] rounded-card border border-glass-line bg-glass-strong p-6 shadow-glass backdrop-blur-2xl backdrop-saturate-150 sm:p-9"
         >
           <div className="flex items-center gap-3">
             <Image

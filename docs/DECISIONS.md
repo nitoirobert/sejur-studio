@@ -12,3 +12,4 @@ Numerotate, cu dată, nu se rescriu. O decizie nouă o poate înlocui pe una vec
 8. 7 nov. Pe WhatsApp scriem proprietarilor doar după ce ne-au răspuns. Emailurile la rece merg doar către firme și PFA-uri, prin adOS.
 9. 7 nov. Planurile și actualizările de structură se pun pe git (`main`) imediat, ca agentul lui Robert să le vadă după `git pull`.
 10. 7 nov. Sejur Studio e proiectul de probă înainte de PMS-ul pentru hoteluri de peste 100 de camere. Lecțiile se notează în `docs/LESSONS.md`.
+11. 8 nov. Pozele se încarcă cu `cacheControl` 300 (5 minute): o poză descărcată cât proprietatea era publică poate rămâne în cache cel mult 5 minute după ascundere; URL-urile semnate noi sunt refuzate imediat.

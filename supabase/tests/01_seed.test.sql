@@ -3,10 +3,19 @@ begin;
 \ir _lib/helpers.psql
 select plan(14);
 
-select is((select count(*) from auth.users), 2::bigint, 'seed: exactly 2 auth accounts');
-select is((select count(*) from auth.users where email not like '%@example.com'), 0::bigint,
-  'seed: every account email is @example.com');
-select is((select count(*) from public.organizations), 2::bigint, 'seed: exactly 2 organizations');
+-- Scoped to the seed accounts and their orgs: the dev DB is shared with the live app,
+-- so real signups exist next to the seed and must not change these counts.
+select is((select count(*) from auth.users
+           where id in (tests.id('user1'), tests.id('user2'))
+              or email in ('owner1@example.com', 'owner2@example.com')), 2::bigint,
+  'seed: exactly 2 seed accounts (fixed ids, no duplicate owner emails)');
+select is((select array_agg(email::text order by email) from auth.users
+           where id in (tests.id('user1'), tests.id('user2'))),
+  array['owner1@example.com', 'owner2@example.com'], 'seed: every seed account email is @example.com');
+select is((select count(*) from public.organizations o
+           join public.organization_members m on m.organization_id = o.id
+           where m.user_id in (tests.id('user1'), tests.id('user2'))), 2::bigint,
+  'seed: exactly 2 seed organizations (one membership per seed owner)');
 select isnt(tests.id('org1'), null, 'seed: one organization has exactly 2 properties');
 select isnt(tests.id('org2'), null, 'seed: one organization has exactly 1 property');
 select isnt(tests.id('org1'), tests.id('org2'), 'seed: org1 and org2 differ');
@@ -32,7 +41,8 @@ select is(
 
 select is((select count(*) from public.guests where email is not null and email not like '%@example.com'),
   0::bigint, 'seed: guest emails are fake (@example.com)');
-select is((select count(*) from public.profiles), 2::bigint, 'seed: one profile per account');
+select is((select count(*) from public.profiles where user_id in (tests.id('user1'), tests.id('user2'))),
+  2::bigint, 'seed: one profile per seed account');
 
 select * from finish();
 rollback;

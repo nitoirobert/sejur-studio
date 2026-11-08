@@ -745,6 +745,7 @@ export type Database = {
     }
     Functions: {
       bucharest_today: { Args: { p_now?: string }; Returns: string }
+      confirm_booking: { Args: { p_booking_id: string }; Returns: undefined }
       create_manual_booking: {
         Args: {
           p_adults?: number
@@ -758,6 +759,24 @@ export type Database = {
           p_unit_id: string
         }
         Returns: string
+      }
+      create_public_booking: {
+        Args: {
+          p_adults?: number
+          p_check_in: string
+          p_check_out: string
+          p_children?: number
+          p_email: string
+          p_full_name: string
+          p_phone: string
+          p_unit_id: string
+        }
+        Returns: {
+          booking_id: string
+          hold_expires_at: string
+          public_token: string
+          total: number
+        }[]
       }
       dashboard_chart: {
         Args: { p_from: string; p_property_id?: string; p_to: string }
@@ -788,6 +807,7 @@ export type Database = {
           revenue_month: number
         }[]
       }
+      decline_booking: { Args: { p_booking_id: string }; Returns: undefined }
       expire_holds: { Args: { p_unit_id?: string }; Returns: number }
       is_live_booking: {
         Args: {
@@ -798,11 +818,40 @@ export type Database = {
       }
       is_org_member: { Args: { org: string }; Returns: boolean }
       is_own_storage_path: { Args: { path: string }; Returns: boolean }
+      public_booking_status: {
+        Args: { p_token: string }
+        Returns: {
+          check_in: string
+          check_out: string
+          currency: string
+          property_name: string
+          status: Database["public"]["Enums"]["booking_status"]
+          total_amount: number
+          unit_name: string
+        }[]
+      }
       public_busy_ranges: {
         Args: { p_from: string; p_to: string; p_unit_id: string }
         Returns: {
           busy_from: string
           busy_to: string
+        }[]
+      }
+      public_quote: {
+        Args: {
+          p_adults?: number
+          p_check_in: string
+          p_check_out: string
+          p_children?: number
+          p_unit_id: string
+        }
+        Returns: {
+          currency: string
+          nightly: Json
+          nights: number
+          ok: boolean
+          reason: string
+          total: number
         }[]
       }
       reorder_photos: {
@@ -812,6 +861,28 @@ export type Database = {
           p_property_id: string
         }
         Returns: undefined
+      }
+      reorder_units: {
+        Args: { p_property_id: string; p_unit_ids: string[] }
+        Returns: undefined
+      }
+      save_unit: {
+        Args: {
+          p_amenities: Json
+          p_area_m2: number
+          p_base_price: number
+          p_bathrooms: number
+          p_bedrooms: number
+          p_beds: number
+          p_description: string
+          p_is_published: boolean
+          p_max_guests: number
+          p_name: string
+          p_property_id: string
+          p_type: string
+          p_unit_id?: string
+        }
+        Returns: string
       }
     }
     Enums: {

@@ -5,6 +5,17 @@ import { PASSWORD_MIN } from "../src/lib/supabase/validation";
 import { OWNER1_STATE, uniqueEmail } from "./support/helpers";
 
 const read = (p: string) => fs.readFileSync(path.join(process.cwd(), p), "utf8");
+/** The body of a function whose opening brace ends just before `start` (brace matching). */
+function bodyAt(src: string, start: number): string {
+  let depth = 1;
+  let i = start;
+  for (; i < src.length && depth > 0; i++) {
+    if (src[i] === "{") depth++;
+    else if (src[i] === "}") depth--;
+  }
+  return src.slice(start, i - 1);
+}
+
 const walkTs = (dir: string): string[] =>
   fs.readdirSync(path.join(process.cwd(), dir), { withFileTypes: true }).flatMap((e) =>
     e.isDirectory() ? walkTs(`${dir}/${e.name}`) : /\.tsx?$/.test(e.name) ? [`${dir}/${e.name}`] : [],
@@ -107,19 +118,26 @@ test.describe("acțiune apelată fără cookie", () => {
     for (const f of files) {
       const src = code(f);
       if (!/^\s*["']use server["']/.test(src)) continue;
-      for (const m of src.matchAll(/export\s+(?:default\s+)?async\s+function\s+(\w+)\s*\([^)]*\)[^{]*\{/g)) {
-        let depth = 1;
-        let i = m.index! + m[0].length;
-        const start = i;
-        for (; i < src.length && depth > 0; i++) {
-          if (src[i] === "{") depth++;
-          else if (src[i] === "}") depth--;
-        }
-        const body = src.slice(start, i);
-        const auth = body.indexOf("await requireViewer()");
+      // Local (non-exported) helpers that are themselves "requireViewer() first": an action may call
+      // `await begin()` instead. A helper qualifies only when its own body awaits requireViewer() before
+      // it touches Supabase, so the rule is the same, just one call deeper.
+      // The body brace is the last "{" on the signature line (a return type may hold "{ id: string }").
+      const guards = ["requireViewer"];
+      for (const h of src.matchAll(/^async\s+function\s+(\w+)\s*\([^)]*\)[^\n]*\{[ \t]*\r?$/gm)) {
+        const hb = bodyAt(src, h.index! + h[0].length);
+        const a = hb.indexOf("await requireViewer()");
+        const sb = hb.search(/createClient\(|supabase\./);
+        if (a >= 0 && (sb < 0 || a < sb)) guards.push(h[1]);
+      }
+      const firstGuard = (body: string) =>
+        Math.min(...guards.map((g) => body.indexOf(`await ${g}()`)).filter((n) => n >= 0).concat(Infinity));
+      for (const m of src.matchAll(/export\s+(?:default\s+)?async\s+function\s+(\w+)\s*\([^)]*\)[^\n]*\{[ \t]*\r?$/gm)) {
+        const body = bodyAt(src, m.index! + m[0].length);
+        const found = firstGuard(body);
+        const auth = Number.isFinite(found) ? found : -1;
         const supa = body.search(/createClient\(|supabase\./);
         actions.push(m[1]);
-        expect(auth, `${f} ${m[1]}: no await requireViewer()`).toBeGreaterThanOrEqual(0);
+        expect(auth, `${f} ${m[1]}: no await requireViewer() (or a local helper that awaits it first)`).toBeGreaterThanOrEqual(0);
         if (supa >= 0) expect(auth, `${f} ${m[1]}: requireViewer() after Supabase`).toBeLessThan(supa);
       }
     }
