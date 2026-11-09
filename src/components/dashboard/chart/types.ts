@@ -22,8 +22,11 @@ export type ChartBooking = {
   optimistic?: boolean;
 };
 
-export type ChartUnit = { id: string; name: string; propertyId: string };
-export type ChartProperty = { id: string; name: string; units: ChartUnit[] };
+// `room`: for a room in a guesthouse (unit type "camera") its number, shown on the row and on its bookings so
+// the owner knows which room is taken; null for apartments, studios and houses (their name says it).
+export type ChartUnit = { id: string; name: string; propertyId: string; room?: string | null };
+// `color`: one hue per property (PROPERTY_COLORS), so an owner with many listings tells them apart at a glance.
+export type ChartProperty = { id: string; name: string; city: string | null; color: string; units: ChartUnit[] };
 
 export type ChartData = {
   today: IsoDate;

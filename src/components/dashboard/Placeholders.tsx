@@ -15,10 +15,10 @@ function SoonChip({ label }: { label: string }) {
 }
 
 // While the overview loads: the KPI row, the chart box and the two side panels.
-export function OverviewSkeleton() {
+export function OverviewSkeleton({ withoutKpis = false }: { withoutKpis?: boolean } = {}) {
   return (
     <div aria-hidden data-testid="overview-skeleton">
-      <KpiSkeleton />
+      {!withoutKpis && <KpiSkeleton />}
       <div className={`${panel} mt-4 h-[28rem] md:mt-5`} />
       <div className="mt-4 grid gap-4 md:mt-5 md:grid-cols-2 md:gap-5">
         <div className={`${panel} h-56`} />

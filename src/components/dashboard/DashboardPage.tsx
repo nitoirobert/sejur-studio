@@ -8,16 +8,19 @@ export function DashboardPage({
   subtitle,
   fallback,
   children,
+  ownHeader = false,
 }: {
   title: string;
   subtitle: string;
   fallback: React.ReactNode;
   children: React.ReactNode;
+  /** The page renders PageHeader itself (inside its content, e.g. next to the KPI cards). */
+  ownHeader?: boolean;
 }) {
   return (
     <div className="px-4 pt-4 pb-10 md:px-6 md:pt-6 xl:pt-8">
-      <PageHeader title={title} subtitle={subtitle} />
-      <div className="mt-7 md:mt-9">
+      {!ownHeader && <PageHeader title={title} subtitle={subtitle} />}
+      <div className={ownHeader ? undefined : "mt-7 md:mt-9"}>
         <Suspense fallback={fallback}>
           <Verified>{children}</Verified>
         </Suspense>

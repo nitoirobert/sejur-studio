@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { chartWindow, parseChartParams } from "@/lib/dates/chart-params";
 import { loadKpis } from "../KpiCards";
 import type { ChartData, ChartProperty } from "./types";
+import { PROPERTY_COLORS } from "./format";
 
 type Raw = Record<string, string | string[] | undefined>;
 
@@ -16,7 +17,7 @@ export async function loadChart(raw: Raw): Promise<ChartData & { unitsTotal: num
   const supabase = await createClient();
   const unitsQuery = supabase
     .from("units")
-    .select("id, name, position, property_id, properties(id, name)")
+    .select("id, name, type, position, property_id, properties(id, name, city)")
     .order("position")
     .order("name")
     .limit(500);
@@ -54,12 +55,17 @@ export async function loadChart(raw: Raw): Promise<ChartData & { unitsTotal: num
     const prop = u.properties;
     let group = byProperty.get(u.property_id);
     if (!group) {
-      group = { id: u.property_id, name: prop?.name ?? "", units: [] };
+      group = { id: u.property_id, name: prop?.name ?? "", city: prop?.city ?? null, color: "", units: [] };
       byProperty.set(u.property_id, group);
     }
-    group.units.push({ id: u.id, name: u.name, propertyId: u.property_id });
+    // Rooms are numbered within their property: the number in the name if it has one ("Camera 12"),
+    // otherwise their order (units come sorted by position).
+    const room = u.type === "camera" ? (u.name.match(/\b(\d{1,4})\b/)?.[1] ?? String(group.units.filter((x) => x.room).length + 1)) : null;
+    group.units.push({ id: u.id, name: u.name, propertyId: u.property_id, room });
   }
   const all = [...byProperty.values()].sort((a, b) => a.name.localeCompare(b.name, "ro"));
+  // Colour by position in the full, sorted list: a property keeps its colour when the filter narrows the chart.
+  all.forEach((p, i) => (p.color = PROPERTY_COLORS[i % PROPERTY_COLORS.length]));
   const properties = params.property ? all.filter((p) => p.id === params.property) : all;
   const filterOptions = props.data
     .map(({ id, name }) => ({ id, name }))

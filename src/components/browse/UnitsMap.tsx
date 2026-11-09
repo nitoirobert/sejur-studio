@@ -45,8 +45,10 @@ type Props = {
   dark: boolean; // tema de noapte: altă hartă, alte culori
 };
 
+// Price pin with a small photo of the stay inside: a preview that shows without hovering
+// (the full card with name and rating still opens on hover / focus).
 const pillBase =
-  "rounded-full px-2.5 py-1 text-xs font-bold whitespace-nowrap shadow-pill ring-1 transition-transform duration-200 hover:scale-110 cursor-pointer animate-[pin-pop_.35s_ease-out]";
+  "flex items-center gap-1.5 rounded-full py-1 pr-2.5 pl-1 text-xs font-bold whitespace-nowrap shadow-pill ring-1 transition-transform duration-200 hover:scale-110 cursor-pointer animate-[pin-pop_.35s_ease-out]";
 const pillIdle = "bg-cream-50 text-ink ring-sand";
 const pillOffer = "bg-star text-ink ring-star";
 const pillSelected = "bg-accent text-cream-50 ring-accent scale-110";
@@ -239,7 +241,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
       const spread = (u: Unit): [number, number] => {
         const ids = sameSpot.get(`${u.lat.toFixed(5)},${u.lng.toFixed(5)}`) ?? [u.id];
         const i = ids.indexOf(u.id);
-        return [(i - (ids.length - 1) / 2) * 84, 0];
+        return [(i - (ids.length - 1) / 2) * 108, 0]; // a pin with its photo is ~100 px wide
       };
 
       if (county) {
@@ -283,7 +285,19 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
             } else {
               const u = byId.get(props.id);
               if (!u) continue;
-              el.textContent = price(nightly(u));
+              const photo = u.photos.find(Boolean);
+              const thumb = document.createElement(photo ? "img" : "span");
+              thumb.className = "size-7 shrink-0 rounded-full bg-cream-200 object-cover ring-2 ring-cream-50";
+              thumb.setAttribute("aria-hidden", "true");
+              if (photo && thumb instanceof HTMLImageElement) {
+                thumb.alt = "";
+                thumb.decoding = "async";
+                thumb.src = photoThumb(photo, 64);
+                thumb.onerror = () => thumb.removeAttribute("src");
+              }
+              const amount = document.createElement("span");
+              amount.textContent = price(nightly(u));
+              el.append(thumb, amount);
               el.setAttribute("aria-label", u.name);
               el.onclick = (e) => {
                 e.stopPropagation();

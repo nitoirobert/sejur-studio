@@ -570,7 +570,8 @@
         "blocked": "Blocată"
       },
       "blockedFrom": "Blocată · {source}",
-      "goProperties": "Adaugă unități în Proprietăți"
+      "goProperties": "Adaugă unități în Proprietăți",
+      "room": "Cam. {number}"
     },
     "loading": "Se încarcă",
     "error": {
