@@ -17,6 +17,7 @@ type Props = {
   selected: boolean;
   onSelect: () => void;
   onFavorite: () => void;
+  favorite?: boolean; // în favoritele contului
   priority?: boolean;
   view: ViewMode;
   index?: number; // poziția în listă, pentru intrarea pe rând
@@ -28,7 +29,7 @@ type Props = {
   3 variante: grilă normală, grilă densă (5 coloane) și listă.
   Cardul e un buton; inima e un buton separat, deasupra lui (nu putem pune buton în buton).
 */
-export function UnitCard({ unit, nights, selected, onSelect, onFavorite, priority, view, index = 0 }: Props) {
+export function UnitCard({ unit, nights, selected, onSelect, onFavorite, favorite = false, priority, view, index = 0 }: Props) {
   const t = useTranslations("Unit");
   const tAmenity = useTranslations("Amenities");
   const tDetail = useTranslations("Detail");
@@ -129,13 +130,15 @@ export function UnitCard({ unit, nights, selected, onSelect, onFavorite, priorit
             <h3 className={`line-clamp-2 min-h-[2lh] leading-snug font-semibold text-ink ${dense ? "text-base" : "text-lg"}`}>
               {unit.name}
             </h3>
-            <span
-              className="flex shrink-0 items-center gap-1 text-base font-semibold text-ink"
-              aria-label={t("rating", { rating: unit.rating })}
-            >
-              <Star className="size-4 fill-star text-star" />
-              {unit.rating.toFixed(1)}
-            </span>
+            {unit.rating !== null && (
+              <span
+                className="flex shrink-0 items-center gap-1 text-base font-semibold text-ink"
+                aria-label={t("rating", { rating: unit.rating })}
+              >
+                <Star className="size-4 fill-star text-star" />
+                {unit.rating.toFixed(1)}
+              </span>
+            )}
           </div>
 
           {/* Rând 2: tip · oraș / oaspeți (stânga, pe 2 rânduri) | facilități-cheie (dreapta) */}
@@ -210,11 +213,14 @@ export function UnitCard({ unit, nights, selected, onSelect, onFavorite, priorit
         whileTap={{ scale: 0.82 }}
         transition={spring}
         aria-label={t("favorite", { name: unit.name })}
-        className={`absolute z-10 grid place-items-center rounded-full bg-cream-50/90 text-ink shadow-pill backdrop-blur hover:text-red-600 ${
+        aria-pressed={favorite}
+        className={`absolute z-10 grid place-items-center rounded-full bg-cream-50/90 shadow-pill backdrop-blur hover:text-red-600 ${
+          favorite ? "text-red-600" : "text-ink"
+        } ${
           dense ? "top-3.5 right-3.5 size-8" : list ? "top-4 right-4 size-9" : "top-5 right-5 size-9"
         }`}
       >
-        <Heart className={dense ? "size-4" : "size-[18px]"} />
+        <Heart className={dense ? "size-4" : "size-[18px]"} fill={favorite ? "currentColor" : "none"} />
       </motion.button>
     </motion.div>
   );

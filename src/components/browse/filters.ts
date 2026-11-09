@@ -1,20 +1,23 @@
-import { nightly, units as allUnits, type Amenity, type Unit, type UnitType } from "@/lib/mock-units";
+import { nightly, type Amenity, type Unit, type UnitType } from "@/lib/mock-units";
 import { normalize } from "@/lib/text";
 
 /* ---------- Limitele prețului (în bani), calculate din unitățile existente ---------- */
 
 const STEP = 5000; // rotunjim la 50 lei
-const nightlyPrices = allUnits.map(nightly);
-export const PRICE_MIN = Math.floor(Math.min(...nightlyPrices) / STEP) * STEP;
-export const PRICE_MAX = Math.ceil(Math.max(...nightlyPrices) / STEP) * STEP;
 export const PRICE_STEP = 1000; // sliderul se mișcă din 10 în 10 lei
 
-// Scurtături de preț (setează intervalul din slider)
-export const priceShortcuts = [
-  { id: "low", range: [PRICE_MIN, 25000] },
-  { id: "mid", range: [25000, 40000] },
-  { id: "high", range: [40000, PRICE_MAX] },
-] as const;
+// Limitele sliderului și scurtăturile de preț, din unitățile de pe pagină
+export function priceLimits(units: Unit[]) {
+  const prices = units.map(nightly);
+  const PRICE_MIN = prices.length ? Math.floor(Math.min(...prices) / STEP) * STEP : 0;
+  const PRICE_MAX = prices.length ? Math.max(Math.ceil(Math.max(...prices) / STEP) * STEP, PRICE_MIN + STEP) : STEP;
+  const priceShortcuts = [
+    { id: "low", range: [PRICE_MIN, 25000] },
+    { id: "mid", range: [25000, 40000] },
+    { id: "high", range: [40000, PRICE_MAX] },
+  ] as const;
+  return { PRICE_MIN, PRICE_MAX, priceShortcuts };
+}
 
 /* ---------- Starea filtrelor ---------- */
 
@@ -64,7 +67,7 @@ export function applyFilters(units: Unit[], f: Filters) {
       (!f.price || (p >= f.price[0] && p <= f.price[1])) &&
       u.bedrooms >= f.bedrooms &&
       u.bathrooms >= f.bathrooms &&
-      u.rating >= f.minRating &&
+      (f.minRating === 0 || (u.rating ?? 0) >= f.minRating) &&
       (!f.onlyOffers || !!u.offer) &&
       f.amenities.every((a) => u.amenities.includes(a))
     );
@@ -85,11 +88,12 @@ export function countActive(f: Filters) {
 }
 
 // Histograma prețurilor: câte unități cad în fiecare interval (pentru graficul de deasupra sliderului)
-export function priceHistogram(bins = 12) {
+export function priceHistogram(units: Unit[], bins = 12) {
+  const { PRICE_MIN, PRICE_MAX } = priceLimits(units);
   const width = (PRICE_MAX - PRICE_MIN) / bins;
   const counts = Array.from({ length: bins }, () => 0);
-  for (const p of nightlyPrices) {
-    counts[Math.min(bins - 1, Math.floor((p - PRICE_MIN) / width))]++;
+  for (const p of units.map(nightly)) {
+    counts[Math.max(0, Math.min(bins - 1, Math.floor((p - PRICE_MIN) / width)))]++;
   }
   return counts.map((count, i) => ({
     count,

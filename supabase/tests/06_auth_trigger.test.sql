@@ -4,6 +4,9 @@ begin;
 \ir _lib/helpers.psql
 select plan(9);
 
+-- The dev DB is shared with the live app: count orgs before the signups and assert the delta.
+create table tests.orgs_before as select count(*) as n from public.organizations;
+
 insert into auth.users (id, instance_id, aud, role, email, raw_user_meta_data, raw_app_meta_data, created_at, updated_at)
 values
   ('00000000-0000-4000-a000-0000000000a1', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated',
@@ -26,7 +29,8 @@ select is((select count(*) from public.organizations o
            where m.user_id = '00000000-0000-4000-a000-0000000000a1'), 1::bigint, 'exactly 1 organization created');
 select is((select count(*) from public.profiles where user_id = '00000000-0000-4000-a000-0000000000a1'),
   1::bigint, 'exactly 1 profile created');
-select is((select count(*) from public.organizations), 4::bigint, '2 seed orgs + 2 new orgs');
+select is((select count(*) from public.organizations) - (select n from tests.orgs_before), 2::bigint,
+  'exactly 2 new orgs for the 2 new accounts');
 select isnt(
   (select organization_id from public.organization_members where user_id = '00000000-0000-4000-a000-0000000000a1'),
   (select organization_id from public.organization_members where user_id = '00000000-0000-4000-a000-0000000000a2'),

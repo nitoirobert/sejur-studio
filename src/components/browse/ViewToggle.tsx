@@ -7,36 +7,59 @@ import { spring } from "@/components/ui/motion";
 
 export type ViewMode = "grid3" | "grid5" | "list" | "map";
 
-const options: { id: ViewMode; icon: LucideIcon }[] = [
+const layouts: { id: ViewMode; icon: LucideIcon }[] = [
   { id: "grid3", icon: Grid2x2 },
   { id: "grid5", icon: Grid3x3 },
   { id: "list", icon: List },
-  { id: "map", icon: MapIcon },
 ];
 
-// Comutator de afișare: 3 coloane / 5 coloane / listă / hartă – cu indicator care alunecă
+// Comutator de afișare: cele 3 așezări ale listei (3 coloane / 5 coloane / listă) într-un grup,
+// iar harta separat, ca buton propriu. Indicatorul alunecă între ele.
 export function ViewToggle({ value, onChange }: { value: ViewMode; onChange: (v: ViewMode) => void }) {
   const t = useTranslations("View");
+  const map = value === "map";
+
   return (
-    <div role="group" aria-label={t("label")} className="flex rounded-full bg-cream-100 p-1 shadow-pressed">
-      {options.map(({ id, icon: Icon }) => (
+    <div role="group" aria-label={t("label")} className="flex items-center gap-2">
+      <div className="flex rounded-full bg-cream-100 p-1 shadow-pressed">
+        {layouts.map(({ id, icon: Icon }) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={value === id}
+            aria-label={t(id)}
+            title={t(id)}
+            onClick={() => onChange(id)}
+            className={`relative grid size-9 place-items-center rounded-full transition-colors ${
+              value === id ? "text-cream-50" : "text-ink-soft hover:text-ink"
+            }`}
+          >
+            {value === id && (
+              <motion.span layoutId="view-toggle" transition={spring} className="absolute inset-0 rounded-full bg-accent shadow-accent" />
+            )}
+            <Icon className="relative size-4" />
+          </button>
+        ))}
+      </div>
+
+      <div className="flex rounded-full bg-cream-100 p-1 shadow-pressed">
         <button
-          key={id}
           type="button"
-          aria-pressed={value === id}
-          aria-label={t(id)}
-          title={t(id)}
-          onClick={() => onChange(id)}
-          className={`relative grid size-9 place-items-center rounded-full transition-colors ${
-            value === id ? "text-cream-50" : "text-ink-soft hover:text-ink"
+          aria-pressed={map}
+          aria-label={t("map")}
+          title={t("map")}
+          onClick={() => onChange("map")}
+          className={`relative flex h-9 items-center gap-2 rounded-full px-3.5 text-sm font-semibold transition-colors ${
+            map ? "text-cream-50" : "text-ink-soft hover:text-ink"
           }`}
         >
-          {value === id && (
+          {map && (
             <motion.span layoutId="view-toggle" transition={spring} className="absolute inset-0 rounded-full bg-accent shadow-accent" />
           )}
-          <Icon className="relative size-4" />
+          <MapIcon className="relative size-4" />
+          <span className="relative max-sm:sr-only">{t("map")}</span>
         </button>
-      ))}
+      </div>
     </div>
   );
 }

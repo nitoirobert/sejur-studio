@@ -2,9 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useTranslations } from "next-intl";
-import { defaultStay, units } from "@/lib/mock-units";
+import { defaultStay, onMap } from "@/lib/mock-units";
+import { useUnits } from "@/lib/use-units";
+import { toggleFavorite, useFavorites } from "@/lib/booking/favorites";
 import { useTheme } from "@/lib/theme";
 import { occupancy } from "@/lib/guests";
 import { backdrop, spring } from "@/components/ui/motion";
@@ -51,6 +54,8 @@ export function PropertyBrowser() {
   const [query, setQuery] = useState("");
   const [place, setPlace] = useState<string | null>(null);
   const [auth, setAuth] = useState<AuthReason | null>(null);
+  const favorites = useFavorites();
+  const router = useRouter();
   const [view, setView] = useState<ViewMode>("grid5");
   const { theme } = useTheme();
   const [stay, setStay] = useState<Stay>({
@@ -61,15 +66,33 @@ export function PropertyBrowser() {
     infants: 0,
   });
 
+  const units = useUnits(); // numele și descrierile în limba aleasă
   const results = useMemo(
     () =>
       applyFilters(units, filters).filter(
         (u) => matchesQuery(u, query) && matchesPlace(u, place) && u.maxGuests >= occupancy(stay),
       ),
-    [filters, query, place, stay],
+    [units, filters, query, place, stay],
   );
   const selected = units.find((u) => u.id === selectedId) ?? null;
   const close = () => setSelectedId(null);
+
+  // Parametri din adresă, citiți o singură dată după hidratare, apoi șterși:
+  //  - /?cazare=<id> (venit de pe pagina unei cazări): redeschidem panoul ei;
+  //  - /?auth=eroare (link din email expirat / Google anulat): deschidem popup-ul cu mesajul.
+  // Adresa e o sursă externă (pe server nu există), deci setState aici e intenționat.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get("cazare");
+    const authError = url.searchParams.get("auth") === "eroare";
+    if (!id && !authError) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (id && units.some((u) => u.id === id)) setSelectedId(id);
+    if (authError) setAuth("linkError");
+    url.searchParams.delete("cazare");
+    url.searchParams.delete("auth");
+    window.history.replaceState(null, "", url);
+  }, [units]);
 
   // Escape închide panoul (dacă nu e deschis popup-ul de autentificare)
   useEffect(() => {
@@ -111,7 +134,7 @@ export function PropertyBrowser() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <SiteHeader {...bar} onFavorites={() => setAuth("favorite")} onLogin={() => setAuth("login")} onHome={goHome} />
+      <SiteHeader {...bar} onFavorites={() => (favorites.signedIn ? router.push("/cont/favorite") : setAuth("favorite"))} onLogin={() => setAuth("login")} onHome={goHome} />
       <Toolbar
         {...bar}
         onOpenFilters={() => setFiltersOpen(true)}
@@ -202,7 +225,7 @@ export function PropertyBrowser() {
                 <UnitsMap
                   key={theme}
                   dark={theme === "dark"}
-                  units={results}
+                  units={results.filter(onMap)}
                   selectedId={selected?.id ?? null}
                   onSelect={setSelectedId}
                   county={place ? (place.includes(",") ? place.split(",")[1].trim() : place) : null}
@@ -226,7 +249,8 @@ export function PropertyBrowser() {
                       index={i}
                       selected={selected?.id === unit.id}
                       onSelect={() => setSelectedId(unit.id)}
-                      onFavorite={() => setAuth("favorite")}
+                      favorite={favorites.ids.has(unit.id)}
+                      onFavorite={() => void toggleFavorite(unit.id).then((ok) => ok || setAuth("favorite"))}
                     />
                   ))}
                 </AnimatePresence>

@@ -14,8 +14,8 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { nightly, type Unit } from "@/lib/mock-units";
-import { siteCounties, sitePlaces } from "@/lib/search/catalog";
+import { nightly, photoThumb, type MappedUnit as Unit } from "@/lib/mock-units";
+import { usePlaces } from "@/lib/search/catalog";
 import { usePrice } from "./use-price";
 
 /*
@@ -35,8 +35,6 @@ const STYLE_DARK = "https://tiles.openfreemap.org/styles/dark";
 const SOURCE = "units";
 const COUNTIES = "judete";
 const LOCALITIES = "localitati";
-const withUnits = siteCounties.map((c) => c.county);
-const withCities = sitePlaces.map((p) => p.city); // doar localitățile în care avem cazări
 
 type Props = {
   units: Unit[];
@@ -123,18 +121,22 @@ const countyOf = (u: Unit) => u.location.split(",")[1]?.trim() ?? "";
 
 export default function UnitsMap({ units, selectedId, onSelect, county, onCountySelect, dark }: Props) {
   const t = useTranslations("Map");
+  const tUnit = useTranslations("Unit");
   const c = dark
     ? { accent: "#9cc1f0", idle: "#354763", halo: "#162236", muted: "#8494ad" }
     : { accent: "#1f3d63", idle: "#e7dfd1", halo: "#fbf8f3", muted: "#8f8778" };
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<MapLibre | null>(null);
   const markers = useRef(new globalThis.Map<string, { marker: Marker; el: HTMLElement }>());
-  const countyMarkers = useRef(new globalThis.Map<string, { marker: Marker; num: HTMLElement }>());
+  const countyMarkers = useRef(new globalThis.Map<string, { marker: Marker; num: HTMLElement; button: HTMLElement }>());
   const info = useRef<Record<string, CountyInfo>>({});
   const lastCamera = useRef<string | null>(null); // ultima stare pentru care am mișcat camera
   const followUnit = useRef<{ unit: Unit; until: number } | null>(null); // recentrare cât se așază panoul
   const pendingUnit = useRef<Unit | null>(null); // unitate aleasă cât județul încă nu era deschis
   const price = usePrice();
+  const { siteCounties, sitePlaces } = usePlaces();
+  const withUnits = siteCounties.map((c) => c.county);
+  const withCities = sitePlaces.map((p) => p.city); // doar localitățile în care avem cazări
 
   // Ultimele valori, citite din evenimentele hărții (care trăiesc în afara ciclului React)
   const latest = useRef({
@@ -145,6 +147,9 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
     county,
     onCountySelect,
     countyLabel: (name: string, count: number) => t("countyPin", { county: name, count }),
+    perNight: tUnit("perNight"),
+    withUnits,
+    withCities,
   });
   useEffect(() => {
     latest.current = {
@@ -155,6 +160,9 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
       county,
       onCountySelect,
       countyLabel: (name, count) => t("countyPin", { county: name, count }),
+      perNight: tUnit("perNight"),
+      withUnits,
+      withCities,
     };
   });
 
@@ -173,9 +181,13 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
         if (!geo) continue;
         let entry = countyMarkers.current.get(name);
         if (!entry) {
+          // Elementul dat lui MapLibre (root) rămâne simplu: MapLibre îl poziționează prin `transform`.
+          // Stilul, hover-ul și animația stau pe butonul din interior; altfel pinul „sărea" la hover.
+          const root = document.createElement("div");
           const el = document.createElement("button");
           el.type = "button";
           el.className = "group flex cursor-pointer flex-col items-center gap-1 animate-[pin-pop_.45s_cubic-bezier(.2,1.3,.4,1)]";
+          root.append(el);
           const num = document.createElement("span");
           num.className =
             "grid size-14 place-items-center rounded-full bg-accent text-lg font-bold text-cream-50 shadow-accent ring-4 ring-accent/25 transition-transform duration-200 group-hover:scale-110";
@@ -184,14 +196,19 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
             "rounded-full bg-cream-50/95 px-2.5 py-0.5 text-[11px] font-bold text-ink shadow-pill ring-1 ring-sand";
           label.textContent = name;
           el.append(num, label);
-          el.onclick = () => onCountySelect(name);
+          // stopPropagation: altfel același click ajunge și la județul de sub pin (stratul „judete-fill"),
+          // care vede județul deja deschis și îl închide la loc — harta nu se mai mișca deloc.
+          el.onclick = (e) => {
+            e.stopPropagation();
+            onCountySelect(name);
+          };
           // cercul (nu tot pinul) stă exact pe centrul județului
-          const marker = new Marker({ element: el, offset: [0, 12] }).setLngLat(geo.center).addTo(m);
-          entry = { marker, num };
+          const marker = new Marker({ element: root, offset: [0, 12] }).setLngLat(geo.center).addTo(m);
+          entry = { marker, num, button: el };
           countyMarkers.current.set(name, entry);
         }
         entry.num.textContent = String(count);
-        entry.marker.getElement().setAttribute("aria-label", countyLabel(name, count));
+        entry.button.setAttribute("aria-label", countyLabel(name, count));
       }
 
       for (const [name, { marker }] of countyMarkers.current) {
@@ -225,14 +242,18 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
 
           let entry = markers.current.get(key);
           if (!entry) {
+            // la fel ca la județe: root simplu pentru MapLibre, butonul stilizat în interior
+            const root = document.createElement("div");
             const el = document.createElement("button");
             el.type = "button";
+            root.append(el);
             if (props.cluster) {
               el.className =
                 "grid size-11 place-items-center rounded-full bg-accent text-sm font-bold text-cream-50 shadow-accent ring-4 ring-accent/25 transition-transform duration-200 hover:scale-110 cursor-pointer animate-[pin-pop_.35s_ease-out]";
               el.textContent = String(props.point_count);
               // Click pe grup: zoom pe unitățile din el (până se desfac în pin-uri separate, pe stradă)
-              el.onclick = async () => {
+              el.onclick = async (e) => {
+                e.stopPropagation(); // altfel click-ul ajungea și la județ și îl închidea
                 const src = m.getSource(SOURCE) as GeoJSONSource;
                 try {
                   const leaves = await src.getClusterLeaves(props.cluster_id, 200, 0);
@@ -256,23 +277,40 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
                 e.stopPropagation();
                 onSelect(u.id);
               };
+              // Previzualizare la hover / focus: poza, numele, locul, nota și prețul, deasupra pinului.
+              const wrap = document.createElement("div");
+              wrap.className = "group relative";
+              const preview = buildPreview(u, price(nightly(u)), latest.current.perNight, () => onSelect(u.id));
+              wrap.append(el, preview);
+              // Pin aproape de marginea de sus a hărții: cardul se deschide dedesubt, ca să nu fie tăiat
+              const place = () => {
+                const box = wrap.closest(".maplibregl-map")?.getBoundingClientRect();
+                const below = !!box && wrap.getBoundingClientRect().top - box.top < 230;
+                preview.classList.toggle("bottom-full", !below);
+                preview.classList.toggle("pb-2", !below);
+                preview.classList.toggle("top-full", below);
+                preview.classList.toggle("pt-2", below);
+              };
+              wrap.addEventListener("mouseenter", place);
+              wrap.addEventListener("focusin", place);
+              root.replaceChildren(wrap);
+              root.classList.add("hover:z-30", "focus-within:z-30");
             }
-            const marker = new Marker({ element: el }).setLngLat(coords).addTo(m);
+            const marker = new Marker({ element: root }).setLngLat(coords).addTo(m);
             entry = { marker, el };
             markers.current.set(key, entry);
           }
           if (!props.cluster) {
             const u = byId.get(props.id);
             const selected = props.id === selectedId;
-            // Atenție: NU suprascriem className – MapLibre pune pe element clasa „maplibregl-marker",
-            // care îl poziționează pe hartă. Schimbăm doar clasele noastre.
+            // Clasele se schimbă pe butonul din interior; elementul lui MapLibre (root) nu se atinge.
             const next = `${pillBase} ${selected ? pillSelected : u?.offer ? pillOffer : pillIdle}`;
             if (entry.el.dataset.cls !== next) {
               if (entry.el.dataset.cls) entry.el.classList.remove(...entry.el.dataset.cls.split(" "));
               entry.el.classList.add(...next.split(" "));
               entry.el.dataset.cls = next;
             }
-            entry.el.style.zIndex = selected ? "10" : "";
+            entry.marker.getElement().style.zIndex = selected ? "10" : "";
           }
         }
       }
@@ -302,7 +340,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
     m.on("load", () => {
       // ---- Județe: doar cele cu cazări sunt colorate și se pot apăsa; restul sunt doar contur fin ----
       m.addSource(COUNTIES, { type: "geojson", data: "/geo/judete.geojson" });
-      const has: ExpressionSpecification = ["in", ["get", "name"], ["literal", withUnits]];
+      const has: ExpressionSpecification = ["in", ["get", "name"], ["literal", latest.current.withUnits]];
       m.addLayer({
         id: "judete-fill",
         type: "fill",
@@ -329,7 +367,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
 
       // ---- Localitățile cu cazări: contur + nume ----
       m.addSource(LOCALITIES, { type: "geojson", data: "/geo/localitati.geojson" });
-      const city: ExpressionSpecification = ["in", ["get", "name"], ["literal", withCities]];
+      const city: ExpressionSpecification = ["in", ["get", "name"], ["literal", latest.current.withCities]];
       m.addLayer({
         id: "localitati-fill",
         type: "fill",
@@ -374,6 +412,8 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
         m.getCanvas().style.cursor = "";
       });
       m.on("click", "judete-fill", (e) => {
+        // un click pe un pin (județ, grup sau cazare) e tratat de pin, nu de județul de dedesubt
+        if ((e.originalEvent.target as HTMLElement | null)?.closest?.(".maplibregl-marker")) return;
         const name = e.features?.[0]?.properties?.name as string | undefined;
         if (!name) return;
         const { county, onCountySelect } = latest.current;
@@ -396,7 +436,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
         .then((geo: GeoJSON.FeatureCollection) => {
           if (map.current !== m) return;
           info.current = analyse(geo);
-          const all = overviewBounds(info.current);
+          const all = overviewBounds(info.current, latest.current.withUnits);
           if (all) {
             m.fitBounds(all, { padding: 70, duration: 0 }); // doar la început; fără limite de zoom sau de tragere
           }
@@ -449,7 +489,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
       } else if (county) {
         fit(m, units, true);
       } else if (!firstRun) {
-        const all = overviewBounds(info.current);
+        const all = overviewBounds(info.current, latest.current.withUnits);
         if (all) m.fitBounds(all, { padding: 70, duration: 900 });
       }
     }
@@ -510,8 +550,55 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
 
 /* ---------- Ajutoare ---------- */
 
+// Cardul de previzualizare al unei cazări (DOM simplu: pinii trăiesc în afara lui React).
+// Ascuns implicit; apare la hover sau focus pe pin. Click pe card = deschide cazarea.
+function buildPreview(u: Unit, priceText: string, perNight: string, onOpen: () => void) {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.tabIndex = -1; // pinul e deja focalizabil; cardul e doar o scurtătură pentru mouse
+  card.className =
+    "pointer-events-none absolute bottom-full left-1/2 w-60 -translate-x-1/2 pb-2 text-left opacity-0 transition-[opacity,translate] duration-200 translate-y-1 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100";
+  card.onclick = (e) => {
+    e.stopPropagation();
+    onOpen();
+  };
+
+  const body = document.createElement("span");
+  body.className = "block overflow-hidden rounded-2xl bg-cream-50 shadow-soft ring-1 ring-sand";
+
+  const img = document.createElement("img");
+  img.src = photoThumb(u.photos[0], 480);
+  img.alt = "";
+  img.loading = "lazy";
+  img.className = "block h-32 w-full object-cover";
+
+  const text = document.createElement("span");
+  text.className = "block px-3 py-2.5";
+  const name = document.createElement("span");
+  name.className = "block truncate font-serif text-base leading-tight text-ink";
+  name.textContent = u.name;
+  const meta = document.createElement("span");
+  meta.className = "mt-0.5 flex items-center justify-between gap-2 text-xs text-muted";
+  const place = document.createElement("span");
+  place.className = "truncate";
+  place.textContent = u.rating !== null ? `${u.location} · ★ ${u.rating.toFixed(1)}` : u.location;
+  const price = document.createElement("span");
+  price.className = "shrink-0 font-bold text-ink";
+  price.textContent = priceText;
+  const night = document.createElement("span");
+  night.className = "font-normal text-muted";
+  night.textContent = ` ${perNight}`;
+  price.append(night);
+  meta.append(place, price);
+  text.append(name, meta);
+
+  body.append(img, text);
+  card.append(body);
+  return card;
+}
+
 // Zona care cuprinde toate județele cu cazări (pe ea se fixează harta)
-function overviewBounds(infos: Record<string, CountyInfo>) {
+function overviewBounds(infos: Record<string, CountyInfo>, withUnits: string[]) {
   const b = new LngLatBounds();
   let any = false;
   for (const name of withUnits) {

@@ -4,6 +4,8 @@ import { DM_Serif_Display, Fraunces, Plus_Jakarta_Sans } from "next/font/google"
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import { SceneBackground } from "@/components/SceneBackground";
+import { CookieConsent } from "@/components/CookieConsent";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -26,9 +28,30 @@ const sans = Plus_Jakarta_Sans({
   subsets: ["latin", "latin-ext"],
 });
 
+// Limba vine din cookie / browser (citită la fiecare cerere), deci paginile se randează pe server, nu static.
+export const instant = false;
+
+// SEO comun pentru tot site-ul. Paginile își pun titlul lor (ex. „Căsuța din Brazi – Sejur Studio").
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("Meta");
-  return { title: t("title"), description: t("description") };
+  const [t, locale] = await Promise.all([getTranslations("Meta"), getLocale()]);
+  const title = t("title");
+  const description = t("description");
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: title, template: `%s – ${SITE_NAME}` },
+    description,
+    applicationName: SITE_NAME,
+    openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
+      title,
+      description,
+      locale: locale === "ro" ? "ro_RO" : locale,
+    },
+    // Imaginea de previzualizare vine din src/app/opengraph-image.tsx
+    twitter: { card: "summary_large_image", title, description },
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
+  };
 }
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
@@ -46,7 +69,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         </Script>
         <SceneBackground />
         {/* Face traducerile disponibile și în componentele client */}
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {children}
+          {/* Fereastra de cookie-uri: apare la 2 s după intrare, doar dacă vizitatorul n-a ales încă */}
+          <CookieConsent />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

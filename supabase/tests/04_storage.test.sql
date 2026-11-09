@@ -1,4 +1,4 @@
--- Check 4: Storage bucket `photos` (private, 10 MB, jpeg/png/webp/avif only, paths <organization_id>/...).
+-- Check 4: Storage bucket `photos` (private, 10 MB, webp only since 0011, paths <organization_id>/...).
 -- Size and MIME limits are enforced by the Storage API from the bucket row, so they are
 -- asserted on storage.buckets; path isolation is asserted through RLS on storage.objects.
 begin;
@@ -9,8 +9,8 @@ select is((select public from storage.buckets where id = 'photos'), false, 'buck
 select is((select file_size_limit from storage.buckets where id = 'photos'), 10485760::bigint,
   'bucket photos file_size_limit = 10 MB');
 select is((select array(select m from storage.buckets, unnest(allowed_mime_types) m where id = 'photos' order by 1)),
-  array['image/avif', 'image/jpeg', 'image/png', 'image/webp'],
-  'bucket photos allows only image/jpeg, png, webp, avif');
+  array['image/webp'],
+  'bucket photos allows only image/webp (0011)');
 
 -- Fixtures (as postgres): one object per org, plus one under a hidden property.
 update public.properties set status = 'activa' where id in (tests.id('prop1'), tests.id('prop2'));
@@ -32,7 +32,7 @@ select is(tests.err(format($$insert into storage.objects (bucket_id, name, owner
   tests.id('org2') || '/x.webp', tests.id('user1'))), '42501', 'org1 cannot write under <org2_id>/');
 select is(tests.err(format($$insert into storage.objects (bucket_id, name, owner, metadata)
   values ('photos', %L, %L, '{"size":1000,"mimetype":"image/webp"}')$$,
-  tests.id('org1') || '/' || tests.id('prop1') || '/new.webp', tests.id('user1'))), null, 'org1 can write under own <org1_id>/');
+  tests.id('org1') || '/' || tests.id('prop1') || '/' || gen_random_uuid() || '.webp', tests.id('user1'))), null, 'org1 can write under own <org1_id>/');
 select is(tests.err($$insert into storage.objects (bucket_id, name, owner) values ('photos', 'no-org/x.webp', auth.uid())$$),
   '42501', 'path without an own organization prefix refused');
 select ok(tests.rows(format($$update storage.objects set metadata = metadata where name like %L$$,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
+import { useId, useMemo, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   BedDouble,
@@ -17,8 +17,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { units } from "@/lib/mock-units";
-import { siteCounties, sitePlaces } from "@/lib/search/catalog";
+import type { Unit } from "@/lib/mock-units";
+import { useBaseUnits } from "@/lib/use-units";
+import { usePlaces } from "@/lib/search/catalog";
 import { card, iconButton } from "@/components/ui/soft";
 import { spring } from "@/components/ui/motion";
 import { usePrice } from "./use-price";
@@ -27,13 +28,11 @@ import { occupancy } from "@/lib/guests";
 import type { Stay } from "./PropertyBrowser";
 import { amenityIcons, typeIcons } from "./icons";
 import {
-  PRICE_MAX,
-  PRICE_MIN,
   PRICE_STEP,
   allAmenities,
   countActive,
   priceHistogram,
-  priceShortcuts,
+  priceLimits,
   ratingOptions,
   roomOptions,
   toggle,
@@ -53,14 +52,18 @@ type Props = {
   onStayChange: (s: Stay) => void;
 };
 
-// Câte unități are fiecare opțiune (afișat lângă opțiune)
-const typeCounts = Object.fromEntries(unitTypes.map((t) => [t, units.filter((u) => u.type === t).length]));
-const amenityCounts = Object.fromEntries(
-  allAmenities.map((a) => [a, units.filter((u) => u.amenities.includes(a)).length]),
-);
-const offerCount = units.filter((u) => u.offer).length;
-const histogram = priceHistogram();
-const maxBin = Math.max(...histogram.map((b) => b.count));
+// Câte unități are fiecare opțiune (afișat lângă opțiune), din unitățile de pe pagină
+function filterStats(units: Unit[]) {
+  const histogram = priceHistogram(units);
+  return {
+    ...priceLimits(units),
+    typeCounts: Object.fromEntries(unitTypes.map((t) => [t, units.filter((u) => u.type === t).length])),
+    amenityCounts: Object.fromEntries(allAmenities.map((a) => [a, units.filter((u) => u.amenities.includes(a)).length])),
+    offerCount: units.filter((u) => u.offer).length,
+    histogram,
+    maxBin: Math.max(1, ...histogram.map((b) => b.count)),
+  };
+}
 
 export function FilterSidebar({ filters, onChange, onClear, onClose, resultCount, place, onPlaceChange, stay, onStayChange }: Props) {
   const t = useTranslations("Filters");
@@ -69,6 +72,12 @@ export function FilterSidebar({ filters, onChange, onClear, onClose, resultCount
   const price = usePrice();
   const guestsSummary = useGuestsSummary();
   const tGuests = useTranslations("Guests");
+  const units = useBaseUnits();
+  const { PRICE_MIN, PRICE_MAX, priceShortcuts, typeCounts, amenityCounts, offerCount, histogram, maxBin } = useMemo(
+    () => filterStats(units),
+    [units],
+  );
+  const { siteCounties } = usePlaces();
   const active = countActive(filters) + (place ? 1 : 0);
   const set = (patch: Partial<Filters>) => onChange({ ...filters, ...patch });
 
@@ -567,6 +576,7 @@ const PLACES_PREVIEW = 5;
 function PlaceChips({ place, onPlaceChange }: { place: string | null; onPlaceChange: (p: string | null) => void }) {
   const t = useTranslations("Filters");
   const [all, setAll] = useState(false);
+  const { sitePlaces } = usePlaces();
 
   // dacă e ales un județ, arătăm doar localitățile lui
   const county = place && !place.includes(",") ? place : place?.split(",")[1]?.trim();

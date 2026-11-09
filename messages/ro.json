@@ -1,7 +1,8 @@
 {
   "Meta": {
-    "title": "Sejur Studio – rezervă direct, fără comision",
-    "description": "Alege unitatea, vezi prețul total și rezervă direct de la gazdă."
+    "title": "Sejur Studio – cazare la mare și la munte, rezervare directă fără comision",
+    "description": "Cazare în Mamaia, Neptun, Saturn, Mangalia, 2 Mai și Bran: vile, apartamente și camere. Vezi prețul final și rezervă direct la gazdă, fără comision.",
+    "unitTitle": "{name} – cazare în {place}"
   },
   "Header": {
     "home": "Acasă",
@@ -15,7 +16,9 @@
     "account": "Contul meu",
     "brand": "Sejur Studio",
     "darkMode": "Mod noapte",
-    "lightMode": "Mod zi"
+    "lightMode": "Mod zi",
+    "hostSignup": "Cont nou de gazdă",
+    "hostAccount": "Contul tău de gazdă"
   },
   "Toolbar": {
     "dates": "{from} – {to}",
@@ -247,8 +250,48 @@
     "forgot": "Ai uitat parola?",
     "submitLogin": "Intră în cont",
     "submitSignup": "Creează cont",
-    "demo": "Demo: autentificarea nu este încă activă.",
-    "terms": "Continuând, ești de acord cu Termenii și Politica de confidențialitate."
+    "terms": "Continuând, ești de acord cu Termenii și Politica de confidențialitate.",
+    "hostQuestion": "Ai o cazare de închiriat?",
+    "soon": "În curând",
+    "forgotTitle": "Resetează parola",
+    "forgotSub": "Îți trimitem pe email un link pentru o parolă nouă.",
+    "forgotSubmit": "Trimite linkul",
+    "backToLogin": "Înapoi la autentificare",
+    "showPassword": "Arată parola",
+    "hidePassword": "Ascunde parola",
+    "passwordHint": "Cel puțin {min} caractere",
+    "errors": {
+      "invalidCredentials": "Email sau parolă greșită.",
+      "emailTaken": "Există deja un cont cu acest email. Intră în cont sau folosește alt email.",
+      "rateLimit": "Prea multe încercări într-un timp scurt. Așteaptă câteva minute și încearcă din nou.",
+      "generic": "Nu am putut termina. Încearcă din nou peste câteva secunde.",
+      "linkExpired": "Linkul a expirat sau a fost deja folosit. Încearcă din nou.",
+      "nameEmpty": "Scrie-ți numele",
+      "nameLong": "Numele poate avea cel mult 80 de caractere",
+      "emailInvalid": "Scrie un email valid, de forma nume@exemplu.ro",
+      "passwordShort": "Parola trebuie să aibă cel puțin {min} caractere",
+      "passwordLong": "Parola poate avea cel mult 72 de caractere"
+    },
+    "notices": {
+      "confirmEmail": "Ți-am trimis un email de confirmare. Deschide linkul din el ca să intri în cont.",
+      "resetSent": "Dacă există un cont cu acest email, ți-am trimis linkul de resetare."
+    },
+    "account": {
+      "title": "Contul tău",
+      "sub": "Ești conectat pe Sejur Studio.",
+      "host": "Cont de gazdă",
+      "guest": "Cont de client",
+      "signOut": "Ieși din cont"
+    },
+    "newPassword": {
+      "title": "Parolă nouă",
+      "sub": "Linkul a expirat? Cere altul din „Ai uitat parola?”.",
+      "label": "Parola nouă",
+      "submit": "Salvează parola",
+      "done": "Parola a fost schimbată. Ești conectat.",
+      "backToSite": "Înapoi la site"
+    },
+    "cookieSettings": "Setări cookie-uri"
   },
   "Guests": {
     "guests": "Adulți",
@@ -269,5 +312,767 @@
   "Map": {
     "allCounties": "Toate județele",
     "countyPin": "{county}: {count, plural, one {# cazare} few {# cazări} other {# de cazări}}"
+  },
+  "Property": {
+    "back": "Înapoi la cazări",
+    "book": "Rezervă această cazare",
+    "photos": "{count, plural, one {# fotografie} few {# fotografii} other {# de fotografii}}",
+    "showAll": "Vezi toate pozele",
+    "openPhoto": "Deschide fotografia {index} pe tot ecranul",
+    "about": "Despre cazare",
+    "rules": "Regulile casei",
+    "perNight": "pe noapte",
+    "notFound": "Cazarea nu există",
+    "share": "Distribuie",
+    "copied": "Link copiat",
+    "tabs": {
+      "amenities": "Facilități",
+      "rules": "Reguli",
+      "location": "Locație"
+    },
+    "stay": "Sejur",
+    "editStay": "Schimbă datele și oaspeții",
+    "fees": "Detalii preț",
+    "host": "Gazda"
+  },
+  "Gallery": {
+    "label": "Galerie foto – {name}",
+    "prev": "Fotografia anterioară",
+    "next": "Fotografia următoare",
+    "close": "Închide galeria",
+    "counter": "{index} / {total}",
+    "thumb": "Mergi la fotografia {index}"
+  },
+  "UnitText": {
+    "casuta-brazi": {
+      "name": "Căsuța din Brazi",
+      "description": "Căsuță din lemn la marginea pădurii, cu șemineu, terasă și priveliște spre Piatra Craiului. Ideală pentru familii sau prieteni care vor liniște."
+    },
+    "camera-balcon": {
+      "name": "Cameră dublă cu balcon",
+      "description": "Cameră luminoasă cu pat matrimonial și balcon spre munte. Micul dejun cu produse locale este inclus."
+    },
+    "apartament-panoramic": {
+      "name": "Apartament Panoramic",
+      "description": "Apartament cu două dormitoare, living deschis și ferestre mari spre vale. Bucătărie complet utilată."
+    },
+    "garsoniera-cires": {
+      "name": "Garsoniera Cireș",
+      "description": "Garsonieră modernă, compactă, cu chicinetă și spațiu de lucru. Potrivită pentru cupluri sau călătorii scurte."
+    },
+    "camera-familie": {
+      "name": "Cameră de familie",
+      "description": "Cameră spațioasă cu un pat matrimonial și o canapea extensibilă. Copiii sub 6 ani stau gratuit."
+    },
+    "casuta-rosie": {
+      "name": "Căsuța Roșie",
+      "description": "Căsuță izolată pe deal, cu grădină proprie și grătar. Drum de pământ ultimii 300 m."
+    },
+    "apartament-lac": {
+      "name": "Apartament Lângă Lac",
+      "description": "Apartament mare, cu două băi și living cu canapea extensibilă. La 5 minute de mers până la lac."
+    },
+    "camera-mansarda": {
+      "name": "Cameră la mansardă",
+      "description": "Cameră cozy sub acoperiș, cu grinzi de lemn și fereastră spre pădure."
+    },
+    "garsoniera-brad": {
+      "name": "Garsoniera Brad",
+      "description": "Garsonieră nouă, într-o casă din lemn și sticlă, cu terasă proprie și vedere spre pădure."
+    },
+    "olimp-panorama": {
+      "name": "Apartament Panorama Mării",
+      "description": "Apartament la etajul 6, cu terasă mare și vedere directă spre mare. La 2 minute de plajă."
+    },
+    "olimp-studio": {
+      "name": "Studio Faleză",
+      "description": "Studio luminos chiar pe faleză, cu balcon spre răsărit."
+    },
+    "neptun-pescarusul": {
+      "name": "Căsuța Pescărușul",
+      "description": "Casă cu piscină proprie și grădină, la 300 m de plajă. Ideală pentru două familii."
+    },
+    "neptun-lac": {
+      "name": "Apartament Lacul Neptun",
+      "description": "Apartament liniștit, cu vedere spre lacul Neptun și pădurea Comorova."
+    },
+    "neptun-park": {
+      "name": "Cameră dublă Neptun Park",
+      "description": "Cameră într-un complex cu piscină, mic dejun inclus."
+    },
+    "jupiter-balcon": {
+      "name": "Cameră cu balcon Jupiter",
+      "description": "Cameră simplă și curată, aproape de centrul stațiunii."
+    },
+    "jupiter-aurora": {
+      "name": "Apartament Aurora Beach",
+      "description": "Apartament cu două camere, la primul rând la mare."
+    },
+    "capaurora-garsoniera": {
+      "name": "Garsoniera Cap Aurora",
+      "description": "Garsonieră renovată, cu chicinetă și balcon cu vedere laterală la mare."
+    },
+    "capaurora-lumina": {
+      "name": "Vila Lumina",
+      "description": "Vilă cu patru dormitoare, piscină încălzită și terasă pe acoperiș."
+    },
+    "venus-garden": {
+      "name": "Cameră Venus Garden",
+      "description": "Cameră într-o pensiune cu grădină, la 5 minute de plajă."
+    },
+    "venus-mirage": {
+      "name": "Studio Mirage",
+      "description": "Studio modern cu bucătărie, într-o zonă liniștită."
+    },
+    "venus-ana": {
+      "name": "Apartament Ana",
+      "description": "Apartament prietenos cu animalele, cu curte comună și loc de parcare."
+    },
+    "saturn-familie": {
+      "name": "Cameră familie Saturn",
+      "description": "Cameră mare pentru familii, în hotel cu piscină pentru copii."
+    },
+    "saturn-delfinul": {
+      "name": "Apartament Delfinul",
+      "description": "Apartament cu vedere la mare, la câțiva pași de plajă."
+    },
+    "saturn-dune": {
+      "name": "Căsuța de lângă dune",
+      "description": "Căsuță din lemn, cu foișor și grătar, chiar lângă dunele de nisip."
+    },
+    "mangalia-port": {
+      "name": "Apartament Port Mangalia",
+      "description": "Apartament cu vedere spre portul turistic și faleză."
+    },
+    "mangalia-callatis": {
+      "name": "Cameră Callatis",
+      "description": "Cameră în centrul vechi, lângă situl arheologic Callatis."
+    },
+    "mangalia-faleza": {
+      "name": "Garsoniera Faleza Nord",
+      "description": "Garsonieră pe Faleza Nord, cu plaja la 100 m."
+    },
+    "2mai-pescari": {
+      "name": "Căsuța Pescarilor",
+      "description": "Casă tradițională dobrogeană, cu curte cu viță-de-vie."
+    },
+    "2mai-boema": {
+      "name": "Cameră boemă 2 Mai",
+      "description": "Cameră colorată, cu atmosferă boemă, aproape de plaja din 2 Mai."
+    }
+  },
+  "Dashboard": {
+    "brand": "Sejur Studio",
+    "brandSub": "Panoul gazdei",
+    "nav": {
+      "label": "Meniul panoului",
+      "overview": "Prezentare",
+      "properties": "Proprietăți",
+      "bookings": "Rezervări",
+      "settings": "Setări",
+      "open": "Deschide meniul",
+      "close": "Închide meniul",
+      "expand": "Extinde meniul",
+      "collapse": "Strânge meniul",
+      "site": "Înapoi la site"
+    },
+    "greeting": "Bună, {name}",
+    "greetingAnon": "Bună",
+    "signOut": "Ieși din cont",
+    "account": "Contul tău",
+    "pages": {
+      "overview": {
+        "title": "Prezentare",
+        "subtitle": "Sosirile, plecările și ocuparea de azi, dintr‑o privire."
+      },
+      "properties": {
+        "title": "Proprietăți",
+        "subtitle": "Locurile pe care le închiriezi, cu unitățile și pozele lor.",
+        "emptyTitle": "Proprietățile vin în pasul următor",
+        "emptyBody": "Aici vei adăuga proprietăți, unități, prețuri și poze, apoi le vei publica pe pagina ta de rezervări."
+      },
+      "bookings": {
+        "title": "Rezervări",
+        "subtitle": "Toate rezervările, filtrate după proprietate și perioadă.",
+        "emptyTitle": "Lista rezervărilor e în lucru",
+        "emptyBody": "Aici vei căuta rezervările după proprietate și interval de date. Până atunci, sosirile și plecările de azi sunt în Prezentare."
+      },
+      "settings": {
+        "title": "Setări",
+        "subtitle": "Profilul tău, parola și datele de facturare.",
+        "emptyTitle": "Setările sunt în lucru",
+        "emptyBody": "Aici îți vei schimba numele, parola și datele firmei care apar pe facturi."
+      }
+    },
+    "soon": "În curând",
+    "backToOverview": "Înapoi la Prezentare",
+    "kpi": {
+      "label": "Indicatorii zilei",
+      "arrivals": "Sosiri azi",
+      "departures": "Plecări azi",
+      "occupancy": "Ocupare",
+      "occupancyHint": "următoarele 30 de zile",
+      "revenue": "Încasări luna aceasta",
+      "revenueHint": "plăți primite, fără rambursări",
+      "todayHint": "{day}",
+      "open": "Vezi în Rezervări: {label}",
+      "currency": "lei"
+    },
+    "chart": {
+      "title": "Graficul rezervărilor",
+      "region": "Graficul rezervărilor, {from} – {to}",
+      "prev": "Perioada anterioară",
+      "next": "Perioada următoare",
+      "today": "Azi",
+      "view": "Câte zile se văd",
+      "days": "{n} zile",
+      "property": "Proprietate",
+      "allProperties": "Toate proprietățile",
+      "unit": "Unitate",
+      "newBooking": "Rezervare nouă",
+      "hintDrag": "Trage peste zilele libere ale unei unități ca să adaugi o rezervare.",
+      "hintTap": "Atinge o zi liberă ca să adaugi o rezervare.",
+      "expand": "Arată unitățile din {name}",
+      "collapse": "Ascunde unitățile din {name}",
+      "units": "{count, plural, one {# unitate} few {# unități} other {# de unități}}",
+      "noUnits": "Încă nu ai unități.",
+      "noUnitsFiltered": "Proprietatea aleasă nu are unități de afișat.",
+      "showAll": "Arată toate proprietățile",
+      "todayLine": "Azi",
+      "noGuest": "Fără nume",
+      "nights": "{count, plural, one {# noapte} few {# nopți} other {# de nopți}}",
+      "bar": "{guest}, {checkIn} – {checkOut}, {nights}, {status}, {source}",
+      "saving": "se salvează",
+      "status": {
+        "confirmed": "confirmată",
+        "hold": "în curs de plată",
+        "blocked": "blocată"
+      },
+      "source": {
+        "direct": "Direct",
+        "booking": "Booking.com",
+        "airbnb": "Airbnb",
+        "altul": "Alt calendar"
+      },
+      "legend": {
+        "label": "Legendă",
+        "confirmed": "Confirmată",
+        "hold": "În curs de plată",
+        "blocked": "Blocată sau din calendar"
+      },
+      "statusLabel": {
+        "confirmed": "Confirmată",
+        "hold": "În curs de plată",
+        "blocked": "Blocată"
+      },
+      "blockedFrom": "Blocată · {source}",
+      "goProperties": "Adaugă unități în Proprietăți"
+    },
+    "loading": "Se încarcă",
+    "error": {
+      "title": "Panoul nu s-a încărcat",
+      "body": "Ceva n-a mers la citirea datelor. Încearcă din nou; dacă nu merge, reîncarcă pagina.",
+      "retry": "Încearcă din nou"
+    },
+    "auth": {
+      "back": "Înapoi la site",
+      "loginTitle": "Intră în cont",
+      "loginSub": "Rezervările, ocuparea și încasările tale, într‑un singur loc.",
+      "signupTitle": "Cont nou de gazdă",
+      "signupSub": "Un minut, fără card. Intri direct în panou.",
+      "name": "Nume complet",
+      "namePlaceholder": "Ana Popescu",
+      "email": "Email",
+      "emailPlaceholder": "nume@exemplu.ro",
+      "password": "Parolă",
+      "passwordHint": "Cel puțin {min} caractere.",
+      "showPassword": "Arată parola",
+      "hidePassword": "Ascunde parola",
+      "submitLogin": "Intră în cont",
+      "submitSignup": "Creează contul",
+      "pending": "Se verifică",
+      "toSignup": "Nu ai cont?",
+      "toSignupLink": "Creează unul",
+      "toLogin": "Ai deja cont?",
+      "toLoginLink": "Intră în cont"
+    },
+    "errors": {
+      "invalidCredentials": "Email sau parolă greșită",
+      "emailTaken": "Există deja un cont cu acest email. Intră în cont sau folosește alt email.",
+      "passwordShort": "Parola trebuie să aibă cel puțin {min} caractere",
+      "passwordLong": "Parola poate avea cel mult 72 de caractere",
+      "nameEmpty": "Scrie-ți numele",
+      "nameLong": "Numele poate avea cel mult 80 de caractere",
+      "emailInvalid": "Scrie un email valid, de forma nume@exemplu.ro",
+      "rateLimit": "Prea multe încercări într‑un timp scurt. Așteaptă câteva minute și încearcă din nou.",
+      "generic": "Nu am putut termina. Încearcă din nou peste câteva secunde.",
+      "unauthorized": "Sesiunea a expirat. Intră din nou în cont."
+    },
+    "details": {
+      "title": "Detaliile rezervării",
+      "close": "Închide",
+      "property": "Proprietate",
+      "unit": "Unitate",
+      "checkIn": "Sosire",
+      "checkOut": "Plecare",
+      "stay": "Șederea",
+      "guests": "Oaspeți",
+      "adults": "{count, plural, one {# adult} few {# adulți} other {# de adulți}}",
+      "children": "{count, plural, =0 {fără copii} one {# copil} few {# copii} other {# de copii}}",
+      "total": "Sumă",
+      "status": "Stare",
+      "source": "Sursă",
+      "holdUntil": "Locul e ținut până la",
+      "readOnly": "Doar pentru citire. Rezervarea se modifică din pagina Rezervări."
+    },
+    "booking": {
+      "title": "Rezervare nouă",
+      "close": "Închide",
+      "unit": "Unitate",
+      "checkIn": "Sosire",
+      "checkOut": "Plecare",
+      "name": "Numele oaspetelui",
+      "namePlaceholder": "Ana Popescu",
+      "email": "Email",
+      "phone": "Telefon",
+      "optional": "opțional",
+      "adults": "Adulți",
+      "children": "Copii",
+      "amount": "Sumă totală",
+      "amountHint": "În lei, de exemplu 450,50.",
+      "submit": "Salvează rezervarea",
+      "pending": "Se salvează",
+      "cancel": "Renunță",
+      "saved": "Rezervarea pentru {guest} a fost salvată.",
+      "errors": {
+        "invalid_input": "Formularul are date pe care nu le recunoaștem. Reîncarcă pagina și încearcă din nou.",
+        "invalid_dates": "Alege o plecare după sosire, cel mult 366 de nopți.",
+        "invalid_guest": "Verifică oaspetele: un nume de cel mult 80 de caractere, cel puțin un adult, emailul și telefonul.",
+        "invalid_amount": "Scrie suma în lei, de exemplu 450,50: fără minus, cu cel mult două zecimale.",
+        "unit_not_found": "Unitatea nu există în contul tău.",
+        "booking_overlap": "Unitatea are deja o rezervare în aceste zile. Alege alte zile.",
+        "unauthorized": "Sesiunea a expirat. Intră din nou în cont.",
+        "generic": "Nu am putut salva rezervarea. Datele au rămas în formular; încearcă din nou."
+      }
+    },
+    "arrivals": {
+      "title": "Sosiri următoare",
+      "hint": "din intervalul afișat",
+      "empty": "Nicio sosire în intervalul afișat.",
+      "goToday": "Mergi la azi"
+    },
+    "occupancy": {
+      "title": "Ocupare pe proprietăți",
+      "hint": "nopți ocupate în intervalul afișat",
+      "empty": "Nicio proprietate de afișat.",
+      "value": "{pct}%"
+    },
+    "properties": {
+      "list": {
+        "add": "Adaugă proprietate",
+        "count": "{count, plural, one {# proprietate} few {# proprietăți} other {# de proprietăți}}",
+        "units": "{count, plural, one {# unitate} few {# unități} other {# de unități}}",
+        "noCover": "Fără copertă",
+        "noCity": "Oraș necompletat",
+        "emptyTitle": "Nicio proprietate încă",
+        "emptyBody": "Începe cu numele și orașul. Unitățile, pozele și prețurile le completezi după, în pagina proprietății.",
+        "pagination": "Paginile listei",
+        "prev": "Pagina anterioară",
+        "next": "Pagina următoare",
+        "page": "Pagina {page} din {pages}"
+      },
+      "status": {
+        "activa": "Activă",
+        "ascunsa": "Ascunsă"
+      },
+      "create": {
+        "title": "Proprietate nouă",
+        "hint": "Pornește ascunsă. O faci activă din Detalii, când e gata.",
+        "name": "Numele proprietății",
+        "namePlaceholder": "Casa de sub munte",
+        "city": "Oraș",
+        "cityPlaceholder": "Bran",
+        "optional": "opțional",
+        "submit": "Creează proprietatea",
+        "pending": "Se creează…",
+        "cancel": "Renunță",
+        "close": "Închide"
+      },
+      "back": "Toate proprietățile",
+      "tabs": {
+        "label": "Secțiunile proprietății",
+        "details": "Detalii",
+        "units": "Unități",
+        "photos": "Poze",
+        "prices": "Prețuri"
+      },
+      "notFound": {
+        "title": "Proprietatea nu există",
+        "body": "Linkul e greșit sau proprietatea nu mai e în contul tău.",
+        "back": "Înapoi la proprietăți"
+      },
+      "details": {
+        "general": "Despre proprietate",
+        "name": "Nume",
+        "slug": "Adresa paginii",
+        "slugHint": "Litere mici fără diacritice, cifre și cratimă. Apare în linkul paginii de rezervări.",
+        "slugFromName": "Din nume",
+        "slugSuggestion": "Adresa e luată. Liberă: {slug}",
+        "useSuggestion": "Folosește-o",
+        "description": "Descriere",
+        "address": "Adresă",
+        "city": "Oraș",
+        "location": "Locație",
+        "mapLabel": "Harta pentru locația proprietății",
+        "mapHint": "Apasă pe hartă sau trage acul ca să marchezi locul exact.",
+        "mapClear": "Scoate acul",
+        "lat": "Latitudine",
+        "lng": "Longitudine",
+        "stay": "Sosire și plecare",
+        "checkIn": "Check-in de la",
+        "checkOut": "Check-out până la",
+        "instructions": "Instrucțiuni de check-in",
+        "instructionsHint": "Private: oaspetele le vede doar după ce rezervarea e confirmată.",
+        "amenities": "Facilități",
+        "status": "Vizibilitate",
+        "statusHint": "Ascunsă nu apare pe pagina publică, nici unitățile ei.",
+        "optional": "opțional",
+        "submit": "Salvează detaliile",
+        "pending": "Se salvează…",
+        "saved": "Detaliile sunt salvate."
+      },
+      "units": {
+        "title": "Unități",
+        "count": "{count, plural, one {# unitate} few {# unități} other {# de unități}}",
+        "add": "Adaugă unitate",
+        "empty": "Nicio unitate încă. Adaugă camerele, apartamentele sau căsuțele pe care le închiriezi.",
+        "dragHint": "Trage de mâner ca să schimbi ordinea.",
+        "dragHandle": "Mută {name}. Cu tastatura: Space, apoi săgețile.",
+        "edit": "Editează {name}",
+        "delete": "Șterge {name}",
+        "deleteConfirm": "Ștergi {name}? Pozele legate de ea se șterg și ele.",
+        "deleteYes": "Da, șterge",
+        "deleteNo": "Păstrează",
+        "published": "Publicată",
+        "draft": "Nepublicată",
+        "guests": "{count, plural, one {# oaspete} few {# oaspeți} other {# de oaspeți}}",
+        "perNight": "{price} / noapte",
+        "noPrice": "Fără preț",
+        "reordered": "Ordinea e salvată.",
+        "saved": "Unitatea e salvată.",
+        "deleted": "Unitatea a fost ștearsă.",
+        "form": {
+          "titleNew": "Unitate nouă",
+          "titleEdit": "Editează unitatea",
+          "close": "Închide",
+          "name": "Nume",
+          "namePlaceholder": "Camera dublă cu balcon",
+          "type": "Tip",
+          "maxGuests": "Oaspeți maxim",
+          "bedrooms": "Dormitoare",
+          "beds": "Paturi",
+          "bathrooms": "Băi",
+          "area": "Suprafață (m²)",
+          "description": "Descriere",
+          "amenities": "Facilități",
+          "basePrice": "Preț de bază pe noapte",
+          "basePriceHint": "Pentru orice noapte fără weekend sau sezon. Weekendul și sezoanele le pui în Prețuri.",
+          "published": "Publicată pe pagina de rezervări",
+          "publishedHint": "Doar o unitate cu preț de bază poate fi publicată.",
+          "optional": "opțional",
+          "submit": "Salvează unitatea",
+          "pending": "Se salvează…",
+          "cancel": "Renunță"
+        }
+      },
+      "unitTypes": {
+        "camera": "Cameră",
+        "apartament": "Apartament",
+        "garsoniera": "Garsonieră",
+        "casuta": "Căsuță"
+      },
+      "amenities": {
+        "wifi": "Wi-Fi",
+        "parking": "Parcare",
+        "breakfast": "Mic dejun",
+        "kitchen": "Bucătărie",
+        "fireplace": "Șemineu",
+        "pets": "Animale permise",
+        "ac": "Aer condiționat",
+        "view": "Priveliște munte",
+        "sea": "Vedere la mare",
+        "pool": "Piscină"
+      },
+      "photos": {
+        "title": "Poze",
+        "count": "{count, plural, one {# poză} few {# poze} other {# de poze}}",
+        "choose": "Alege poze",
+        "dropHint": "Sau trage pozele aici. JPG, PNG, WebP sau AVIF, cel mult 10 MB fiecare. Le micșorăm la 2000 px înainte să plece.",
+        "dropActive": "Lasă pozele aici",
+        "staged": "Gata de încărcat",
+        "alt": "Ce se vede în poză",
+        "altPlaceholder": "Dormitorul cu vedere spre pădure",
+        "altHint": "Obligatoriu: îl citesc cei care nu văd poza și motoarele de căutare.",
+        "unit": "Unitate",
+        "unitNone": "Toată proprietatea",
+        "remove": "Scoate {name} din listă",
+        "upload": "{count, plural, one {Încarcă poza} few {Încarcă # poze} other {Încarcă # de poze}}",
+        "resizing": "Se micșorează {done} din {total}…",
+        "uploading": "Se încarcă {done} din {total}…",
+        "uploaded": "{count, plural, one {Poza e încărcată.} few {# poze sunt încărcate.} other {# de poze sunt încărcate.}}",
+        "clear": "Golește lista",
+        "cover": "Copertă",
+        "makeCover": "Fă copertă",
+        "edit": "Editează",
+        "save": "Salvează",
+        "cancel": "Renunță",
+        "delete": "Șterge poza",
+        "deleteConfirm": "Ștergi poza? Fișierul se șterge definitiv.",
+        "deleteYes": "Da, șterge",
+        "deleteNo": "Păstrează",
+        "dragHandle": "Mută poza {n}. Cu tastatura: Space, apoi săgețile.",
+        "empty": "Nicio poză încă. Prima poză încărcată devine coperta.",
+        "reordered": "Ordinea e salvată.",
+        "saved": "Poza e salvată.",
+        "deleted": "Poza a fost ștearsă.",
+        "coverSet": "Coperta e schimbată.",
+        "fileErrors": {
+          "too_big": "{name}: are peste 10 MB.",
+          "bad_type": "{name}: nu e o poză JPG, PNG, WebP sau AVIF.",
+          "empty": "{name}: fișierul e gol.",
+          "resize": "{name}: browserul nu a putut micșora poza.",
+          "too_many": "Cel mult 20 de poze odată."
+        }
+      },
+      "prices": {
+        "unit": "Unitatea",
+        "noUnits": "Adaugă întâi o unitate. Prețurile se pun pe fiecare unitate.",
+        "goUnits": "Mergi la Unități",
+        "perNight": "Preț pe noapte",
+        "minNights": "Minim nopți",
+        "save": "Salvează",
+        "pending": "Se salvează…",
+        "cancel": "Renunță",
+        "close": "Închide",
+        "saved": "Prețul e salvat.",
+        "base": {
+          "title": "Preț de bază",
+          "hint": "Pentru orice noapte fără weekend sau sezon."
+        },
+        "weekend": {
+          "title": "Weekend",
+          "hint": "Nopțile de vineri și sâmbătă.",
+          "none": "Fără preț de weekend: vinerea și sâmbăta au prețul de bază.",
+          "add": "Adaugă preț de weekend",
+          "delete": "Scoate prețul de weekend",
+          "deleted": "Prețul de weekend a fost scos."
+        },
+        "seasons": {
+          "title": "Sezoane",
+          "hint": "Bat weekendul și baza. Două sezoane pe aceeași noapte: câștigă prioritatea mai mare.",
+          "empty": "Niciun sezon.",
+          "add": "Adaugă sezon",
+          "titleNew": "Sezon nou",
+          "titleEdit": "Editează sezonul",
+          "firstNight": "Prima noapte",
+          "lastNight": "Ultima noapte",
+          "lastNightHint": "Inclusiv. Pentru tot august: 1 august și 31 august.",
+          "priority": "Prioritate",
+          "priorityHint": "Un număr de la 0 la 100.",
+          "range": "{from} – {to}",
+          "nights": "{count, plural, one {# noapte} few {# nopți} other {# de nopți}}",
+          "meta": "min. {min} · prioritate {priority}",
+          "edit": "Editează sezonul {range}",
+          "delete": "Șterge sezonul {range}",
+          "deleteConfirm": "Ștergi sezonul {range}?",
+          "deleteYes": "Da, șterge",
+          "deleteNo": "Păstrează",
+          "deleted": "Sezonul a fost șters."
+        },
+        "preview": {
+          "title": "Următoarele 30 de nopți",
+          "hint": "Ce plătește un oaspete pe fiecare noapte, de azi înainte.",
+          "base": "Bază",
+          "weekend": "Weekend",
+          "season": "Sezon",
+          "none": "Fără preț",
+          "night": "{date}: {price}, {kind}"
+        }
+      },
+      "formErrors": {
+        "invalid_input": "Datele nu sunt valide. Verifică câmpurile și încearcă din nou.",
+        "invalid_field": "Verifică câmpul marcat.",
+        "not_found": "Nu există sau nu mai există. Reîncarcă pagina.",
+        "slug_taken": "Adresa e folosită deja de altă proprietate.",
+        "unit_has_bookings": "Unitatea are rezervări, așa că nu poate fi ștearsă. O poți ascunde: debifează „Publicată”.",
+        "publish_needs_price": "O unitate publicată are nevoie de un preț de bază.",
+        "season_overlap": "Alt sezon cu aceeași prioritate acoperă deja o noapte din interval. Schimbă datele sau prioritatea.",
+        "weekend_exists": "Unitatea are deja un preț de weekend.",
+        "photo_set_mismatch": "Lista s-a schimbat între timp. Reîncarcă pagina.",
+        "upload_failed": "Încărcarea nu a reușit. Încearcă din nou.",
+        "unauthorized": "Sesiunea a expirat. Intră din nou în cont.",
+        "generic": "Ceva n-a mers. Încearcă din nou."
+      },
+      "fieldErrors": {
+        "name": "Scrie un nume, cel mult 100 de caractere.",
+        "slug": "Doar litere mici fără diacritice, cifre și cratimă, între 3 și 80 de caractere.",
+        "description": "Descrierea e prea lungă.",
+        "address": "Adresa e prea lungă.",
+        "city": "Numele orașului e prea lung.",
+        "lat": "Pune ambele coordonate: latitudinea e între -90 și 90.",
+        "lng": "Longitudinea e între -180 și 180.",
+        "check_in_time": "Scrie ora ca 15:00.",
+        "check_out_time": "Scrie ora ca 11:00.",
+        "checkin_instructions": "Instrucțiunile sunt prea lungi.",
+        "amenities": "Alege facilitățile doar din listă.",
+        "status": "Alege Activă sau Ascunsă.",
+        "type": "Alege un tip din listă.",
+        "max_guests": "Între 1 și 50 de oaspeți.",
+        "bedrooms": "Un număr între 0 și 50.",
+        "beds": "Un număr între 0 și 100.",
+        "bathrooms": "Un număr între 0 și 50.",
+        "area_m2": "Între 1 și 10.000 m², sau lasă gol.",
+        "base_price": "Scrie un preț între 0,01 și 21.000.000 lei, de exemplu 450,50.",
+        "price": "Scrie un preț între 0,01 și 21.000.000 lei, de exemplu 450,50.",
+        "min_nights": "Între 1 și 60 de nopți.",
+        "priority": "Un număr între 0 și 100.",
+        "first_night": "Alege prima noapte.",
+        "last_night": "Ultima noapte e cel puțin prima, iar sezonul are cel mult 366 de nopți.",
+        "alt": "Scrie ce se vede în poză, cel mult 200 de caractere."
+      }
+    },
+    "requests": {
+      "title": "De confirmat",
+      "intro": "Cererile venite de pe site. Locul e ținut 24 de ore; dacă nu răspunzi, cererea expiră singură.",
+      "count": "{count, plural, =0 {nicio cerere} one {# cerere} few {# cereri} other {# de cereri}}",
+      "badge": "{count, plural, one {# cerere de confirmat} few {# cereri de confirmat} other {# de cereri de confirmat}}",
+      "empty": "Nicio cerere nouă. Când un oaspete cere o rezervare pe site, apare aici.",
+      "expiresInHours": "expiră în {hours} h {minutes} min",
+      "expiresInMinutes": "expiră în {minutes} min",
+      "expiresAt": "Locul e ținut până la {moment}",
+      "expired": "Expirată",
+      "pending": "În așteptare",
+      "confirm": "Confirmă",
+      "decline": "Refuză",
+      "confirming": "Se confirmă…",
+      "declining": "Se refuză…",
+      "confirmed": "Ai confirmat rezervarea lui {guest}.",
+      "declined": "Ai refuzat cererea lui {guest}.",
+      "call": "Sună: {phone}",
+      "write": "Scrie: {email}",
+      "received": "Primită {moment}",
+      "pager": "Paginile cererilor",
+      "page": "Pagina {page} din {pages}",
+      "prev": "Pagina anterioară",
+      "next": "Pagina următoare",
+      "detailsHint": "Cererea vine de pe site. Confirm-o sau refuz-o înainte să expire.",
+      "errors": {
+        "booking_not_found": "Rezervarea nu mai există sau nu e în contul tău. Am reîncărcat lista.",
+        "hold_expired": "Cererea a expirat. Locul nu mai e ținut pentru oaspete.",
+        "invalid_status": "Cererea are deja un răspuns. Am adus starea ei reală.",
+        "unauthorized": "Sesiunea a expirat. Intră din nou în cont.",
+        "generic": "Nu am putut trimite răspunsul. Verifică legătura la internet și încearcă din nou."
+      }
+    }
+  },
+  "Cookies": {
+    "title": "Folosim cookie-uri",
+    "text": "Unele sunt necesare ca site-ul să meargă. Cu acordul tău, folosim și cookie-uri ca să înțelegem ce caută vizitatorii și să-ți arătăm oferte potrivite.",
+    "acceptAll": "Accept toate",
+    "necessaryOnly": "Doar necesare",
+    "customize": "Alege ce accepți",
+    "save": "Salvează alegerea",
+    "close": "Închide (doar necesare)",
+    "alwaysOn": "Mereu active",
+    "necessary": {
+      "title": "Necesare",
+      "text": "Contul, limba și tema alese. Fără ele site-ul nu funcționează."
+    },
+    "analytics": {
+      "title": "Statistici",
+      "text": "Ne arată ce pagini și cazări sunt căutate, anonim, ca să îmbunătățim site-ul."
+    },
+    "marketing": {
+      "title": "Marketing",
+      "text": "Ne ajută să-ți arătăm oferte Sejur Studio pe Facebook, Instagram, TikTok și Google."
+    }
+  },
+  "BookingRequest": {
+    "stayLegend": "Sejurul",
+    "checkIn": "Sosire",
+    "checkOut": "Plecare",
+    "busy": "Ocupat:",
+    "guests": "Oaspeți (cel mult {max})",
+    "priceTitle": "Prețul pe nopți",
+    "quoting": "Calculăm prețul…",
+    "night": "Noaptea de {date}",
+    "total": "Total pentru {count, plural, one {# noapte} few {# nopți} other {# de nopți}}",
+    "contactLegend": "Datele tale",
+    "fullName": "Nume și prenume",
+    "email": "Email",
+    "phone": "Telefon",
+    "requestNote": "Gazda primește cererea și o confirmă în cel mult 24 de ore. Până atunci locul e ținut pentru tine.",
+    "continue": "Rezervă această cazare",
+    "send": "Trimite cererea",
+    "sending": "Se trimite…",
+    "changeStay": "Schimbă datele sau oaspeții",
+    "noPayment": "Nu plătești nimic acum.",
+    "errors": {
+      "unit_not_found": "Cazarea nu mai e disponibilă pe site.",
+      "invalid_dates": "Alege o dată de plecare după data sosirii, de azi încolo, de cel mult 30 de nopți.",
+      "invalid_guest": "Verifică numele, emailul și telefonul (cel puțin 6 cifre).",
+      "too_many_guests": "Cazarea primește cel mult {max} oaspeți.",
+      "no_price": "Gazda nu a pus încă prețul pentru aceste date.",
+      "min_nights": "Pentru aceste date gazda cere un sejur mai lung.",
+      "invalid_amount": "Sejurul ales e prea lung. Alege mai puține nopți.",
+      "unavailable": "Zilele alese sunt deja ocupate. Alege alte date.",
+      "too_many_requests": "Ai deja 3 cereri în așteptare pe acest email. Așteaptă răspunsul gazdei.",
+      "rate_limited": "Prea multe cereri într-o oră. Încearcă din nou mai târziu.",
+      "invalid_request": "Cererea nu a putut fi trimisă. Reîncarcă pagina și încearcă din nou.",
+      "generic": "Nu am putut trimite cererea. Verifică legătura la internet și încearcă din nou."
+    }
+  },
+  "BookingStatus": {
+    "title": "Cererea ta de rezervare",
+    "back": "Înapoi la cazări",
+    "eyebrow": "Cererea ta de rezervare",
+    "status": {
+      "hold": "În așteptare",
+      "confirmed": "Confirmată",
+      "cancelled": "Anulată",
+      "expired": "Expirată"
+    },
+    "explain": {
+      "hold": "Gazda a primit cererea și îți răspunde în cel mult 24 de ore. Locul e ținut pentru tine până atunci.",
+      "confirmed": "Gazda a confirmat rezervarea. Te așteaptă!",
+      "cancelled": "Gazda nu a putut primi această cerere. Poți alege alte date sau altă cazare.",
+      "expired": "Gazda nu a răspuns în 24 de ore, așa că cererea a expirat. Poți trimite una nouă."
+    },
+    "checkIn": "Sosire",
+    "checkOut": "Plecare",
+    "total": "Total",
+    "amount": "{amount} {currency, select, RON {lei} other {{currency}}}",
+    "keepLink": "Păstrează adresa acestei pagini: aici vezi oricând starea cererii.",
+    "notFoundTitle": "Rezervare negăsită",
+    "notFoundBody": "Nu am găsit nicio rezervare la această adresă. Verifică linkul primit.",
+    "home": "Caută o cazare"
+  },
+  "Account": {
+    "title": "Contul meu",
+    "back": "Înapoi la cazări",
+    "bookings": "Rezervări",
+    "favorites": "Favorite",
+    "bookingsTitle": "Rezervările mele",
+    "favoritesTitle": "Favoritele mele",
+    "bookingsEmpty": "Nu ai nicio rezervare încă.",
+    "pageEmpty": "Pagina nu mai are rezervări.",
+    "favoritesEmpty": "Nu ai nicio cazare la favorite. Apasă inima de pe o cazare ca s-o păstrezi aici.",
+    "search": "Caută o cazare",
+    "viewStatus": "Vezi starea cererii",
+    "loadError": "Nu am putut încărca rezervările. Reîncarcă pagina.",
+    "pager": "Paginile rezervărilor",
+    "page": "Pagina {page} din {pages}",
+    "prev": "Pagina anterioară",
+    "next": "Pagina următoare"
   }
 }

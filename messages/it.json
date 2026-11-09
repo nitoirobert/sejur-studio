@@ -1,0 +1,564 @@
+{
+  "Meta": {
+    "title": "Sejur Studio – alloggi al mare e in montagna in Romania, prenotazione diretta senza commissioni",
+    "description": "Alloggi a Mamaia, Neptun, Saturn, Mangalia, 2 Mai e Bran: ville, appartamenti e camere. Prezzo finale e prenotazione diretta con l'host, senza commissioni.",
+    "unitTitle": "{name} – alloggio a {place}, Romania"
+  },
+  "Header": {
+    "home": "Home",
+    "nav": {
+      "location": "Località",
+      "favorites": "Preferiti"
+    },
+    "call": "Chiama l'host",
+    "language": "Lingua",
+    "login": "Accedi",
+    "account": "Il mio account",
+    "brand": "Sejur Studio",
+    "darkMode": "Modalità notte",
+    "lightMode": "Modalità giorno",
+    "hostSignup": "Diventa host",
+    "hostAccount": "Il tuo account host"
+  },
+  "Toolbar": {
+    "dates": "{from} – {to}",
+    "guests": "{count, plural, one {# ospite} other {# ospiti}}",
+    "search": "Cerca alloggi per nome o località",
+    "filters": "Filtri",
+    "searchPlaceholder": "Cerca per nome o località",
+    "clearSearch": "Cancella la ricerca",
+    "guestsAria": "Ospiti: {count}",
+    "done": "Fatto"
+  },
+  "Filters": {
+    "title": "Filtri",
+    "collapse": "Nascondi i filtri",
+    "close": "Chiudi",
+    "clear": "Cancella tutto",
+    "all": "Tutti",
+    "any": "Qualsiasi",
+    "selected": "{count, plural, one {# selezionato} other {# selezionati}}",
+    "found": "Alloggi trovati",
+    "offers": {
+      "title": "Solo offerte",
+      "hint": "{count, plural, one {# alloggio scontato} other {# alloggi scontati}}"
+    },
+    "price": {
+      "title": "Prezzo a notte",
+      "any": "Qualsiasi prezzo",
+      "min": "Minimo",
+      "max": "Massimo",
+      "minLabel": "Prezzo minimo a notte",
+      "maxLabel": "Prezzo massimo a notte",
+      "shortcuts": {
+        "low": "Sotto 250 RON",
+        "mid": "250 – 400 RON",
+        "high": "Oltre 400 RON"
+      }
+    },
+    "type": {
+      "title": "Tipo di alloggio"
+    },
+    "rooms": {
+      "title": "Camere",
+      "bedrooms": "Camere da letto",
+      "bathrooms": "Bagni",
+      "min": "{count}+",
+      "bedroomsShort": "{count}+ camere da letto",
+      "bathroomsShort": "{count}+ bagni"
+    },
+    "rating": {
+      "title": "Valutazione",
+      "any": "Qualsiasi",
+      "min": "{rating}+ stelle"
+    },
+    "amenities": {
+      "title": "Servizi"
+    },
+    "showResults": "{count, plural, =0 {Nessun alloggio} one {Vedi # alloggio} other {Vedi # alloggi}}",
+    "location": {
+      "title": "Località",
+      "anywhere": "Ovunque",
+      "counties": "Province",
+      "places": "Località",
+      "county": "prov. {county}",
+      "showMore": "Mostra altro ({count})",
+      "showLess": "Mostra meno"
+    }
+  },
+  "Unit": {
+    "types": {
+      "camera": "Camera",
+      "apartament": "Appartamento",
+      "garsoniera": "Monolocale",
+      "casuta": "Chalet"
+    },
+    "perNight": "/ notte",
+    "rating": "{rating} su 5",
+    "open": "Vedi i dettagli di {name}",
+    "maxGuests": "{count, plural, one {# ospite} other {fino a # ospiti}}",
+    "favorite": "Aggiungi ai preferiti: {name}",
+    "offers": {
+      "winter": "Offerta invernale",
+      "lastMinute": "Last minute"
+    },
+    "discount": "−{percent}%",
+    "oldPrice": "Prezzo originale {price}",
+    "total": "{total} in totale · {nights}",
+    "totalShort": "totale · {nights}",
+    "perNightShort": "a notte",
+    "metaPlace": "{type} · {city}",
+    "metaGuests": "{count, plural, one {# ospite} other {fino a # ospiti}}"
+  },
+  "Results": {
+    "title": "Alloggi disponibili",
+    "subtitle": "{count, plural, =0 {Nessun alloggio corrisponde ai filtri.} one {# alloggio per le date scelte} other {# alloggi per le date scelte}}",
+    "empty": "Prova con altri filtri o altre date.",
+    "reset": "Reimposta i filtri"
+  },
+  "Detail": {
+    "tabs": {
+      "overview": "Presentazione",
+      "reviews": "Recensioni",
+      "rules": "Regole della casa"
+    },
+    "space": "Spazio",
+    "beds": "{count, plural, one {# letto} other {# letti}}",
+    "bathrooms": "{count, plural, one {# bagno} other {# bagni}}",
+    "area": "{area} m²",
+    "amenities": "Servizi",
+    "location": "Posizione",
+    "viewMap": "Vedi sulla mappa",
+    "reviewsSoon": "Le recensioni degli ospiti appariranno qui.",
+    "rules": {
+      "checkIn": "Check-in dalle {time}",
+      "checkOut": "Check-out entro le {time}",
+      "noSmoking": "Vietato fumare all'interno",
+      "quiet": "Silenzio dopo le 22:00"
+    },
+    "booking": {
+      "nights": "{count, plural, one {# notte} other {# notti}}",
+      "nightsTimesPrice": "{price} × {nights}",
+      "total": "Totale",
+      "noFees": "Nessuna commissione nascosta",
+      "cta": "Prenota",
+      "close": "Chiudi i dettagli",
+      "discountRow": "{label} −{percent}%"
+    },
+    "photo": "Foto {index} di {total} – {name}"
+  },
+  "Amenities": {
+    "wifi": "Wi-Fi",
+    "parking": "Parcheggio",
+    "breakfast": "Colazione",
+    "kitchen": "Cucina",
+    "fireplace": "Camino",
+    "pets": "Animali ammessi",
+    "ac": "Aria condizionata",
+    "view": "Vista montagna",
+    "sea": "Vista mare",
+    "pool": "Piscina"
+  },
+  "Common": {
+    "price": "{price} RON"
+  },
+  "Booking": {
+    "steps": {
+      "details": "Dettagli",
+      "guest": "I tuoi dati",
+      "payment": "Pagamento"
+    },
+    "stepOf": "Passo {step} di 3",
+    "back": "Indietro",
+    "close": "Chiudi il pannello",
+    "checkIn": "Arrivo",
+    "checkOut": "Partenza",
+    "guests": "Ospiti",
+    "guestsCount": "{count, plural, one {# ospite} other {# ospiti}}",
+    "fewer": "Meno ospiti",
+    "more": "Più ospiti",
+    "maxGuests": "Massimo {count} ospiti",
+    "invalidDates": "La data di partenza deve essere successiva a quella di arrivo.",
+    "continueToPayment": "Continua al pagamento",
+    "form": {
+      "name": "Nome e cognome",
+      "namePh": "es. Anna Rossi",
+      "phone": "Telefono",
+      "phonePh": "+39 3xx xxx xxxx",
+      "email": "Email",
+      "emailPh": "anna@esempio.it",
+      "privacy": "Usiamo i tuoi dati solo per questa prenotazione. Non serve un account."
+    },
+    "summary": "Riepilogo della prenotazione",
+    "guestLabel": "Ospite",
+    "hold": "Le tue date restano riservate per 30 minuti.",
+    "secure": "Il pagamento è sicuro tramite Stripe. Non conserviamo i dati della carta.",
+    "pay": "Paga {total}",
+    "paying": "Elaborazione del pagamento…",
+    "demo": "Demo: il pagamento è simulato.",
+    "doneTitle": "Prenotazione confermata!",
+    "doneText": "Abbiamo inviato la conferma e le istruzioni per il check-in a {email}.",
+    "code": "Codice di prenotazione",
+    "doneClose": "Fatto",
+    "detailsTitle": "Dettagli dell'alloggio"
+  },
+  "View": {
+    "label": "Modalità di visualizzazione",
+    "grid3": "3 colonne",
+    "grid5": "5 colonne",
+    "list": "Elenco",
+    "map": "Mappa"
+  },
+  "Search": {
+    "typePrefix": "Cerca ",
+    "recent": "Ricerche recenti",
+    "clearHistory": "Cancella cronologia",
+    "popular": "Suggerimenti",
+    "units": "Alloggi",
+    "places": "Località",
+    "unitsCount": "{count, plural, one {# alloggio} other {# alloggi}}",
+    "hint": "Tab o → completa · ↑↓ scegli · Invio cerca"
+  },
+  "Location": {
+    "button": "Località",
+    "title": "Dove vuoi andare?",
+    "placeholder": "Scrivi una città o una zona",
+    "results": "Risultati",
+    "recent": "Recenti",
+    "onSite": "Con alloggi sul sito",
+    "noUnits": "ancora nessun alloggio",
+    "clear": "Cancella la località",
+    "change": "Cambia località: {place}",
+    "none": "Nessuna località per «{query}»"
+  },
+  "Auth": {
+    "close": "Chiudi",
+    "titleFavorite": "Salva i tuoi preferiti",
+    "subFavorite": "Accedi o crea un account per conservare gli alloggi che ti piacciono.",
+    "titleLogin": "Benvenuto",
+    "subLogin": "Accedi o crea un nuovo account in pochi secondi.",
+    "tabs": {
+      "login": "Accedi",
+      "signup": "Nuovo account"
+    },
+    "apple": "Continua con Apple",
+    "google": "Continua con Google",
+    "or": "oppure con email",
+    "name": "Nome",
+    "email": "Email",
+    "password": "Password",
+    "forgot": "Hai dimenticato la password?",
+    "submitLogin": "Accedi",
+    "submitSignup": "Crea account",
+    "terms": "Continuando, accetti i Termini e l'Informativa sulla privacy.",
+    "hostQuestion": "Hai un alloggio da affittare?",
+    "soon": "In arrivo",
+    "forgotTitle": "Reimposta la password",
+    "forgotSub": "Ti inviamo via email un link per una nuova password.",
+    "forgotSubmit": "Invia il link",
+    "backToLogin": "Torna all'accesso",
+    "showPassword": "Mostra password",
+    "hidePassword": "Nascondi password",
+    "passwordHint": "Almeno {min} caratteri",
+    "errors": {
+      "invalidCredentials": "Email o password errata.",
+      "emailTaken": "Esiste già un account con questa email. Accedi o usa un'altra email.",
+      "rateLimit": "Troppi tentativi in poco tempo. Attendi qualche minuto e riprova.",
+      "generic": "Non è stato possibile completare. Riprova tra qualche secondo.",
+      "linkExpired": "Il link è scaduto o è già stato usato. Riprova.",
+      "nameEmpty": "Scrivi il tuo nome",
+      "nameLong": "Il nome può avere al massimo 80 caratteri",
+      "emailInvalid": "Scrivi un'email valida, ad es. nome@esempio.it",
+      "passwordShort": "La password deve avere almeno {min} caratteri",
+      "passwordLong": "La password può avere al massimo 72 caratteri"
+    },
+    "notices": {
+      "confirmEmail": "Ti abbiamo inviato un'email di conferma. Apri il link per accedere.",
+      "resetSent": "Se esiste un account con questa email, ti abbiamo inviato il link."
+    },
+    "account": {
+      "title": "Il tuo account",
+      "sub": "Hai effettuato l'accesso a Sejur Studio.",
+      "host": "Account host",
+      "guest": "Account ospite",
+      "signOut": "Esci"
+    },
+    "newPassword": {
+      "title": "Nuova password",
+      "sub": "Link scaduto? Richiedine un altro da «Password dimenticata?».",
+      "label": "Nuova password",
+      "submit": "Salva la password",
+      "done": "La password è stata cambiata. Hai effettuato l'accesso.",
+      "backToSite": "Torna al sito"
+    },
+    "cookieSettings": "Impostazioni cookie"
+  },
+  "Guests": {
+    "guests": "Adulti",
+    "guestsHint": "oltre 5 anni",
+    "kids": "Bambini",
+    "kidsHint": "2–5 anni",
+    "infants": "Neonati",
+    "infantsHint": "0–2 anni",
+    "fewer": "Meno: {label}",
+    "more": "Più: {label}",
+    "capacity": "Capacità: massimo {count, plural, one {# persona} other {# persone}} (i neonati non contano)",
+    "adultsCount": "{count, plural, one {# adulto} other {# adulti}}",
+    "kidsCount": "{count, plural, one {# bambino} other {# bambini}}",
+    "infantsCount": "{count, plural, one {# neonato} other {# neonati}}",
+    "filterTitle": "Numero di persone",
+    "filterHint": "Mostriamo solo gli alloggi che ospitano {count, plural, one {# persona} other {# persone}}. I neonati (0–2 anni) non occupano posto."
+  },
+  "Map": {
+    "allCounties": "Tutte le province",
+    "countyPin": "{county}: {count, plural, one {# alloggio} other {# alloggi}}"
+  },
+  "Property": {
+    "back": "Torna agli alloggi",
+    "book": "Prenota questo alloggio",
+    "photos": "{count, plural, one {# foto} other {# foto}}",
+    "showAll": "Vedi tutte le foto",
+    "openPhoto": "Apri la foto {index} a schermo intero",
+    "about": "Informazioni sull'alloggio",
+    "rules": "Regole della casa",
+    "perNight": "a notte",
+    "notFound": "L'alloggio non esiste",
+    "share": "Condividi",
+    "copied": "Link copiato",
+    "tabs": {
+      "amenities": "Servizi",
+      "rules": "Regole",
+      "location": "Posizione"
+    },
+    "stay": "Soggiorno",
+    "editStay": "Modifica date e ospiti",
+    "fees": "Dettagli del prezzo",
+    "host": "Host"
+  },
+  "Gallery": {
+    "label": "Galleria fotografica – {name}",
+    "prev": "Foto precedente",
+    "next": "Foto successiva",
+    "close": "Chiudi la galleria",
+    "counter": "{index} / {total}",
+    "thumb": "Vai alla foto {index}"
+  },
+  "UnitText": {
+    "casuta-brazi": {
+      "name": "Casetta tra gli Abeti",
+      "description": "Casetta in legno ai margini del bosco, con camino, terrazza e vista sul Piatra Craiului. Ideale per famiglie o amici in cerca di tranquillità."
+    },
+    "camera-balcon": {
+      "name": "Camera doppia con balcone",
+      "description": "Camera luminosa con letto matrimoniale e balcone vista montagna. Colazione con prodotti locali inclusa."
+    },
+    "apartament-panoramic": {
+      "name": "Appartamento Panoramico",
+      "description": "Appartamento con due camere da letto, soggiorno open space e grandi finestre sulla valle. Cucina completamente attrezzata."
+    },
+    "garsoniera-cires": {
+      "name": "Monolocale Ciliegio",
+      "description": "Monolocale moderno e compatto con angolo cottura e zona lavoro. Adatto a coppie o soggiorni brevi."
+    },
+    "camera-familie": {
+      "name": "Camera familiare",
+      "description": "Camera spaziosa con letto matrimoniale e divano letto. I bambini sotto i 6 anni soggiornano gratis."
+    },
+    "casuta-rosie": {
+      "name": "La Casetta Rossa",
+      "description": "Casetta isolata in collina, con giardino privato e barbecue. Strada sterrata negli ultimi 300 m."
+    },
+    "apartament-lac": {
+      "name": "Appartamento sul lago",
+      "description": "Appartamento ampio con due bagni e soggiorno con divano letto. A 5 minuti a piedi dal lago."
+    },
+    "camera-mansarda": {
+      "name": "Camera mansardata",
+      "description": "Camera accogliente sotto il tetto, con travi in legno e finestra sul bosco."
+    },
+    "garsoniera-brad": {
+      "name": "Monolocale Abete",
+      "description": "Monolocale nuovo in una casa di legno e vetro, con terrazza privata e vista sul bosco."
+    },
+    "olimp-panorama": {
+      "name": "Appartamento Panorama sul Mare",
+      "description": "Appartamento al 6° piano con ampia terrazza e vista diretta sul mare. A 2 minuti dalla spiaggia."
+    },
+    "olimp-studio": {
+      "name": "Monolocale sul Lungomare",
+      "description": "Monolocale luminoso direttamente sul lungomare, con balcone verso l'alba."
+    },
+    "neptun-pescarusul": {
+      "name": "Casetta Il Gabbiano",
+      "description": "Casa con piscina privata e giardino, a 300 m dalla spiaggia. Ideale per due famiglie."
+    },
+    "neptun-lac": {
+      "name": "Appartamento Lago Neptun",
+      "description": "Appartamento tranquillo con vista sul lago Neptun e sulla foresta di Comorova."
+    },
+    "neptun-park": {
+      "name": "Camera doppia Neptun Park",
+      "description": "Camera in un complesso con piscina, colazione inclusa."
+    },
+    "jupiter-balcon": {
+      "name": "Camera con balcone Jupiter",
+      "description": "Camera semplice e pulita, vicino al centro della località."
+    },
+    "jupiter-aurora": {
+      "name": "Appartamento Aurora Beach",
+      "description": "Bilocale in prima fila sul mare."
+    },
+    "capaurora-garsoniera": {
+      "name": "Monolocale Cap Aurora",
+      "description": "Monolocale ristrutturato con angolo cottura e balcone con vista laterale sul mare."
+    },
+    "capaurora-lumina": {
+      "name": "Villa Lumina",
+      "description": "Villa con quattro camere da letto, piscina riscaldata e terrazza sul tetto."
+    },
+    "venus-garden": {
+      "name": "Camera Venus Garden",
+      "description": "Camera in una pensione con giardino, a 5 minuti dalla spiaggia."
+    },
+    "venus-mirage": {
+      "name": "Monolocale Mirage",
+      "description": "Monolocale moderno con cucina, in una zona tranquilla."
+    },
+    "venus-ana": {
+      "name": "Appartamento Ana",
+      "description": "Appartamento che accetta animali, con cortile comune e posto auto."
+    },
+    "saturn-familie": {
+      "name": "Camera familiare Saturn",
+      "description": "Ampia camera familiare in un hotel con piscina per bambini."
+    },
+    "saturn-delfinul": {
+      "name": "Appartamento Il Delfino",
+      "description": "Appartamento vista mare, a pochi passi dalla spiaggia."
+    },
+    "saturn-dune": {
+      "name": "Casetta vicino alle dune",
+      "description": "Casetta in legno con gazebo e barbecue, proprio accanto alle dune di sabbia."
+    },
+    "mangalia-port": {
+      "name": "Appartamento Porto di Mangalia",
+      "description": "Appartamento con vista sul porto turistico e sul lungomare."
+    },
+    "mangalia-callatis": {
+      "name": "Camera Callatis",
+      "description": "Camera nel centro storico, accanto al sito archeologico di Callatis."
+    },
+    "mangalia-faleza": {
+      "name": "Monolocale Lungomare Nord",
+      "description": "Monolocale sul Lungomare Nord, a 100 m dalla spiaggia."
+    },
+    "2mai-pescari": {
+      "name": "Casetta dei Pescatori",
+      "description": "Casa tradizionale della Dobrugia, con cortile coperto di vite."
+    },
+    "2mai-boema": {
+      "name": "Camera bohémien 2 Mai",
+      "description": "Camera colorata dall'atmosfera bohémien, vicino alla spiaggia di 2 Mai."
+    }
+  },
+  "Cookies": {
+    "title": "Usiamo i cookie",
+    "text": "Alcuni servono al funzionamento del sito. Con il tuo consenso, li usiamo anche per capire cosa cercano i visitatori e mostrarti offerte adatte.",
+    "acceptAll": "Accetta tutti",
+    "necessaryOnly": "Solo necessari",
+    "customize": "Scegli",
+    "save": "Salva la scelta",
+    "close": "Chiudi (solo necessari)",
+    "alwaysOn": "Sempre attivi",
+    "necessary": {
+      "title": "Necessari",
+      "text": "Il tuo account, la lingua e il tema scelti. Senza di essi il sito non funziona."
+    },
+    "analytics": {
+      "title": "Statistiche",
+      "text": "Ci mostrano in modo anonimo quali pagine e alloggi vengono cercati, per migliorare il sito."
+    },
+    "marketing": {
+      "title": "Marketing",
+      "text": "Ci aiutano a mostrarti le offerte Sejur Studio su Facebook, Instagram, TikTok e Google."
+    }
+  },
+  "BookingRequest": {
+    "stayLegend": "Il tuo soggiorno",
+    "checkIn": "Arrivo",
+    "checkOut": "Partenza",
+    "busy": "Occupato:",
+    "guests": "Ospiti (al massimo {max})",
+    "priceTitle": "Prezzo per notte",
+    "quoting": "Calcolo del prezzo…",
+    "night": "Notte del {date}",
+    "total": "Totale per {count, plural, one {# notte} other {# notti}}",
+    "contactLegend": "I tuoi dati",
+    "fullName": "Nome e cognome",
+    "email": "Email",
+    "phone": "Telefono",
+    "requestNote": "L’host riceve la richiesta e la conferma entro 24 ore. Fino ad allora l’alloggio resta riservato per te.",
+    "continue": "Prenota questo alloggio",
+    "send": "Invia la richiesta",
+    "sending": "Invio in corso…",
+    "changeStay": "Cambia date o ospiti",
+    "noPayment": "Non paghi nulla adesso.",
+    "errors": {
+      "unit_not_found": "Questo alloggio non è più disponibile sul sito.",
+      "invalid_dates": "Scegli una partenza dopo l’arrivo, da oggi in poi, per al massimo 30 notti.",
+      "invalid_guest": "Controlla nome, email e telefono (almeno 6 cifre).",
+      "too_many_guests": "L’alloggio ospita al massimo {max} persone.",
+      "no_price": "L’host non ha ancora fissato il prezzo per queste date.",
+      "min_nights": "Per queste date l’host chiede un soggiorno più lungo.",
+      "invalid_amount": "Il soggiorno è troppo lungo. Scegli meno notti.",
+      "unavailable": "Queste date sono già occupate. Scegli altre date.",
+      "too_many_requests": "Hai già 3 richieste in attesa con questa email. Aspetta la risposta dell’host.",
+      "rate_limited": "Troppe richieste in un’ora. Riprova più tardi.",
+      "invalid_request": "Non è stato possibile inviare la richiesta. Ricarica la pagina e riprova.",
+      "generic": "Non siamo riusciti a inviare la richiesta. Controlla la connessione e riprova."
+    }
+  },
+  "BookingStatus": {
+    "title": "La tua richiesta di prenotazione",
+    "back": "Torna agli alloggi",
+    "eyebrow": "La tua richiesta di prenotazione",
+    "status": {
+      "hold": "In attesa",
+      "confirmed": "Confermata",
+      "cancelled": "Annullata",
+      "expired": "Scaduta"
+    },
+    "explain": {
+      "hold": "L’host ha ricevuto la richiesta e risponde entro 24 ore. Fino ad allora l’alloggio resta riservato per te.",
+      "confirmed": "L’host ha confermato la prenotazione. A presto!",
+      "cancelled": "L’host non ha potuto accettare questa richiesta. Scegli altre date o un altro alloggio.",
+      "expired": "L’host non ha risposto entro 24 ore, quindi la richiesta è scaduta. Puoi inviarne una nuova."
+    },
+    "checkIn": "Arrivo",
+    "checkOut": "Partenza",
+    "total": "Totale",
+    "amount": "{amount} {currency, select, RON {lei} other {{currency}}}",
+    "keepLink": "Conserva l’indirizzo di questa pagina: qui vedi sempre lo stato della richiesta.",
+    "notFoundTitle": "Prenotazione non trovata",
+    "notFoundBody": "Nessuna prenotazione a questo indirizzo. Controlla il link ricevuto.",
+    "home": "Cerca un alloggio"
+  },
+  "Account": {
+    "title": "Il mio account",
+    "back": "Torna agli alloggi",
+    "bookings": "Prenotazioni",
+    "favorites": "Preferiti",
+    "bookingsTitle": "Le mie prenotazioni",
+    "favoritesTitle": "I miei preferiti",
+    "bookingsEmpty": "Non hai ancora prenotazioni.",
+    "pageEmpty": "Questa pagina non ha altre prenotazioni.",
+    "favoritesEmpty": "Nessun preferito per ora. Tocca il cuore di un alloggio per tenerlo qui.",
+    "search": "Cerca un alloggio",
+    "viewStatus": "Vedi lo stato della richiesta",
+    "loadError": "Impossibile caricare le prenotazioni. Ricarica la pagina.",
+    "pager": "Pagine delle prenotazioni",
+    "page": "Pagina {page} di {pages}",
+    "prev": "Pagina precedente",
+    "next": "Pagina successiva"
+  }
+}

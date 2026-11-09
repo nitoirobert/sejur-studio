@@ -8,6 +8,18 @@ update public.properties set status = 'activa' where id = tests.id('prop1');
 update public.properties set status = 'ascunsa' where id = tests.id('prop2');
 update public.units set is_published = true where id = tests.id('unit1');
 update public.units set is_published = false where id = tests.id('unit1b');
+-- prop1b active with an unpublished unit (unit1_unpub): its own photo and price must stay hidden.
+update public.properties set status = 'activa' where id = tests.id('prop1b');
+update public.units set is_published = false where id = tests.id('unit1_unpub');
+insert into public.photos (organization_id, property_id, unit_id, storage_path, position, is_cover)
+values (tests.id('org1'), tests.id('prop1b'), tests.id('unit1_unpub'),
+        tests.id('org1') || '/' || tests.id('prop1b') || '/unpub.webp', 90, false),
+       (tests.id('org1'), tests.id('prop1b'), null,
+        tests.id('org1') || '/' || tests.id('prop1b') || '/property.webp', 91, false),
+       (tests.id('org1'), tests.id('prop1'), tests.id('unit1'),
+        tests.id('org1') || '/' || tests.id('prop1') || '/published.webp', 92, false);
+insert into public.unit_prices (organization_id, unit_id, kind, price_per_night, date_from, date_to)
+values (tests.id('org1'), tests.id('unit1_unpub'), 'season', 31000, '2033-07-01', '2033-08-01');
 insert into public.bookings (organization_id, unit_id, check_in, check_out, status, source, adults, children, total_amount)
 values (tests.id('org1'), tests.id('unit1'), '2033-02-10', '2033-02-14', 'confirmed', 'direct', 2, 0, 70000),
        (tests.id('org1'), tests.id('unit1b'), '2033-02-10', '2033-02-14', 'confirmed', 'direct', 2, 0, 70000);
@@ -33,6 +45,28 @@ select ok(tests.cnt(format($$select 1 from public.unit_prices where unit_id in (
 select ok(tests.cnt('select 1 from public.photos') >= 0, 'anon can read photos');
 select ok(tests.cnt(format($$select 1 from public.photos where property_id = %L$$, tests.id('prop2'))) <= 0,
   'anon sees no photos of hidden properties');
+
+-- unpublished unit of an ACTIVE property (unit1_unpub in prop1b): no photo, no price
+reset role;
+select ok((select p.status = 'activa' and not u.is_published
+             from public.units u join public.properties p on p.id = u.property_id
+            where u.id = tests.id('unit1_unpub')),
+  'precondition: unit1_unpub is unpublished and its property is activa');
+select ok((select count(*) from public.unit_prices where unit_id = tests.id('unit1_unpub')) >= 2,
+  'precondition: unit1_unpub has prices (seed base + fixture season)');
+select tests.login_anon();
+select is(tests.cnt(format($$select 1 from public.photos where unit_id = %L$$, tests.id('unit1_unpub'))), 0::bigint,
+  'anon sees no photo of an unpublished unit in an active property');
+select is(tests.cnt(format($$select 1 from public.unit_prices where unit_id = %L$$, tests.id('unit1_unpub'))), 0::bigint,
+  'anon sees no price of an unpublished unit in an active property');
+select is(tests.cnt(format($$select 1 from public.photos where storage_path = %L$$,
+  tests.id('org1') || '/' || tests.id('prop1b') || '/property.webp')), 1::bigint,
+  'anon sees a property-level photo of the same active property (control)');
+select is(tests.cnt(format($$select 1 from public.photos where storage_path = %L$$,
+  tests.id('org1') || '/' || tests.id('prop1') || '/published.webp')), 1::bigint,
+  'anon sees the photo of a published unit (control)');
+select ok(tests.cnt(format($$select 1 from public.unit_prices where unit_id = %L$$, tests.id('unit1'))) >= 1,
+  'anon sees the prices of a published unit (control)');
 
 -- private tables: 0 rows (or no access at all)
 select ok(tests.cnt(format('select 1 from public.%I', t)) <= 0, 'anon reads 0 rows from ' || t)

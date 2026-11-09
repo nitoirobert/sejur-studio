@@ -74,49 +74,51 @@ begin
      43.889, 28.611, 'Recepția este deschisă 08:00-22:00 (date de test).', pol,
      '["wifi", "parking", "sea", "pool"]', 'activa');
 
-  insert into public.units (id, property_id, name, type, max_guests, bedrooms, beds, bathrooms, area_m2,
-                            description, amenities, position, is_published)
+  insert into public.units (id, organization_id, property_id, name, type, max_guests, bedrooms, beds, bathrooms,
+                            area_m2, description, amenities, position, is_published)
   values
-    ('b1000000-0000-4000-8000-000000000001', 'a1000000-0000-4000-8000-000000000001', 'Căsuța din Brazi',
+    ('b1000000-0000-4000-8000-000000000001', org1, 'a1000000-0000-4000-8000-000000000001', 'Căsuța din Brazi',
      'casuta', 4, 2, 3, 1, 48, 'Căsuță din lemn cu șemineu și terasă.',
      '["wifi", "parking", "fireplace", "kitchen", "view", "pets"]', 0, true),
-    ('b1000000-0000-4000-8000-000000000002', 'a1000000-0000-4000-8000-000000000001', 'Cameră dublă cu balcon',
+    ('b1000000-0000-4000-8000-000000000002', org1, 'a1000000-0000-4000-8000-000000000001', 'Cameră dublă cu balcon',
      'camera', 2, 1, 1, 1, 22, 'Cameră luminoasă cu balcon spre munte.',
      '["wifi", "parking", "breakfast", "view"]', 1, true),
-    ('b1000000-0000-4000-8000-000000000003', 'a1000000-0000-4000-8000-000000000001', 'Apartament Panoramic',
+    ('b1000000-0000-4000-8000-000000000003', org1, 'a1000000-0000-4000-8000-000000000001', 'Apartament Panoramic',
      'apartament', 4, 2, 2, 1, 58, 'Apartament cu două dormitoare și priveliște panoramică.',
      '["wifi", "parking", "kitchen", "view"]', 2, true),
-    ('b1000000-0000-4000-8000-000000000004', 'a1000000-0000-4000-8000-000000000002', 'Apartament Panorama Mării',
+    ('b1000000-0000-4000-8000-000000000004', org1, 'a1000000-0000-4000-8000-000000000002', 'Apartament Panorama Mării',
      'apartament', 4, 2, 2, 1, 60, 'Apartament cu vedere la mare.',
      '["wifi", "ac", "sea", "pool"]', 0, true),
-    ('b1000000-0000-4000-8000-000000000005', 'a1000000-0000-4000-8000-000000000002', 'Garsonieră Faleză',
+    ('b1000000-0000-4000-8000-000000000005', org1, 'a1000000-0000-4000-8000-000000000002', 'Garsonieră Faleză',
      'garsoniera', 2, 1, 1, 1, 30, 'Garsonieră aproape de plajă.',
      '["wifi", "ac", "sea"]', 1, true),
-    ('b1000000-0000-4000-8000-000000000006', 'a1000000-0000-4000-8000-000000000002', 'Cameră cu vedere la mare',
+    ('b1000000-0000-4000-8000-000000000006', org1, 'a1000000-0000-4000-8000-000000000002', 'Cameră cu vedere la mare',
      'camera', 2, 1, 1, 1, 20, 'Cameră nepublicată încă (date de test).',
      '["wifi", "ac"]', 2, false);
 
-  insert into public.unit_prices (unit_id, kind, price_per_night, date_from, date_to, min_nights, priority)
+  insert into public.unit_prices (organization_id, unit_id, kind, price_per_night, date_from, date_to, min_nights, priority)
   values
-    ('b1000000-0000-4000-8000-000000000001', 'base', 52000, null, null, 1, 0),
-    ('b1000000-0000-4000-8000-000000000001', 'weekend', 60000, null, null, 2, 10),
-    ('b1000000-0000-4000-8000-000000000002', 'base', 28000, null, null, 1, 0),
-    ('b1000000-0000-4000-8000-000000000003', 'base', 45000, null, null, 1, 0),
-    ('b1000000-0000-4000-8000-000000000004', 'base', 52000, null, null, 2, 0),
-    ('b1000000-0000-4000-8000-000000000004', 'season', 65000, make_date(extract(year from a)::int + 1, 7, 1),
+    (org1, 'b1000000-0000-4000-8000-000000000001', 'base', 52000, null, null, 1, 0),
+    (org1, 'b1000000-0000-4000-8000-000000000001', 'weekend', 60000, null, null, 2, 10),
+    (org1, 'b1000000-0000-4000-8000-000000000002', 'base', 28000, null, null, 1, 0),
+    (org1, 'b1000000-0000-4000-8000-000000000002', 'weekend', 32000, null, null, 1, 10),
+    (org1, 'b1000000-0000-4000-8000-000000000003', 'base', 45000, null, null, 1, 0),
+    (org1, 'b1000000-0000-4000-8000-000000000004', 'base', 52000, null, null, 2, 0),
+    (org1, 'b1000000-0000-4000-8000-000000000004', 'weekend', 58000, null, null, 2, 10),
+    (org1, 'b1000000-0000-4000-8000-000000000004', 'season', 65000, make_date(extract(year from a)::int + 1, 7, 1),
      make_date(extract(year from a)::int + 1, 9, 1), 3, 20),
-    ('b1000000-0000-4000-8000-000000000005', 'base', 25000, null, null, 1, 0),
-    ('b1000000-0000-4000-8000-000000000006', 'base', 30000, null, null, 1, 0);
+    (org1, 'b1000000-0000-4000-8000-000000000005', 'base', 25000, null, null, 1, 0),
+    (org1, 'b1000000-0000-4000-8000-000000000006', 'base', 30000, null, null, 1, 0);
 
   -- org 2: one hidden property, one unit
   insert into public.properties (id, organization_id, name, slug, city, status)
   values ('a2000000-0000-4000-8000-000000000001', org2, 'Casa de Oaspeți Test', 'casa-de-oaspeti-test',
           'Sibiu', 'ascunsa');
-  insert into public.units (id, property_id, name, type, max_guests, is_published)
-  values ('b2000000-0000-4000-8000-000000000001', 'a2000000-0000-4000-8000-000000000001', 'Camera 1',
+  insert into public.units (id, organization_id, property_id, name, type, max_guests, is_published)
+  values ('b2000000-0000-4000-8000-000000000001', org2, 'a2000000-0000-4000-8000-000000000001', 'Camera 1',
           'camera', 2, true);
-  insert into public.unit_prices (unit_id, kind, price_per_night)
-  values ('b2000000-0000-4000-8000-000000000001', 'base', 20000);
+  insert into public.unit_prices (organization_id, unit_id, kind, price_per_night)
+  values (org2, 'b2000000-0000-4000-8000-000000000001', 'base', 20000);
 
   -- Bookings: (unit n, check_in offset, check_out offset, status, source, guest name, amount in bani)
   for r in
@@ -153,17 +155,17 @@ begin
       returning id into g;
     end if;
 
-    insert into public.bookings (unit_id, guest_id, check_in, check_out, status, source, adults, children,
-                                 total_amount, hold_expires_at)
-    values (('b1000000-0000-4000-8000-00000000000' || r.unit_n)::uuid, g, a + r.ci, a + r.co,
+    insert into public.bookings (organization_id, unit_id, guest_id, check_in, check_out, status, source, adults,
+                                 children, total_amount, hold_expires_at)
+    values (org1, ('b1000000-0000-4000-8000-00000000000' || r.unit_n)::uuid, g, a + r.ci, a + r.co,
             r.st::public.booking_status, r.src::public.booking_source, 2, (i % 3 = 0)::int, r.amount,
             case when r.st = 'hold' then now() + interval '7 days' end)
     returning id into b;
 
     -- Paid 5 days before check-in, at noon Bucharest time.
     if r.st = 'confirmed' then
-      insert into public.payments (booking_id, amount, status, stripe_payment_intent_id, created_at)
-      values (b, r.amount, 'succeeded', 'pi_test_seed_' || i,
+      insert into public.payments (organization_id, booking_id, amount, status, stripe_payment_intent_id, created_at)
+      values (org1, b, r.amount, 'succeeded', 'pi_test_seed_' || i,
               ((a + (r.ci - 5)) + time '12:00') at time zone 'Europe/Bucharest');
     end if;
   end loop;
@@ -172,10 +174,11 @@ begin
   insert into public.guests (organization_id, full_name, email, phone)
   values (org2, 'Oaspete Org Doi', 'oaspete.org2@example.com', '+40700000999')
   returning id into g;
-  insert into public.bookings (unit_id, guest_id, check_in, check_out, status, source, adults, total_amount)
-  values ('b2000000-0000-4000-8000-000000000001', g, a + 3, a + 6, 'confirmed', 'direct', 2, 60000)
+  insert into public.bookings (organization_id, unit_id, guest_id, check_in, check_out, status, source, adults,
+                               total_amount)
+  values (org2, 'b2000000-0000-4000-8000-000000000001', g, a + 3, a + 6, 'confirmed', 'direct', 2, 60000)
   returning id into b;
-  insert into public.payments (booking_id, amount, status, created_at)
-  values (b, 60000, 'succeeded', ((a + 1) + time '12:00') at time zone 'Europe/Bucharest');
+  insert into public.payments (organization_id, booking_id, amount, status, created_at)
+  values (org2, b, 60000, 'succeeded', ((a + 1) + time '12:00') at time zone 'Europe/Bucharest');
 end
 $$;

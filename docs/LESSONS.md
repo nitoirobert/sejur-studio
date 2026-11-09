@@ -7,3 +7,9 @@
 
 ## Brief 02: intrare în cont
 - Două sesiuni au lucrat în același folder pe ramuri diferite. Regula de acum: al doilea scriitor lucrează într-un `git worktree` separat.
+- Un open redirect a trecut de prima rundă: normalizarea URL-ului poate produce `//host`. Orice „next=” se verifică după normalizare, plus un test cu payload-uri dot-segment.
+- Next 16 păstrează ruta veche ascunsă în DOM; după ieșirea din cont trebuie o încărcare completă a paginii.
+
+## Brief 03: graficul rezervărilor
+- `supabase test db --remote` cere totuși Docker (pg_prove rulează în container). Fără Docker, pgTAP se rulează doar când se schimbă migrațiile, pe un PC cu Docker pornit.
+- Tester-ul a scris specificațiile în paralel cu construcția, cu selectori provizorii. Contractul cu `data-testid` se trimite la început, nu la final.
