@@ -3,12 +3,18 @@
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
+import { avatarOf } from "@/lib/avatar";
 
 // Cine e logat în browser, doar pentru afișare (texte, butoane). Accesul real (panou, date)
 // e verificat oricum pe server. Citește sesiunea din cookie, fără cerere la server
 // decât dacă tokenul trebuie reîmprospătat. Pe server și până la prima citire: nimeni.
 
-export type Account = { kind: "host" | "guest"; name: string | null; email: string | null } | null;
+export type Account = {
+  kind: "host" | "guest";
+  name: string | null;
+  email: string | null;
+  avatarUrl: string | null;
+} | null;
 
 // Aceeași regulă ca trigger-ul din supabase/migrations/0012_guest_accounts.sql
 function toAccount(session: Session | null): Account {
@@ -18,7 +24,7 @@ function toAccount(session: Session | null): Account {
   const provider = user.app_metadata?.provider;
   const guest = meta.account_type === "guest" || provider === "google" || provider === "apple";
   const name = (meta.full_name || meta.name || "").trim() || null;
-  return { kind: guest ? "guest" : "host", name, email: user.email ?? null };
+  return { kind: guest ? "guest" : "host", name, email: user.email ?? null, avatarUrl: avatarOf(meta) };
 }
 
 export function useAccount(): Account {

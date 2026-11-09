@@ -206,41 +206,10 @@ export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: ()
                     </button>
                   ))}
                 </div>
-
-                {/* Conectare rapidă: Apple „în curând", Google activ */}
-                <div className="mt-5 space-y-2.5">
-                  <button
-                    type="button"
-                    disabled
-                    aria-disabled="true"
-                    className="flex w-full cursor-not-allowed items-center justify-center gap-3 rounded-full bg-[#111]/55 py-3.5 text-sm font-semibold text-white/80 shadow-pill"
-                  >
-                    <AppleLogo />
-                    {t("apple")}
-                    <span className="rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-bold text-ink">{t("soon")}</span>
-                  </button>
-                  <motion.button
-                    whileHover={{ y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                    type="button"
-                    disabled={pending}
-                    onClick={() => run(guestGoogle, false)}
-                    className="flex w-full items-center justify-center gap-3 rounded-full bg-white py-3.5 text-sm font-semibold text-[#1f1f1f] shadow-pill ring-1 ring-sand disabled:opacity-60"
-                  >
-                    <GoogleLogo />
-                    {t("google")}
-                  </motion.button>
-                </div>
-
-                <div className="my-5 flex items-center gap-3 text-xs text-muted">
-                  <span className="h-px flex-1 bg-sand-200" />
-                  {t("or")}
-                  <span className="h-px flex-1 bg-sand-200" />
-                </div>
               </>
             )}
 
-            <form className={`space-y-3 ${mode === "forgot" ? "mt-6" : ""}`} onSubmit={submit} noValidate>
+            <form className={`space-y-3 ${mode === "forgot" ? "mt-5" : "mt-6"}`} onSubmit={submit} noValidate>
               <AnimatePresence initial={false}>
                 {mode === "signup" && (
                   <motion.label
@@ -346,6 +315,41 @@ export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: ()
                 </motion.p>
               )}
             </AnimatePresence>
+
+            {mode !== "forgot" && (
+              <>
+                <div className="my-5 flex items-center gap-3 text-xs text-muted">
+                  <span className="h-px flex-1 bg-sand-200" />
+                  {t("or")}
+                  <span className="h-px flex-1 bg-sand-200" />
+                </div>
+
+                {/* Conectare rapidă: Apple „în curând", Google activ */}
+                <div className="space-y-2.5">
+                  <button
+                    type="button"
+                    disabled
+                    aria-disabled="true"
+                    className="flex w-full cursor-not-allowed items-center justify-center gap-3 rounded-full bg-[#111]/55 py-3.5 text-sm font-semibold text-white/80 shadow-pill"
+                  >
+                    <AppleLogo />
+                    {t("apple")}
+                    <span className="rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-bold text-ink">{t("soon")}</span>
+                  </button>
+                  <motion.button
+                    whileHover={{ y: -1 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="button"
+                    disabled={pending}
+                    onClick={() => run(guestGoogle, false)}
+                    className="flex w-full items-center justify-center gap-3 rounded-full bg-white py-3.5 text-sm font-semibold text-[#1f1f1f] shadow-pill ring-1 ring-sand disabled:opacity-60"
+                  >
+                    <GoogleLogo />
+                    {t("google")}
+                  </motion.button>
+                </div>
+              </>
+            )}
           </>
         )}
 

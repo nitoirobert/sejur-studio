@@ -2,15 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
-import { Heart, House, HousePlus } from "lucide-react";
+import { House, HousePlus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { pill, pillActive } from "@/components/ui/soft";
 import { hostDashboardUrl, hostSignupUrl } from "@/lib/links";
 import { useAccount } from "@/lib/use-host-session";
 import { spring } from "@/components/ui/motion";
 import { StayBar } from "./StayBar";
-import { LocationPicker } from "./LocationPicker";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import type { Stay } from "./PropertyBrowser";
@@ -21,18 +21,12 @@ type Props = {
   query: string;
   onQueryChange: (q: string) => void;
   onOpenUnit: (id: string) => void;
-  place: string | null;
-  onPlaceChange: (p: string | null) => void;
-  onFavorites: () => void;
   onLogin: () => void;
   onHome: () => void; // click pe logo sau pe „Sejur Studio" → pagina de start (grila cu 5 coloane)
 };
 
-// Antetul: logo | Favorite + bară de căutare + Locație (centru, ecrane ≥1536px) | contact + cont
+// Antetul: logo | bară de căutare (centru, ecrane ≥1536px) | temă, limbă, cont
 export function SiteHeader({
-  place,
-  onPlaceChange,
-  onFavorites,
   onLogin,
   onHome,
   ...bar
@@ -44,6 +38,9 @@ export function SiteHeader({
   const hostSignedIn = account?.kind === "host";
   const firstName =
     (account?.name ?? account?.email ?? "").trim().split(/[\s@]+/)[0] || null;
+  // Logat: profilul are pagina lui (/cont). Delogat: popup-ul de autentificare.
+  const router = useRouter();
+  const openAccount = () => (account ? router.push("/cont") : onLogin());
   const hostLabel = t(hostSignedIn ? "hostAccount" : "hostSignup");
   const HostIcon = hostSignedIn ? House : HousePlus;
   const tap = {
@@ -80,19 +77,9 @@ export function SiteHeader({
         </motion.span>
       </Link>
 
-      {/* Centru (doar ≥1536px): Favorite – bară de căutare – Locație */}
-      <nav className="mx-auto hidden shrink-0 items-center gap-3 2xl:flex">
-        <motion.button
-          {...tap}
-          type="button"
-          onClick={onFavorites}
-          className={`${pill} h-14 gap-2.5 px-6 text-base font-semibold`}
-        >
-          <Heart className="size-5 text-accent" />
-          {t("nav.favorites")}
-        </motion.button>
-        <StayBar {...bar} className="2xl:w-[26rem] min-[1800px]:w-[34rem]" />
-        <LocationPicker value={place} onChange={onPlaceChange} size="lg" />
+      {/* Centru (doar ≥1536px): bara de căutare, lată cât să încapă textul de exemplu întreg */}
+      <nav className="mx-auto hidden min-w-0 flex-1 justify-center px-4 2xl:flex">
+        <StayBar {...bar} size="lg" className="w-full max-w-[52rem]" />
       </nav>
 
       <div className="ml-auto flex shrink-0 items-center gap-2.5 2xl:ml-0">
@@ -128,13 +115,18 @@ export function SiteHeader({
           <motion.button
             {...tap}
             type="button"
-            onClick={onLogin}
-            className="grid size-12 shrink-0 place-items-center rounded-full bg-accent-50 text-accent shadow-pill ring-2 ring-cream-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            onClick={openAccount}
+            className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-full bg-accent-50 text-accent shadow-pill ring-2 ring-cream-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             aria-label={t("account")}
           >
-            <span className="text-lg font-bold">
-              {firstName.charAt(0).toUpperCase()}
-            </span>
+            {account?.avatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element -- external avatar URL (Supabase / Google)
+              <img src={account.avatarUrl} alt="" className="size-full object-cover" referrerPolicy="no-referrer" />
+            ) : (
+              <span className="text-lg font-bold">
+                {firstName.charAt(0).toUpperCase()}
+              </span>
+            )}
           </motion.button>
         )}
       </div>

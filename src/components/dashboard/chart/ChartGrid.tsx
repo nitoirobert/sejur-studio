@@ -163,9 +163,16 @@ export function ChartGrid({
         {properties.map((p) => {
           const closed = collapsed.has(p.id);
           return (
-            <div key={p.id} role="rowgroup" data-testid="chart-property" data-property={p.id}>
-              <div role="row" className="grid grid-cols-[var(--unit-col)_1fr] border-b border-glass-line bg-cream-100/50">
-                <div role="rowheader" className="sticky left-0 z-20 bg-cream-100">
+            <div
+              key={p.id}
+              role="rowgroup"
+              data-testid="chart-property"
+              data-property={p.id}
+              style={{ "--prop": p.color } as React.CSSProperties}
+              className="border-t-4 border-[color-mix(in_srgb,var(--prop)_35%,transparent)] first:border-t-0"
+            >
+              <div role="row" className="grid grid-cols-[var(--unit-col)_1fr] border-b border-glass-line bg-[color-mix(in_srgb,var(--prop)_10%,transparent)]">
+                <div role="rowheader" className="sticky left-0 z-20 border-l-4 border-[var(--prop)] bg-cream-100">
                   <button
                     type="button"
                     onClick={() => toggle(p.id)}
@@ -177,10 +184,15 @@ export function ChartGrid({
                       aria-hidden
                       className={`size-4 shrink-0 text-ink-soft transition-transform duration-150 ${closed ? "-rotate-90" : ""}`}
                     />
+                    <span aria-hidden className="size-2.5 shrink-0 rounded-full bg-[var(--prop)]" />
                     <span className="line-clamp-2 text-[13px] leading-tight break-words md:text-sm">{p.name}</span>
                   </button>
                 </div>
-                <div className="flex items-center px-3 text-xs text-ink-soft">{t("units", { count: p.units.length })}</div>
+                <div className="flex items-center gap-2 px-3 text-xs text-ink-soft">
+                  {p.city && <span className="font-semibold text-[var(--prop)]">{p.city}</span>}
+                  {p.city && <span aria-hidden>·</span>}
+                  {t("units", { count: p.units.length })}
+                </div>
               </div>
               {!closed &&
                 p.units.map((u) => (
@@ -287,9 +299,14 @@ const UnitRow = memo(function UnitRow({ unit, days, today, bookings, drag, onBeg
     <div role="row" data-testid="chart-row" data-unit-id={unit.id} className="grid grid-cols-[var(--unit-col)_1fr] border-b border-glass-line/70">
       <div
         role="rowheader"
-        className="sticky left-0 z-20 flex min-h-12 items-center bg-cream-50 px-3 text-[13px] leading-tight text-ink md:px-4 md:text-sm"
+        className="sticky left-0 z-20 flex min-h-12 items-center border-l-4 border-[var(--prop)] bg-cream-50 px-3 text-[13px] leading-tight text-ink md:px-4 md:text-sm"
         title={unit.name}
       >
+        {unit.room && (
+          <span className="mr-2 shrink-0 rounded-md bg-[color-mix(in_srgb,var(--prop)_16%,transparent)] px-1.5 py-0.5 text-xs font-bold text-[var(--prop)] tabular-nums">
+            {t("room", { number: unit.room })}
+          </span>
+        )}
         <span className="line-clamp-2 break-words">{unit.name}</span>
       </div>
       <div
@@ -340,7 +357,7 @@ const UnitRow = memo(function UnitRow({ unit, days, today, bookings, drag, onBeg
         )}
 
         {bars.map(({ b, start, end, clipStart, clipEnd }) => (
-          <Bar key={b.id} booking={b} from={days[start]} to={addDays(from, end)} start={start} end={end} n={n} clipStart={clipStart} clipEnd={clipEnd} onOpen={onOpen} t={t} />
+          <Bar key={b.id} booking={b} room={unit.room ?? null} from={days[start]} to={addDays(from, end)} start={start} end={end} n={n} clipStart={clipStart} clipEnd={clipEnd} onOpen={onOpen} t={t} />
         ))}
       </div>
     </div>
@@ -356,6 +373,7 @@ const SOURCE_ICON: Record<BookingSource, typeof House | null> = {
 
 function Bar({
   booking: b,
+  room,
   from,
   to,
   start,
@@ -367,6 +385,8 @@ function Bar({
   t,
 }: {
   booking: ChartBooking;
+  /** Room number when the unit is a guesthouse room: shown first on the bar ("Cam. 2"). */
+  room: string | null;
   /** First shown night and the day after the last shown night (clipped to the window). */
   from: IsoDate;
   to: IsoDate;
@@ -391,7 +411,7 @@ function Bar({
   const text = kind === "blocked" && b.source !== "direct" ? t(`source.${b.source}`) : guest;
   const status = t(`status.${kind}`);
   const label = t("bar", {
-    guest,
+    guest: room ? `${t("room", { number: room })} · ${guest}` : guest,
     checkIn: fmt.short(b.checkIn),
     checkOut: fmt.short(b.checkOut),
     nights: t("nights", { count: nights }),
@@ -436,6 +456,11 @@ function Bar({
     >
       {Icon && <Icon aria-hidden className="size-3.5 shrink-0 opacity-75" />}
       {/* On the hatched hold the name sits on a solid chip, so it stays readable (AA) over the stripes. */}
+      {room && !iconOnly && (
+        <span className={`shrink-0 rounded px-1 py-px text-[11px] font-bold tabular-nums ${kind === "confirmed" ? "bg-cream-50/20" : "bg-cream-50"}`}>
+          {t("room", { number: room })}
+        </span>
+      )}
       {!iconOnly && (
         <span className={kind === "hold" ? "min-w-0 truncate rounded bg-cream-50 px-1 py-px" : "truncate"}>{text}</span>
       )}

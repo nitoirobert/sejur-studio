@@ -5,7 +5,6 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getPublishedUnits } from "@/lib/catalog/server";
 import { card } from "@/components/ui/soft";
-import { AccountShell } from "@/components/booking/AccountShell";
 import { FavoritesList } from "@/components/booking/FavoritesList";
 
 // The account's hearts. Rows come from `favorites` (RLS: own rows only); the unit details from the
@@ -18,11 +17,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function FavoritesPage() {
   return (
-    <AccountShell active="favorites">
+    <>
       <Suspense fallback={<div className={`${card} h-48 animate-pulse`} aria-hidden />}>
         <Favorites />
       </Suspense>
-    </AccountShell>
+    </>
   );
 }
 

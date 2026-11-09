@@ -625,6 +625,54 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          booking_id: string
+          comment: string
+          created_at: string
+          id: string
+          rating: number
+          unit_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          booking_id: string
+          comment?: string
+          created_at?: string
+          id?: string
+          rating: number
+          unit_id: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          booking_id?: string
+          comment?: string
+          created_at?: string
+          id?: string
+          rating?: number
+          unit_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sync_conflicts: {
         Row: {
           booking_id: string | null
@@ -902,6 +950,28 @@ export type Database = {
       is_org_member: { Args: { org: string }; Returns: boolean }
       is_own_storage_path: { Args: { path: string }; Returns: boolean }
       is_public_unit: { Args: { p_unit_id: string }; Returns: boolean }
+      can_review_booking: {
+        Args: { p_booking_id: string; p_unit_id: string }
+        Returns: boolean
+      }
+      delete_my_account: { Args: never; Returns: undefined }
+      my_payments: {
+        Args: { p_limit?: number; p_offset?: number }
+        Returns: {
+          amount: number
+          booking_public_token: string
+          check_in: string
+          check_out: string
+          created_at: string
+          currency: string
+          payment_id: string
+          property_name: string
+          refunded_amount: number
+          status: Database["public"]["Enums"]["payment_status"]
+          total_count: number
+          unit_name: string
+        }[]
+      }
       my_bookings: {
         Args: { p_limit?: number; p_offset?: number }
         Returns: {

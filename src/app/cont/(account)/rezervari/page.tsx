@@ -7,7 +7,6 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { card, pill } from "@/components/ui/soft";
 import { isoToDate } from "@/lib/dates/days";
-import { AccountShell } from "@/components/booking/AccountShell";
 
 // "My bookings" for any signed-in account (guest or host): my_bookings() returns only the
 // requests linked to auth.uid(). Without an account: the login page, back here afterwards.
@@ -21,11 +20,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function MyBookingsPage({ searchParams }: PageProps<"/cont/rezervari">) {
   return (
-    <AccountShell active="bookings">
+    <>
       <Suspense fallback={<div className={`${card} h-48 animate-pulse`} aria-hidden />}>
         <Bookings searchParams={searchParams} />
       </Suspense>
-    </AccountShell>
+    </>
   );
 }
 
@@ -74,48 +73,77 @@ async function Bookings({ searchParams }: { searchParams: PageProps<"/cont/rezer
   }
 
   const day = (d: string) => format.dateTime(isoToDate(d), { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  // Today in Romania: a stay whose check-out has passed is "past".
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Bucharest" }).format(new Date());
+  const upcoming = rows.filter((b) => b.check_out > today);
+  const past = rows.filter((b) => b.check_out <= today);
 
-  return (
-    <>
-      <ul className="space-y-3">
-        {rows.map((b) => {
-          const status = b.status in STATUS_STYLE ? b.status : "cancelled";
-          return (
-            <li key={b.booking_id} className={`${card} p-5`} data-testid="my-booking">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="font-semibold text-ink">{b.property_name}</p>
-                  <p className="text-sm text-ink-soft">
-                    {b.unit_name}
-                    {b.city ? ` · ${b.city}` : ""}
-                  </p>
-                </div>
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold shadow-pill ${STATUS_STYLE[status]}`}>
-                  {tStatus(`status.${status}`)}
-                </span>
+  const list = (items: typeof rows) => (
+    <ul className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(min(100%,24rem),1fr))]">
+      {items.map((b) => {
+        const status = b.status in STATUS_STYLE ? b.status : "cancelled";
+        const reviewable = b.status === "confirmed" && b.check_out <= today;
+        return (
+          <li key={b.booking_id} className={`${card} p-5`} data-testid="my-booking">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="font-semibold text-ink">{b.property_name}</p>
+                <p className="text-sm text-ink-soft">
+                  {b.unit_name}
+                  {b.city ? ` · ${b.city}` : ""}
+                </p>
               </div>
-              <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm">
-                <span className="text-ink">
-                  {day(b.check_in)} – {day(b.check_out)}
-                </span>
-                <span className="font-semibold text-ink">
-                  {tStatus("amount", {
-                    amount: format.number(b.total_amount / 100, { maximumFractionDigits: 2 }),
-                    currency: b.currency,
-                  })}
-                </span>
-              </div>
+              <span className={`rounded-full px-3 py-1 text-xs font-semibold shadow-pill ${STATUS_STYLE[status]}`}>
+                {tStatus(`status.${status}`)}
+              </span>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm">
+              <span className="text-ink">
+                {day(b.check_in)} – {day(b.check_out)}
+              </span>
+              <span className="font-semibold text-ink">
+                {tStatus("amount", {
+                  amount: format.number(b.total_amount / 100, { maximumFractionDigits: 2 }),
+                  currency: b.currency,
+                })}
+              </span>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1">
               <Link
                 href={`/rezervare/${b.public_token}`}
                 prefetch={false}
-                className="mt-3 inline-block text-sm font-semibold text-accent underline-offset-4 hover:underline"
+                className="text-sm font-semibold text-accent underline-offset-4 hover:underline"
               >
                 {t("viewStatus")}
               </Link>
-            </li>
-          );
-        })}
-      </ul>
+              {reviewable && (
+                <Link href="/cont/recenzii" className="text-sm font-semibold text-accent underline-offset-4 hover:underline">
+                  {t("reviews.leave")}
+                </Link>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+
+  return (
+    <>
+      <div className="space-y-8">
+        {upcoming.length > 0 && (
+          <section>
+            <h2 className="mb-4 font-serif text-xl text-ink">{t("upcoming")}</h2>
+            {list(upcoming)}
+          </section>
+        )}
+        {past.length > 0 && (
+          <section>
+            <h2 className="mb-4 font-serif text-xl text-ink">{t("past")}</h2>
+            {list(past)}
+          </section>
+        )}
+      </div>
       {pages > 1 && (
         <nav aria-label={t("pager")} className="mt-6 flex items-center justify-center gap-3 text-sm">
           {page > 1 && (

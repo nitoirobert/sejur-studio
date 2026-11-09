@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
+import { Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { defaultStay, onMap } from "@/lib/mock-units";
 import { useUnits } from "@/lib/use-units";
@@ -11,10 +12,12 @@ import { toggleFavorite, useFavorites } from "@/lib/booking/favorites";
 import { useTheme } from "@/lib/theme";
 import { occupancy } from "@/lib/guests";
 import { backdrop, spring } from "@/components/ui/motion";
+import { pill } from "@/components/ui/soft";
 import { SiteHeader } from "./SiteHeader";
 import { Toolbar } from "./Toolbar";
 import { FilterSidebar } from "./FilterSidebar";
 import { UnitCard } from "./UnitCard";
+import { MapPanel } from "./MapPanel";
 import { UnitPanel, nightsBetween } from "./UnitPanel";
 import { AuthModal, type AuthReason } from "./AuthModal";
 import { ViewToggle, type ViewMode } from "./ViewToggle";
@@ -48,6 +51,7 @@ export type Stay = { from: string; to: string; guests: number; kids: number; inf
 export function PropertyBrowser() {
   const t = useTranslations("Results");
   const tFilters = useTranslations("Filters");
+  const tHeader = useTranslations("Header");
   const [filters, setFilters] = useState<Filters>(emptyFilters);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -74,6 +78,8 @@ export function PropertyBrowser() {
       ),
     [units, filters, query, place, stay],
   );
+  const mapUnits = useMemo(() => results.filter(onMap), [results]);
+  const mapCounty = place ? (place.includes(",") ? place.split(",")[1].trim() : place) : null;
   const selected = units.find((u) => u.id === selectedId) ?? null;
   const close = () => setSelectedId(null);
 
@@ -134,7 +140,7 @@ export function PropertyBrowser() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <SiteHeader {...bar} onFavorites={() => (favorites.signedIn ? router.push("/cont/favorite") : setAuth("favorite"))} onLogin={() => setAuth("login")} onHome={goHome} />
+      <SiteHeader {...bar} onLogin={() => setAuth("login")} onHome={goHome} />
       <Toolbar
         {...bar}
         onOpenFilters={() => setFiltersOpen(true)}
@@ -180,7 +186,18 @@ export function PropertyBrowser() {
                 </motion.p>
               </AnimatePresence>
             </div>
-            <ViewToggle value={view} onChange={setView} />
+            <div className="flex shrink-0 items-center gap-2">
+              {/* Favorite: înaintea comutatoarelor de afișare */}
+              <button
+                type="button"
+                onClick={() => (favorites.signedIn ? router.push("/cont/favorite") : setAuth("favorite"))}
+                className={`${pill} h-11 gap-2 px-4 text-sm font-semibold`}
+              >
+                <Heart className="size-4 text-accent" />
+                <span className="max-sm:sr-only">{tHeader("nav.favorites")}</span>
+              </button>
+              <ViewToggle value={view} onChange={setView} />
+            </div>
           </motion.div>
 
           {/*
@@ -220,17 +237,29 @@ export function PropertyBrowser() {
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, scale: 0.985, filter: "blur(6px)", transition: { duration: 0.2 } }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="min-h-[65vh] flex-1 overflow-hidden rounded-card shadow-soft ring-4 ring-cream-50"
+                className="flex min-h-[65vh] flex-1 gap-3"
               >
-                <UnitsMap
-                  key={theme}
-                  dark={theme === "dark"}
-                  units={results.filter(onMap)}
-                  selectedId={selected?.id ?? null}
-                  onSelect={setSelectedId}
-                  county={place ? (place.includes(",") ? place.split(",")[1].trim() : place) : null}
-                  onCountySelect={setPlace}
-                />
+                {/* Lista din stânga: județele, apoi cazările județului ales */}
+                <aside className="relative hidden w-80 shrink-0 overflow-hidden rounded-card bg-cream-50 shadow-soft ring-1 ring-sand lg:block 2xl:w-[22rem]">
+                  <MapPanel
+                    units={mapUnits}
+                    county={mapCounty}
+                    selectedId={selected?.id ?? null}
+                    onSelect={setSelectedId}
+                    onCountySelect={setPlace}
+                  />
+                </aside>
+                <div className="min-w-0 flex-1 overflow-hidden rounded-card shadow-soft ring-4 ring-cream-50">
+                  <UnitsMap
+                    key={theme}
+                    dark={theme === "dark"}
+                    units={mapUnits}
+                    selectedId={selected?.id ?? null}
+                    onSelect={setSelectedId}
+                    county={mapCounty}
+                    onCountySelect={setPlace}
+                  />
+                </div>
               </motion.div>
             ) : (
               <motion.div

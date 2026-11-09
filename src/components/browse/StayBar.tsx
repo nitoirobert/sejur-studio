@@ -9,8 +9,8 @@ import { popover } from "@/components/ui/motion";
 import { useUnits } from "@/lib/use-units";
 import { matchScore, suggestUnits, typewriterWords, usePlaces } from "@/lib/search/catalog";
 import { clearRecent, rankRecent, recordRecent, useRecent } from "@/lib/search/recent";
-import { nightsBetween } from "./UnitPanel";
 import { GuestsEditor, useGuestsSummary } from "./GuestsEditor";
+import { RangeCalendar } from "./RangeCalendar";
 import { totalPeople } from "@/lib/guests";
 import { typeIcons } from "./icons";
 import { Autocomplete, type AcGroup } from "./Autocomplete";
@@ -27,14 +27,13 @@ type Props = {
   onQueryChange: (q: string) => void;
   onOpenUnit: (id: string) => void;
   className?: string;
+  size?: "md" | "lg"; // lg: the big bar in the desktop header
 };
 
 // Bara de căutare: [perioadă] | [🔍 nume sau locație] | [oaspeți]
-export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, className = "" }: Props) {
+export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, className = "", size = "md" }: Props) {
   const t = useTranslations("Toolbar");
   const tSearch = useTranslations("Search");
-  const tBooking = useTranslations("Booking");
-  const tDetail = useTranslations("Detail");
   const format = useFormatter();
   const summary = useGuestsSummary();
   const [open, setOpen] = useState<Open>(null);
@@ -141,17 +140,15 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
   ];
 
   const dateOpts = { day: "numeric", month: "short" } as const;
-  const nights = nightsBetween(stay.from, stay.to);
+  const lg = size === "lg";
   const segment =
-    "relative flex shrink-0 items-center gap-2 text-sm font-semibold text-ink transition-colors hover:bg-cream-100 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent";
-  const field =
-    "mt-1 w-full rounded-2xl bg-cream-100 px-4 py-3 text-sm font-semibold text-ink shadow-pressed outline-none [color-scheme:light] focus-visible:ring-2 focus-visible:ring-accent/60";
+    `relative flex shrink-0 items-center gap-2 ${lg ? "text-base" : "text-sm"} font-semibold text-ink transition-colors hover:bg-cream-100 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent`;
 
   return (
     <div ref={ref} className={`relative ${className}`}>
       <motion.div
         layout
-        className={`flex h-12 items-stretch rounded-full bg-cream-50 shadow-pill transition-shadow 2xl:h-14 ${
+        className={`flex items-stretch rounded-full bg-cream-50 shadow-pill transition-shadow ${lg ? "h-16" : "h-12 2xl:h-14"} ${
           focused ? "ring-2 ring-accent/25" : ""
         }`}
       >
@@ -159,9 +156,9 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
           type="button"
           aria-expanded={open === "dates"}
           onClick={() => setOpen(open === "dates" ? null : "dates")}
-          className={`${segment} rounded-l-full pr-4 pl-4 2xl:pr-5 2xl:pl-6 ${open === "dates" ? "bg-cream-100" : ""}`}
+          className={`${segment} rounded-l-full ${lg ? "pr-6 pl-7" : "pr-4 pl-4 2xl:pr-5 2xl:pl-6"} ${open === "dates" ? "bg-cream-100" : ""}`}
         >
-          <CalendarDays className="size-4 shrink-0 text-accent 2xl:size-5" />
+          <CalendarDays className={`shrink-0 text-accent ${lg ? "size-5" : "size-4 2xl:size-5"}`} />
           <span className="whitespace-nowrap">
             {t("dates", {
               from: format.dateTime(new Date(stay.from), dateOpts),
@@ -174,7 +171,7 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
 
         <Autocomplete
           className="min-w-0 flex-1"
-          fieldClassName="flex h-full items-center gap-2 px-4"
+          fieldClassName={`flex h-full items-center gap-2 ${lg ? "px-5 text-base" : "px-4"}`}
           listClassName="left-1/2 w-[min(26rem,calc(100vw-2rem))] -translate-x-1/2"
           value={query}
           onChange={onQueryChange}
@@ -204,7 +201,7 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
               </span>
             )
           }
-          leading={<Search className="size-4 shrink-0 text-ink-soft 2xl:size-5" />}
+          leading={<Search className={`shrink-0 text-ink-soft ${lg ? "size-5" : "size-4 2xl:size-5"}`} />}
           trailing={
             <AnimatePresence>
               {query && (
@@ -231,7 +228,7 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
           aria-expanded={open === "guests"}
           aria-label={`${t("guestsAria", { count: totalPeople(stay) })}: ${summary(stay)}`}
           onClick={() => setOpen(open === "guests" ? null : "guests")}
-          className={`${segment} rounded-r-full pr-4 pl-4 2xl:pr-6 2xl:pl-5 ${open === "guests" ? "bg-cream-100" : ""}`}
+          className={`${segment} rounded-r-full ${lg ? "pr-7 pl-6" : "pr-4 pl-4 2xl:pr-6 2xl:pl-5"} ${open === "guests" ? "bg-cream-100" : ""}`}
         >
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.span
@@ -268,45 +265,34 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
             animate="show"
             exit="exit"
             style={{ transformOrigin: open === "dates" ? "top left" : "top right" }}
-            className={`absolute top-full z-40 mt-3 w-80 max-w-[calc(100vw-2rem)] rounded-card bg-cream-50 p-5 shadow-soft ring-1 ring-sand ${
+            className={`absolute top-full z-40 mt-3 max-w-[calc(100vw-2rem)] rounded-card bg-cream-50 shadow-soft ring-1 ring-sand ${
+              open === "dates" ? "w-[30rem] p-4" : "w-80 p-5"
+            } ${
               open === "dates" ? "left-0" : "right-0"
             }`}
           >
             {open === "dates" ? (
-              <div className="space-y-4">
-                <label className="block text-xs font-semibold text-ink">
-                  {tBooking("checkIn")}
-                  <input
-                    type="date"
-                    value={stay.from}
-                    onChange={(e) => onStayChange({ ...stay, from: e.target.value })}
-                    className={field}
-                  />
-                </label>
-                <label className="block text-xs font-semibold text-ink">
-                  {tBooking("checkOut")}
-                  <input
-                    type="date"
-                    value={stay.to}
-                    min={stay.from}
-                    onChange={(e) => onStayChange({ ...stay, to: e.target.value })}
-                    className={field}
-                  />
-                </label>
-                <p className={`text-sm ${nights > 0 ? "text-ink-soft" : "text-red-700"}`}>
-                  {nights > 0 ? tDetail("booking.nights", { count: nights }) : tBooking("invalidDates")}
-                </p>
-              </div>
+              <RangeCalendar
+                from={stay.from}
+                to={stay.to}
+                onCancel={() => setOpen(null)}
+                onApply={(from, to) => {
+                  onStayChange({ ...stay, from, to });
+                  setOpen(null);
+                }}
+              />
             ) : (
-              <GuestsEditor value={stay} onChange={(g) => onStayChange({ ...stay, ...g })} />
+              <>
+                <GuestsEditor value={stay} onChange={(g) => onStayChange({ ...stay, ...g })} />
+                <button
+                  type="button"
+                  onClick={() => setOpen(null)}
+                  className={`${primaryButton} mt-5 w-full !py-3 text-sm`}
+                >
+                  {t("done")}
+                </button>
+              </>
             )}
-            <button
-              type="button"
-              onClick={() => setOpen(null)}
-              className={`${primaryButton} mt-5 w-full !py-3 text-sm`}
-            >
-              {t("done")}
-            </button>
           </motion.div>
         )}
       </AnimatePresence>

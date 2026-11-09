@@ -243,7 +243,7 @@
     },
     "apple": "Continue with Apple",
     "google": "Continue with Google",
-    "or": "or with email",
+    "or": "or",
     "name": "Name",
     "email": "Email",
     "password": "Password",
@@ -311,6 +311,10 @@
   },
   "Map": {
     "allCounties": "All counties",
+    "panelCounties": "Counties",
+    "panelSearch": "Search a stay",
+    "panelEmpty": "No stays found.",
+    "stays": "{count, plural, one {# stay} other {# stays}}",
     "countyPin": "{county}: {count, plural, one {# stay} other {# stays}}"
   },
   "Property": {
@@ -544,6 +548,34 @@
     "home": "Find a stay"
   },
   "Account": {
+    "avatar": {
+      "add": "Add profile photo",
+      "change": "Change photo",
+      "remove": "Remove photo",
+      "errors": {
+        "type": "Choose an image (JPG, PNG or WebP).",
+        "size": "The image is too large. Choose one under 15 MB.",
+        "generic": "We could not save the photo. Try again."
+      }
+    },
+    "profile": "Profile",
+    "profileTitle": "My profile",
+    "overview": {
+      "memberSince": "member since {date}",
+      "completeTitle": "Profile complete",
+      "steps": {
+        "name": "Full name",
+        "phone": "Phone number",
+        "avatar": "Profile picture",
+        "email": "Confirmed email address"
+      },
+      "activity": "Your activity",
+      "nextStay": "Next stay",
+      "noStay": "You have no stay planned.",
+      "search": "Find a stay",
+      "nights": "{count, plural, one {# night} other {# nights}}"
+    },
+    "security": "Account security",
     "title": "My account",
     "back": "Back to stays",
     "bookings": "Bookings",
@@ -559,6 +591,185 @@
     "pager": "Booking pages",
     "page": "Page {page} of {pages}",
     "prev": "Previous page",
-    "next": "Next page"
+    "next": "Next page",
+    "nav": {
+      "profile": "Profile",
+      "bookings": "Bookings",
+      "reviews": "Reviews",
+      "favorites": "Favourites",
+      "payments": "Payments and cards",
+      "notifications": "Notifications"
+    },
+    "upcoming": "Upcoming bookings",
+    "past": "Past bookings",
+    "personal": {
+      "title": "Personal details",
+      "hostAlsoGuest": "you can book as a guest too",
+      "name": "Full name",
+      "phone": "Phone",
+      "phoneHint": "We fill it in for you when you send a booking request.",
+      "save": "Save",
+      "saved": "Your details were saved.",
+      "errors": {
+        "nameEmpty": "Enter your name.",
+        "nameLong": "The name is too long (80 characters at most).",
+        "phone": "This phone number does not look right.",
+        "generic": "We could not save. Try again."
+      }
+    },
+    "email": {
+      "title": "Email address",
+      "current": "Current address:",
+      "new": "New address",
+      "submit": "Change email",
+      "sent": "We sent a confirmation link to {email}. The address changes once you click it.",
+      "pending": "Waiting for the new address to be confirmed: {email}. Check your email.",
+      "errors": {
+        "invalid": "This email address does not look right.",
+        "same": "This is already your address.",
+        "taken": "An account with this address already exists.",
+        "rateLimit": "Too many attempts. Try again in a few minutes.",
+        "generic": "We could not change the email. Try again."
+      }
+    },
+    "password": {
+      "title": "Password",
+      "new": "New password",
+      "confirm": "Confirm password",
+      "hint": "At least {min} characters.",
+      "submit": "Change password",
+      "saved": "Your password was changed.",
+      "show": "Show password",
+      "hide": "Hide password",
+      "social": "You sign in with Google, so the account has no separate password.",
+      "errors": {
+        "short": "The password needs at least {min} characters.",
+        "long": "The password can have at most 72 characters.",
+        "mismatch": "The passwords do not match.",
+        "same": "The new password must differ from the old one.",
+        "weak": "The password is too weak. Choose a longer one.",
+        "reauth": "For your safety, sign out, sign in again and retry.",
+        "generic": "We could not change the password. Try again."
+      }
+    },
+    "danger": {
+      "signOutText": "Sign out of your account on this device.",
+      "section": "Session and account",
+      "title": "Delete account",
+      "text": "We delete your account, favourites and reviews. Bookings stay with the hosts, no longer linked to your account. This cannot be undone.",
+      "hostNote": "You also have a host account: properties and bookings belong to your business, so the account cannot be deleted here. Write to us and we will help.",
+      "open": "I want to delete my account",
+      "confirmWord": "DELETE",
+      "confirmLabel": "Type {word} to confirm",
+      "submit": "Delete permanently",
+      "cancel": "Cancel",
+      "errors": {
+        "host": "The account has a host business and cannot be deleted here.",
+        "generic": "We could not delete the account. Try again."
+      }
+    },
+    "notify": {
+      "title": "Notifications",
+      "sub": "Choose which emails you get from Sejur Studio.",
+      "channel": "We send them to {email}.",
+      "always": "Always on",
+      "saved": "Preference saved.",
+      "error": "We could not save. Try again.",
+      "booking": {
+        "title": "Your bookings",
+        "text": "Request received, confirmation, cancellation and changes made by the host."
+      },
+      "reminders": {
+        "title": "Before arrival",
+        "text": "Address, check-in time and the host's directions, one day before."
+      },
+      "reviews": {
+        "title": "Review request",
+        "text": "After your stay, we ask how it went."
+      },
+      "favorites": {
+        "title": "Favourites news",
+        "text": "When a favourite stay gets a lower price or free dates."
+      },
+      "offers": {
+        "title": "Offers and news",
+        "text": "Special offers and new stays, at most twice a month."
+      }
+    },
+    "reviews": {
+      "title": "My reviews",
+      "dueTitle": "To review",
+      "dueEmpty": "No stay is waiting for a review.",
+      "doneTitle": "Your reviews",
+      "doneEmpty": "You have not written any review yet.",
+      "search": "Find a stay",
+      "leave": "Leave a review",
+      "rating": "Your rating",
+      "stars": "{count, plural, one {# star} other {# stars}}",
+      "comment": "Comment (optional)",
+      "placeholder": "What did you like? What could be better?",
+      "submit": "Send review",
+      "update": "Save",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "loadError": "We could not load your reviews. Reload the page.",
+      "errors": {
+        "rating": "Choose a rating from 1 to 5 stars.",
+        "generic": "We could not save the review. Try again."
+      },
+      "soon": "Reviews are switching on soon. Your finished stays will show up here so you can rate them."
+    },
+    "payments": {
+      "title": "Payments and cards",
+      "cardsTitle": "Saved cards",
+      "cardsSub": "Pay the deposit faster on your next booking.",
+      "cardsEmpty": "No saved card",
+      "cardsSoon": "Online card payment is coming soon. You will be able to save a card on your first payment.",
+      "secure": "Card details are kept by Stripe, the payment processor. Sejur Studio never sees or stores your card number.",
+      "historyTitle": "Payment history",
+      "historyEmpty": "You have not made any payment yet.",
+      "loadError": "We could not load your payments. Reload the page.",
+      "viewBooking": "See booking",
+      "refunded": "Refunded: {amount}",
+      "status": {
+        "pending": "Pending",
+        "succeeded": "Paid",
+        "failed": "Failed",
+        "refunded": "Refunded",
+        "partially_refunded": "Partly refunded"
+      }
+    }
+  },
+  "Calendar": {
+    "holidaysTitle": "Next<br></br>days off",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "pickCheckOut": "Pick check-out",
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "nights": "{count, plural, one {# night} other {# nights}}",
+    "holidays": {
+      "newYear": "New Year's Eve",
+      "epiphany": "Epiphany",
+      "union": "Union Day",
+      "dragobete": "Dragobete (love day)",
+      "easter": "Easter",
+      "labour": "1 May",
+      "children": "Children's Day",
+      "pentecost": "Pentecost",
+      "assumption": "Assumption of Mary",
+      "standrew": "St Andrew & National Day",
+      "national": "National Day",
+      "christmas": "Christmas"
+    },
+    "more": "More ({count})",
+    "less": "Fewer",
+    "leave": "{count, plural, one {+# day of leave} other {+# days of leave}}",
+    "noLeave": "no leave needed",
+    "leaveDays": "Days of leave (bridge): {days}",
+    "bridge": "bridge day, worth taking off"
   }
 }
