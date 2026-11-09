@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowLeft,
@@ -53,6 +53,7 @@ export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: ()
   const [result, setResult] = useState<Result>(reason === "linkError" ? { error: "linkExpired" } : {});
   const [pending, setPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const passwordId = useId();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -276,9 +277,10 @@ export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: ()
                 <FieldError text={fieldError("email")} />
               </label>
               {mode !== "forgot" && (
-                <label className="block">
+                <div className="block">
+                  {/* No wrapping <label> here: it would label the first control inside it (the forgot button), not the input. */}
                   <span className="flex items-center justify-between text-xs font-semibold text-ink">
-                    {t("password")}
+                    <label htmlFor={passwordId}>{t("password")}</label>
                     {mode === "login" && (
                       <button type="button" onClick={() => switchMode("forgot")} className="font-medium text-ink-soft hover:text-ink">
                         {t("forgot")}
@@ -287,6 +289,7 @@ export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: ()
                   </span>
                   <span className="relative block">
                     <input
+                      id={passwordId}
                       type={showPassword ? "text" : "password"}
                       autoComplete={mode === "login" ? "current-password" : "new-password"}
                       maxLength={72}
@@ -308,7 +311,7 @@ export function AuthModal({ reason, onClose }: { reason: AuthReason; onClose: ()
                     <span className="mt-1 block text-xs text-muted">{t("passwordHint", { min: PASSWORD_MIN })}</span>
                   )}
                   <FieldError text={fieldError("password")} />
-                </label>
+                </div>
               )}
               <motion.button whileTap={{ scale: 0.98 }} type="submit" disabled={pending} className={`${primaryButton} w-full disabled:opacity-70`}>
                 {pending && <Loader2 className="size-4 animate-spin" />}

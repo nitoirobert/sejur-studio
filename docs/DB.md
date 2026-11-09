@@ -1,6 +1,6 @@
 # Baza de date (Supabase) — pe scurt
 
-Migrații: `supabase/migrations/0001_core.sql` (tabele), `0002_rls.sql` (securitate), `0003_storage.sql` (poze), `0004_functions.sql` (funcții), `0005`–`0009` (curățare: vezi `docs/untangle-db.md`), `0010_public_booking.sql` (rezervare publică, unități, pg_cron), `0011_photos_hardening.sql` (poze doar WebP cu nume uuid, un singur preț de weekend pe unitate). Date de test: `supabase/seed.sql`.
+Migrații: `supabase/migrations/0001_core.sql` (tabele), `0002_rls.sql` (securitate), `0003_storage.sql` (poze), `0004_functions.sql` (funcții), `0005`–`0009` (curățare: vezi `docs/untangle-db.md`), `0010_public_booking.sql` (rezervare publică, unități, pg_cron), `0011_photos_hardening.sql` (poze doar WebP cu nume uuid, un singur preț de weekend pe unitate), `0012_guest_accounts.sql` (conturi de oaspete fără firmă), `0013_guest_booking.sql` (cererea legată de cont, favorite, lista de cereri a gazdei, limita pe IP). Date de test: `supabase/seed.sql`.
 Reguli: fiecare tabel are `id uuid`, `created_at`, `updated_at` (se schimbă singur la update) și RLS. Banii sunt **întregi în bani** (1 leu = 100), cu `check (>= 0)`, moneda implicită `RON`. Datele sunt `date`; o rezervare ocupă `[check_in, check_out)` (ziua plecării e liberă).
 
 ## Tabele
@@ -15,17 +15,19 @@ Reguli: fiecare tabel are `id uuid`, `created_at`, `updated_at` (se schimbă sin
 | `unit_prices` | prețuri pe noapte (bani): `base` (una pe unitate), `weekend` (una pe unitate, din 0011: index unic `unit_prices_one_weekend_idx`, a doua dă 23505), `season` (oricâte) (cu date_from/date_to), min_nights, priority |
 | `photos` | poze: property_id, unit_id (opțional), storage_path (obligatoriu `<organization_id>/<property_id>/<fișier>` al aceluiași rând), position (0..n-1), is_cover (max una pe proprietate), alt |
 | `guests` | oaspete, GDPR minim: doar full_name, email, phone |
-| `bookings` | rezervarea: unit, guest (se pune null dacă oaspetele e șters), check_in/check_out, `stay` (generat), status, source, adulți, copii, total_amount, hold_expires_at (obligatoriu la `hold`), `stripe_checkout_session_id`, public_token; o rezervare importată are `ical_feed_id` + `external_uid` (unice împreună) |
+| `bookings` | rezervarea: unit, guest (se pune null dacă oaspetele e șters), check_in/check_out, `stay` (generat), status, source, adulți, copii, total_amount, hold_expires_at (obligatoriu la `hold`), `stripe_checkout_session_id`, public_token, `user_id` (contul oaspetelui care a trimis cererea, din 0013; null fără cont); o rezervare importată are `ical_feed_id` + `external_uid` (unice împreună) |
 | `payments` | plăți (scrise doar de webhook-ul Stripe): amount, refunded_amount, status, id-uri Stripe (`stripe_payment_intent_id` e doar aici); starea rambursării e un constraint: `refunded` = toată suma, `partially_refunded` = între 0 și sumă, restul = 0 |
 | `cancellation_policies` | reguli de rambursare (jsonb) |
 | `ical_feeds` | feed-uri iCal importate pe unitate; `provider` folosește același enum ca `bookings.source`, dar nu poate fi `direct` |
 | `sync_conflicts` | suprapuneri găsite la sincronizarea iCal; „rezolvat” = `resolved_at is not null` |
+| `favorites` | inimile oaspetelui (0013): user_id, unit_id, unic pe pereche; fiecare cont vede și scrie doar ale lui |
+| `rate_limit_hits`, `rate_limit_salt` | contorul limitei pe IP (0013): un rând pe cerere acceptată, IP-ul doar ca hash; nicio rolă API nu le citește |
 
 `organization_id` se trimite **explicit** la fiecare insert pe un tabel copil (NOT NULL). Cheile străine sunt compuse (`(părinte_id, organization_id)`), deci un rând legat de altă firmă e refuzat de bază cu `23503` (nu mai există trigger). Tot așa: poza și unitatea ei sunt în aceeași proprietate; feed-ul, rezervarea și conflictul sunt ale aceleiași unități; `bookings.source` = `provider` al feed-ului. Ștergerea unei unități cu rezervări e refuzată (`23503`); ștergerea unei organizații întregi merge. Cheile de legătură nu se mai pot schimba cât timp sunt folosite (`23503`): o unitate cu poze nu se mută în altă proprietate; `provider` sau `unit_id` al unui feed cu rezervări și `unit_id` al unei rezervări importate sau legate de un conflict rămân fixe. La plăți, `status` și `refunded_amount` se schimbă împreună (`23514` altfel).
 
 **Status rezervare:** `hold` (în plată, expiră), `confirmed`, `blocked` (iCal sau blocare manuală), `cancelled`, `expired`. Doar `hold`, `confirmed`, `blocked` ocupă zile: constraint-ul `bookings_no_overlap` refuză suprapunerea pe aceeași unitate (cod `23P01`). Un `hold` are mereu `hold_expires_at` (`23514` altfel). `status` nu are valoare implicită: fiecare insert îl trimite (`23502` altfel). **Sursă:** `direct`, `booking`, `airbnb`, `altul`.
 
-**Cont nou:** triggerul de pe `auth.users` creează o organizație nouă, membrul `owner` și profilul. Nu citește firma sau rolul din metadata (doar `full_name`, ca nume).
+**Cont nou:** triggerul de pe `auth.users` creează o organizație nouă, membrul `owner` și profilul. Nu citește firma sau rolul din metadata (doar `full_name`, ca nume). Din 0012, un cont de **oaspete** (metadata `account_type = 'guest'`, sau Google / Apple) primește doar profilul, fără organizație.
 
 ## Funcții
 
@@ -36,6 +38,7 @@ Reguli: fiecare tabel are `id uuid`, `created_at`, `updated_at` (se schimbă sin
 | `reorder_units(p_property_id, p_unit_ids)` | proprietar | ca `reorder_photos`: exact toate unitățile proprietății, poziții 0..n-1. Erori: `property_not_found`, `unit_set_mismatch` |
 | `save_unit(...) → uuid` | proprietar | creează sau editează unitatea și prețul ei de bază, într-o tranzacție (vezi „Rezervare publică”) |
 | `public_quote`, `create_public_booking`, `public_booking_status`, `confirm_booking`, `decline_booking` | vezi „Rezervare publică” | contractul cu site-ul public |
+| `my_bookings`, `pending_requests`, `pending_requests_count`, `is_public_unit`, `rate_limit_hit` | vezi „Oaspete, cereri, limita pe IP (0013)” | contul oaspetelui, cererile din panou, contorul pe IP |
 | `dashboard_chart(p_from, p_to, p_property_id default null)` | proprietar | rezervările (confirmed, blocked, hold neexpirat) care se suprapun cu `[from, to)`, inclusiv cele începute înainte; max 366 zile. Coloane: booking_id, unit_id, property_id, check_in, check_out, status, source, guest_name, adults, children, total_amount, currency, hold_expires_at |
 | `dashboard_kpis(p_day default null)` | proprietar | kpi_day, arrivals_today, departures_today, occupancy_pct, revenue_month, currency (vezi regulile mai jos) |
 | `bucharest_today(p_now default now())` | proprietar | data de azi în `Europe/Bucharest` |
@@ -125,6 +128,28 @@ Doar `authenticated`, pe rezervările firmei lui (`security definer` cu verifica
 - `anon` are EXECUTE pe exact 4 funcții: `public_quote`, `create_public_booking`, `public_booking_status`, `public_busy_ranges`.
 - Doar `authenticated`: `confirm_booking`, `decline_booking`, `save_unit`, `reorder_units` (plus cele de dinainte).
 - `PUBLIC`: nimic. Anon nu citește și nu scrie direct în `bookings` sau `guests`.
+
+## Oaspete, cereri, limita pe IP (0013)
+
+**Legătura cu contul.** `bookings.user_id` (FK `auth.users`, `on delete set null`) e scris **doar** de `create_public_booking`, din `auth.uid()` al apelantului: fără parametru, fără potrivire după email. Anon → null; un JWT al unui cont șters → null (fără 23503). Semnătura, verificările și drepturile lui `create_public_booking` sunt cele din 0010 (o singură funcție în `pg_proc`). Nicio politică nouă pe `bookings` sau `guests`: oaspetele nu citește tabelele, doar `my_bookings()`. Gazda scrie `bookings` prin drepturi pe coloane care lasă afară `user_id` (insert/update pe `user_id` → 42501; restul coloanelor merg ca înainte). **O coloană nouă pe `bookings` trebuie adăugată și în aceste `grant insert (...)` / `grant update (...)`, altfel panoul primește 42501 la scriere.** `supabase/types.ts` arată totuși `user_id` în `Insert`/`Update` (generatorul nu citește drepturile pe coloane): nu-l trimiteți.
+
+### `my_bookings(p_limit int default 20, p_offset int default 0)`
+Doar `authenticated` (anon → 42501); `security definer`, filtrează `user_id = auth.uid()` (nu RLS-ul gazdei: owner1 ca oaspete vede doar cererile lui). Cele mai noi întâi (`created_at desc, id desc`). Coloane: `booking_id`, `public_token` (pentru linkul spre `/rezervare/[token]`), `status` (hold expirat → `expired`), `check_in`, `check_out`, `unit_id`, `unit_name`, `property_name`, `city`, `adults`, `children`, `total_amount`, `currency`, `hold_expires_at`, `created_at`, `total_count` (toate rândurile, pentru paginare). **Fără** `checkin_instructions`, `organization_id`, `guest_id`, `user_id`, nume / email / telefon. Erori: `invalid_page` (22023) dacă limita nu e 1–100 sau offset < 0.
+
+### `pending_requests(p_limit int default 50, p_offset int default 0)` și `pending_requests_count() → integer`
+Doar `authenticated`; `security invoker` (RLS-ul gazdei) plus filtrul explicit `is_org_member`. Hold-urile **vii** (`is_live_booking`) ale firmelor apelantului; un hold expirat nu apare. Cel mai urgent întâi (`hold_expires_at`, apoi `created_at`, `id`). Coloane: `booking_id`, `unit_id`, `property_id`, `unit_name`, `property_name`, `check_in`, `check_out`, `adults`, `children`, `total_amount`, `currency`, `hold_expires_at`, `created_at`, `guest_name`, `guest_email`, `guest_phone`, `total_count`. **Fără** `public_token`, `user_id`, `guest_id`, `organization_id`. Insigna = `pending_requests_count()` = `total_count` al listei (același predicat). Un cont de oaspete primește 0. Erori: `invalid_page` (22023).
+
+### `favorites`
+`user_id` (implicit `auth.uid()`, cascadă la ștergerea contului), `unit_id` (cascadă la ștergerea unității), `unique (user_id, unit_id)` (`favorites_user_unit_key`), index pe `unit_id`. RLS: select și delete cu `user_id = (select auth.uid())`; insert cu același WITH CHECK plus `is_public_unit(unit_id)` (unitate publicată dintr-o proprietate activă; altfel 42501). Fără update (nici politică, nici drept). Anon: nimic. Gazda nu vede cine i-a dat inimă. Clic dublu: `upsert` cu `onConflict: 'user_id,unit_id'`, `ignoreDuplicates: true` (= `on conflict do nothing`), deci fără 23505. Lista: `select unit_id, created_at` din `favorites`, apoi detaliile unităților prin clientul fără sesiune (o unitate ascunsă între timp pur și simplu lipsește).
+
+### `rate_limit_hit(p_bucket text, p_ip text, p_max int default 5, p_window_seconds int default 3600)`
+Doar `service_role` (server action; singura folosire a cheii de serviciu). Întoarce un rând: `allowed boolean`, `hits integer` (cereri acceptate în fereastră, inclusiv aceasta), `retry_after_seconds integer` (0 când e permis). Fereastră glisantă: cel mult `p_max` cereri acceptate pe `(bucket, ip)` în ultimele `p_window_seconds`; una refuzată nu se numără. IP-ul (după `trim` + litere mici) se stochează doar ca `sha256(sare | bucket | ip)`, sarea fiind generată în bază la migrare (`rate_limit_salt`, nu e în repo). Rândurile mai vechi de o zi se șterg la fiecare apel. Erori: `invalid_rate_limit` (22023): bucket `^[a-z][a-z0-9_]{0,39}$`, ip 1–100 caractere, max 1–1.000.000, fereastră 1–86.400 s. Resetare în teste: `delete from rate_limit_hits where bucket = '<bucket>'` cu cheia de serviciu.
+
+### Drepturi (0013)
+- `anon` are tot EXECUTE pe exact 4 funcții (cele din 0010).
+- `authenticated` (și `service_role`, implicit Supabase, ca toate funcțiile de proprietar): `my_bookings`, `pending_requests`, `pending_requests_count`, `is_public_unit`. Niciodată `anon` sau `PUBLIC`.
+- Doar `service_role`: `rate_limit_hit`. Tabelele `rate_limit_*`: RLS fără politici, niciun drept pentru `anon` / `authenticated` / `service_role` (doar funcția, `security definer`).
+- Toate au `set search_path = ''`. `security definer`: `my_bookings`, `is_public_unit`, `rate_limit_hit`; `security invoker`: `pending_requests`, `pending_requests_count`.
 
 ## Mai târziu
 - `public_busy_ranges`: `busy_from` poate dezvălui check-in-ul original al unui sejur lung; de tăiat la începutul ferestrei.

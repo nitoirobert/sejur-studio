@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { units } from "@/lib/mock-units";
+import { getBookingContext, getPublishedUnit } from "@/lib/catalog/server";
 import { PropertyView } from "@/components/property/PropertyView";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { unitJsonLd } from "@/lib/seo/structured-data";
@@ -11,21 +11,18 @@ import { SITE_NAME } from "@/lib/site";
 // Pagina dedicată unei cazări: /cazare/<id>. Cu ?foto=<n> se deschide direct galeria pe tot ecranul,
 // la poza n (așa ajunge clientul când dă click pe o poză din panoul din dreapta).
 
-export function generateStaticParams() {
-  return units.map((u) => ({ id: u.id }));
-}
-
 export async function generateMetadata({ params }: PageProps<"/cazare/[id]">): Promise<Metadata> {
   const { id } = await params;
-  const unit = units.find((u) => u.id === id);
+  const unit = await getPublishedUnit(id);
   if (!unit) {
     const t = await getTranslations("Property");
-    return { title: t("notFound") };
+    return { title: t("notFound"), robots: { index: false } };
   }
   const [tMeta, tUnit] = await Promise.all([getTranslations("Meta"), getTranslations("UnitText")]);
+  const name = tUnit.has(`${unit.id}.name`) ? tUnit(`${unit.id}.name`) : unit.name;
+  const description = tUnit.has(`${unit.id}.description`) ? tUnit(`${unit.id}.description`) : unit.description;
   // Titlu cu cuvintele căutate: „Căsuța din Brazi – cazare în Bran, Brașov – Sejur Studio"
-  const title = tMeta("unitTitle", { name: tUnit(`${id}.name`), place: unit.location });
-  const description = tUnit(`${id}.description`);
+  const title = unit.location ? tMeta("unitTitle", { name, place: unit.location }) : name;
   const url = `/cazare/${id}`;
   return {
     title,
@@ -38,14 +35,14 @@ export async function generateMetadata({ params }: PageProps<"/cazare/[id]">): P
       title: `${title} – ${SITE_NAME}`,
       description,
       url,
-      images: unit.photos.slice(0, 1).map((src) => ({ url: `${src}?w=1200&h=630&fit=crop&q=75`, width: 1200, height: 630 })),
+      images: unit.hasPhotos ? unit.photos.slice(0, 1).map((src) => ({ url: src })) : undefined,
     },
   };
 }
 
-// Pagina e statică (o variantă per cazare, din generateStaticParams). ?foto=n se citește în browser.
-// Citirea lui `params` stă sub <Suspense>, cum cere Next 16 pentru navigări instantanee:
-// la navigare se vede imediat scheletul, apoi pagina (deja pre-generată).
+// Pagina se randează la fiecare cerere (unitățile vin din baza de date; o unitate publicată acum
+// se vede imediat). ?foto=n se citește în browser. Citirea datelor stă sub <Suspense>:
+// la navigare se vede imediat scheletul, apoi pagina.
 export default function CazarePage({ params }: PageProps<"/cazare/[id]">) {
   return (
     <Suspense fallback={<PropertySkeleton />}>
@@ -56,12 +53,13 @@ export default function CazarePage({ params }: PageProps<"/cazare/[id]">) {
 
 async function Cazare({ params }: { params: PageProps<"/cazare/[id]">["params"] }) {
   const { id } = await params;
-  const unit = units.find((u) => u.id === id);
+  const unit = await getPublishedUnit(id);
   if (!unit) notFound();
+  const booking = await getBookingContext(unit.id);
   return (
     <>
       <JsonLd data={unitJsonLd(unit)} />
-      <PropertyView unit={unit} />
+      <PropertyView unit={unit} booking={booking} />
     </>
   );
 }

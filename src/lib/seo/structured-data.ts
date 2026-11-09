@@ -1,4 +1,4 @@
-import { nightly, property, type Unit } from "@/lib/mock-units";
+import { nightly, type Unit } from "@/lib/mock-units";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 /*
@@ -56,20 +56,20 @@ export function unitJsonLd(u: Unit) {
     name: u.name,
     description: u.description,
     url: `${SITE_URL}/cazare/${u.id}`,
-    image: u.photos,
+    image: u.hasPhotos ? u.photos : undefined,
     priceRange: `de la ${lei} lei / noapte`,
     currenciesAccepted: "RON",
-    checkinTime: property.checkIn,
-    checkoutTime: property.checkOut,
+    checkinTime: u.checkIn,
+    checkoutTime: u.checkOut,
     petsAllowed: u.amenities.includes("pets"),
     numberOfRooms: u.bedrooms,
     address: {
       "@type": "PostalAddress",
-      addressLocality: locality,
-      addressRegion: region,
+      addressLocality: locality || undefined,
+      addressRegion: region || undefined,
       addressCountry: "RO",
     },
-    geo: { "@type": "GeoCoordinates", latitude: u.lat, longitude: u.lng },
+    geo: u.lat !== null && u.lng !== null ? { "@type": "GeoCoordinates", latitude: u.lat, longitude: u.lng } : undefined,
     amenityFeature: u.amenities.map((a) => ({
       "@type": "LocationFeatureSpecification",
       name: amenityNames[a] ?? a,

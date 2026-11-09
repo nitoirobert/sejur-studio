@@ -14,8 +14,8 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { nightly, type Unit } from "@/lib/mock-units";
-import { siteCounties, sitePlaces } from "@/lib/search/catalog";
+import { nightly, photoThumb, type MappedUnit as Unit } from "@/lib/mock-units";
+import { usePlaces } from "@/lib/search/catalog";
 import { usePrice } from "./use-price";
 
 /*
@@ -35,8 +35,6 @@ const STYLE_DARK = "https://tiles.openfreemap.org/styles/dark";
 const SOURCE = "units";
 const COUNTIES = "judete";
 const LOCALITIES = "localitati";
-const withUnits = siteCounties.map((c) => c.county);
-const withCities = sitePlaces.map((p) => p.city); // doar localitățile în care avem cazări
 
 type Props = {
   units: Unit[];
@@ -136,6 +134,9 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
   const followUnit = useRef<{ unit: Unit; until: number } | null>(null); // recentrare cât se așază panoul
   const pendingUnit = useRef<Unit | null>(null); // unitate aleasă cât județul încă nu era deschis
   const price = usePrice();
+  const { siteCounties, sitePlaces } = usePlaces();
+  const withUnits = siteCounties.map((c) => c.county);
+  const withCities = sitePlaces.map((p) => p.city); // doar localitățile în care avem cazări
 
   // Ultimele valori, citite din evenimentele hărții (care trăiesc în afara ciclului React)
   const latest = useRef({
@@ -147,6 +148,8 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
     onCountySelect,
     countyLabel: (name: string, count: number) => t("countyPin", { county: name, count }),
     perNight: tUnit("perNight"),
+    withUnits,
+    withCities,
   });
   useEffect(() => {
     latest.current = {
@@ -158,6 +161,8 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
       onCountySelect,
       countyLabel: (name, count) => t("countyPin", { county: name, count }),
       perNight: tUnit("perNight"),
+      withUnits,
+      withCities,
     };
   });
 
@@ -335,7 +340,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
     m.on("load", () => {
       // ---- Județe: doar cele cu cazări sunt colorate și se pot apăsa; restul sunt doar contur fin ----
       m.addSource(COUNTIES, { type: "geojson", data: "/geo/judete.geojson" });
-      const has: ExpressionSpecification = ["in", ["get", "name"], ["literal", withUnits]];
+      const has: ExpressionSpecification = ["in", ["get", "name"], ["literal", latest.current.withUnits]];
       m.addLayer({
         id: "judete-fill",
         type: "fill",
@@ -362,7 +367,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
 
       // ---- Localitățile cu cazări: contur + nume ----
       m.addSource(LOCALITIES, { type: "geojson", data: "/geo/localitati.geojson" });
-      const city: ExpressionSpecification = ["in", ["get", "name"], ["literal", withCities]];
+      const city: ExpressionSpecification = ["in", ["get", "name"], ["literal", latest.current.withCities]];
       m.addLayer({
         id: "localitati-fill",
         type: "fill",
@@ -431,7 +436,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
         .then((geo: GeoJSON.FeatureCollection) => {
           if (map.current !== m) return;
           info.current = analyse(geo);
-          const all = overviewBounds(info.current);
+          const all = overviewBounds(info.current, latest.current.withUnits);
           if (all) {
             m.fitBounds(all, { padding: 70, duration: 0 }); // doar la început; fără limite de zoom sau de tragere
           }
@@ -484,7 +489,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
       } else if (county) {
         fit(m, units, true);
       } else if (!firstRun) {
-        const all = overviewBounds(info.current);
+        const all = overviewBounds(info.current, latest.current.withUnits);
         if (all) m.fitBounds(all, { padding: 70, duration: 900 });
       }
     }
@@ -562,7 +567,7 @@ function buildPreview(u: Unit, priceText: string, perNight: string, onOpen: () =
   body.className = "block overflow-hidden rounded-2xl bg-cream-50 shadow-soft ring-1 ring-sand";
 
   const img = document.createElement("img");
-  img.src = `${u.photos[0]}?w=480&q=70&auto=format&fit=crop`;
+  img.src = photoThumb(u.photos[0], 480);
   img.alt = "";
   img.loading = "lazy";
   img.className = "block h-32 w-full object-cover";
@@ -576,7 +581,7 @@ function buildPreview(u: Unit, priceText: string, perNight: string, onOpen: () =
   meta.className = "mt-0.5 flex items-center justify-between gap-2 text-xs text-muted";
   const place = document.createElement("span");
   place.className = "truncate";
-  place.textContent = `${u.location} · ★ ${u.rating.toFixed(1)}`;
+  place.textContent = u.rating !== null ? `${u.location} · ★ ${u.rating.toFixed(1)}` : u.location;
   const price = document.createElement("span");
   price.className = "shrink-0 font-bold text-ink";
   price.textContent = priceText;
@@ -593,7 +598,7 @@ function buildPreview(u: Unit, priceText: string, perNight: string, onOpen: () =
 }
 
 // Zona care cuprinde toate județele cu cazări (pe ea se fixează harta)
-function overviewBounds(infos: Record<string, CountyInfo>) {
+function overviewBounds(infos: Record<string, CountyInfo>, withUnits: string[]) {
   const b = new LngLatBounds();
   let any = false;
   for (const name of withUnits) {

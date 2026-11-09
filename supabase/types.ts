@@ -36,6 +36,7 @@ export type Database = {
           total_amount: number
           unit_id: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           adults?: number
@@ -58,6 +59,7 @@ export type Database = {
           total_amount?: number
           unit_id: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           adults?: number
@@ -80,6 +82,7 @@ export type Database = {
           total_amount?: number
           unit_id?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -143,6 +146,38 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      favorites: {
+        Row: {
+          created_at: string
+          id: string
+          unit_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          unit_id: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          unit_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
             referencedColumns: ["id"]
           },
         ]
@@ -542,6 +577,54 @@ export type Database = {
           },
         ]
       }
+      rate_limit_hits: {
+        Row: {
+          bucket: string
+          created_at: string
+          id: string
+          key_hash: string
+          updated_at: string
+        }
+        Insert: {
+          bucket: string
+          created_at?: string
+          id?: string
+          key_hash: string
+          updated_at?: string
+        }
+        Update: {
+          bucket?: string
+          created_at?: string
+          id?: string
+          key_hash?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rate_limit_salt: {
+        Row: {
+          created_at: string
+          id: string
+          salt: string
+          singleton: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          salt?: string
+          singleton?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          salt?: string
+          singleton?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sync_conflicts: {
         Row: {
           booking_id: string | null
@@ -818,6 +901,51 @@ export type Database = {
       }
       is_org_member: { Args: { org: string }; Returns: boolean }
       is_own_storage_path: { Args: { path: string }; Returns: boolean }
+      is_public_unit: { Args: { p_unit_id: string }; Returns: boolean }
+      my_bookings: {
+        Args: { p_limit?: number; p_offset?: number }
+        Returns: {
+          adults: number
+          booking_id: string
+          check_in: string
+          check_out: string
+          children: number
+          city: string
+          created_at: string
+          currency: string
+          hold_expires_at: string
+          property_name: string
+          public_token: string
+          status: Database["public"]["Enums"]["booking_status"]
+          total_amount: number
+          total_count: number
+          unit_id: string
+          unit_name: string
+        }[]
+      }
+      pending_requests: {
+        Args: { p_limit?: number; p_offset?: number }
+        Returns: {
+          adults: number
+          booking_id: string
+          check_in: string
+          check_out: string
+          children: number
+          created_at: string
+          currency: string
+          guest_email: string
+          guest_name: string
+          guest_phone: string
+          hold_expires_at: string
+          property_id: string
+          property_name: string
+          total_amount: number
+          total_count: number
+          unit_id: string
+          unit_name: string
+        }[]
+      }
+      pending_requests_count: { Args: never; Returns: number }
       public_booking_status: {
         Args: { p_token: string }
         Returns: {
@@ -852,6 +980,19 @@ export type Database = {
           ok: boolean
           reason: string
           total: number
+        }[]
+      }
+      rate_limit_hit: {
+        Args: {
+          p_bucket: string
+          p_ip: string
+          p_max?: number
+          p_window_seconds?: number
+        }
+        Returns: {
+          allowed: boolean
+          hits: number
+          retry_after_seconds: number
         }[]
       }
       reorder_photos: {

@@ -482,5 +482,83 @@
       "title": "Marketing",
       "text": "Nos ayudan a mostrarte ofertas de Sejur Studio en Facebook, Instagram, TikTok y Google."
     }
+  },
+  "BookingRequest": {
+    "stayLegend": "Tu estancia",
+    "checkIn": "Llegada",
+    "checkOut": "Salida",
+    "busy": "Ocupado:",
+    "guests": "Huéspedes (hasta {max})",
+    "priceTitle": "Precio por noche",
+    "quoting": "Calculando el precio…",
+    "night": "Noche del {date}",
+    "total": "Total por {count, plural, one {# noche} other {# noches}}",
+    "contactLegend": "Tus datos",
+    "fullName": "Nombre y apellidos",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "requestNote": "El anfitrión recibe tu solicitud y la confirma en 24 horas como máximo. Hasta entonces el alojamiento queda reservado para ti.",
+    "continue": "Reservar este alojamiento",
+    "send": "Enviar solicitud",
+    "sending": "Enviando…",
+    "changeStay": "Cambiar fechas o huéspedes",
+    "noPayment": "No pagas nada ahora.",
+    "errors": {
+      "unit_not_found": "Este alojamiento ya no está disponible en el sitio.",
+      "invalid_dates": "Elige una salida posterior a la llegada, desde hoy, de 30 noches como máximo.",
+      "invalid_guest": "Revisa el nombre, el correo y el teléfono (al menos 6 cifras).",
+      "too_many_guests": "El alojamiento admite como máximo {max} huéspedes.",
+      "no_price": "El anfitrión aún no ha fijado el precio para estas fechas.",
+      "min_nights": "Para estas fechas el anfitrión pide una estancia más larga.",
+      "invalid_amount": "La estancia es demasiado larga. Elige menos noches.",
+      "unavailable": "Estas fechas ya están ocupadas. Elige otras fechas.",
+      "too_many_requests": "Ya tienes 3 solicitudes pendientes con este correo. Espera la respuesta del anfitrión.",
+      "rate_limited": "Demasiadas solicitudes en una hora. Vuelve a intentarlo más tarde.",
+      "invalid_request": "No se pudo enviar la solicitud. Recarga la página e inténtalo de nuevo.",
+      "generic": "No pudimos enviar la solicitud. Revisa tu conexión e inténtalo de nuevo."
+    }
+  },
+  "BookingStatus": {
+    "title": "Tu solicitud de reserva",
+    "back": "Volver a los alojamientos",
+    "eyebrow": "Tu solicitud de reserva",
+    "status": {
+      "hold": "Pendiente",
+      "confirmed": "Confirmada",
+      "cancelled": "Cancelada",
+      "expired": "Caducada"
+    },
+    "explain": {
+      "hold": "El anfitrión ha recibido tu solicitud y responde en 24 horas como máximo. Hasta entonces el alojamiento queda reservado para ti.",
+      "confirmed": "El anfitrión ha confirmado tu reserva. ¡Hasta pronto!",
+      "cancelled": "El anfitrión no pudo aceptar esta solicitud. Elige otras fechas u otro alojamiento.",
+      "expired": "El anfitrión no respondió en 24 horas, así que la solicitud caducó. Puedes enviar una nueva."
+    },
+    "checkIn": "Llegada",
+    "checkOut": "Salida",
+    "total": "Total",
+    "amount": "{amount} {currency, select, RON {lei} other {{currency}}}",
+    "keepLink": "Guarda la dirección de esta página: aquí ves en todo momento el estado de tu solicitud.",
+    "notFoundTitle": "Reserva no encontrada",
+    "notFoundBody": "No hay ninguna reserva en esta dirección. Revisa el enlace que recibiste.",
+    "home": "Buscar alojamiento"
+  },
+  "Account": {
+    "title": "Mi cuenta",
+    "back": "Volver a los alojamientos",
+    "bookings": "Reservas",
+    "favorites": "Favoritos",
+    "bookingsTitle": "Mis reservas",
+    "favoritesTitle": "Mis favoritos",
+    "bookingsEmpty": "Aún no tienes reservas.",
+    "pageEmpty": "Esta página ya no tiene reservas.",
+    "favoritesEmpty": "Aún no tienes favoritos. Toca el corazón de un alojamiento para guardarlo aquí.",
+    "search": "Buscar alojamiento",
+    "viewStatus": "Ver el estado de la solicitud",
+    "loadError": "No pudimos cargar tus reservas. Recarga la página.",
+    "pager": "Páginas de reservas",
+    "page": "Página {page} de {pages}",
+    "prev": "Página anterior",
+    "next": "Página siguiente"
   }
 }

@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { pill } from "@/components/ui/soft";
 import { popover } from "@/components/ui/motion";
-import { places, sitePlaces, suggestPlaces, type Place } from "@/lib/search/catalog";
+import { suggestPlaces, usePlaces, type Place } from "@/lib/search/catalog";
 import { rankRecent, recordRecent, useRecent } from "@/lib/search/recent";
 import { Autocomplete, type AcGroup, type AcItem } from "./Autocomplete";
 import { useDismiss } from "./use-dismiss";
@@ -27,6 +27,7 @@ export function LocationPicker({ value, onChange, size = "md", className = "" }:
   const [now, setNow] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const recent = useRecent("location");
+  const { places, sitePlaces } = usePlaces();
 
   useDismiss(ref, open, () => setOpen(false));
 
@@ -45,7 +46,7 @@ export function LocationPicker({ value, onChange, size = "md", className = "" }:
     onPick: () => pick(p),
   });
 
-  const suggestions = text.trim() ? suggestPlaces(text, recent, now) : [];
+  const suggestions = text.trim() ? suggestPlaces(text, recent, now, 7, places) : [];
   const groups: AcGroup[] = text.trim()
     ? [{ id: "results", title: t("results"), items: suggestions.map((p) => toItem(p)) }]
     : [

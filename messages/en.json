@@ -482,5 +482,83 @@
       "title": "Marketing",
       "text": "Helps us show you Sejur Studio offers on Facebook, Instagram, TikTok and Google."
     }
+  },
+  "BookingRequest": {
+    "stayLegend": "Your stay",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "busy": "Booked:",
+    "guests": "Guests (up to {max})",
+    "priceTitle": "Price per night",
+    "quoting": "Working out the price…",
+    "night": "Night of {date}",
+    "total": "Total for {count, plural, one {# night} other {# nights}}",
+    "contactLegend": "Your details",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "requestNote": "The host gets your request and confirms it within 24 hours. Until then the place is held for you.",
+    "continue": "Book this stay",
+    "send": "Send request",
+    "sending": "Sending…",
+    "changeStay": "Change dates or guests",
+    "noPayment": "You pay nothing now.",
+    "errors": {
+      "unit_not_found": "This stay is no longer available on the site.",
+      "invalid_dates": "Pick a check-out after check-in, from today on, for at most 30 nights.",
+      "invalid_guest": "Check your name, email and phone (at least 6 digits).",
+      "too_many_guests": "This stay takes at most {max} guests.",
+      "no_price": "The host has not set a price for these dates yet.",
+      "min_nights": "The host asks for a longer stay on these dates.",
+      "invalid_amount": "This stay is too long. Pick fewer nights.",
+      "unavailable": "These dates are already booked. Pick other dates.",
+      "too_many_requests": "You already have 3 pending requests with this email. Wait for the host's answer.",
+      "rate_limited": "Too many requests in one hour. Try again later.",
+      "invalid_request": "The request could not be sent. Reload the page and try again.",
+      "generic": "We could not send the request. Check your connection and try again."
+    }
+  },
+  "BookingStatus": {
+    "title": "Your booking request",
+    "back": "Back to stays",
+    "eyebrow": "Your booking request",
+    "status": {
+      "hold": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    },
+    "explain": {
+      "hold": "The host has your request and will answer within 24 hours. The place is held for you until then.",
+      "confirmed": "The host confirmed your booking. See you soon!",
+      "cancelled": "The host could not take this request. You can pick other dates or another stay.",
+      "expired": "The host did not answer within 24 hours, so the request expired. You can send a new one."
+    },
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "total": "Total",
+    "amount": "{amount} {currency, select, RON {lei} other {{currency}}}",
+    "keepLink": "Keep this page's address: you can check your request here at any time.",
+    "notFoundTitle": "Booking not found",
+    "notFoundBody": "We found no booking at this address. Check the link you received.",
+    "home": "Find a stay"
+  },
+  "Account": {
+    "title": "My account",
+    "back": "Back to stays",
+    "bookings": "Bookings",
+    "favorites": "Favourites",
+    "bookingsTitle": "My bookings",
+    "favoritesTitle": "My favourites",
+    "bookingsEmpty": "You have no bookings yet.",
+    "pageEmpty": "This page has no more bookings.",
+    "favoritesEmpty": "No favourite stays yet. Tap the heart on a stay to keep it here.",
+    "search": "Find a stay",
+    "viewStatus": "See request status",
+    "loadError": "We could not load your bookings. Reload the page.",
+    "pager": "Booking pages",
+    "page": "Page {page} of {pages}",
+    "prev": "Previous page",
+    "next": "Next page"
   }
 }

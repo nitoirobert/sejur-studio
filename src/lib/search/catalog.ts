@@ -1,4 +1,6 @@
-import { units, type Unit } from "@/lib/mock-units";
+import { useMemo } from "react";
+import type { Unit } from "@/lib/mock-units";
+import { useBaseUnits } from "@/lib/use-units";
 import { normalize } from "@/lib/text";
 import { frecency, type RecentEntry } from "./recent";
 
@@ -42,34 +44,44 @@ const split = (label: string) => {
   return { city, county };
 };
 
-// Câte unități avem în fiecare locație de pe site
-const siteCounts = new Map<string, number>();
-for (const u of units) siteCounts.set(u.location, (siteCounts.get(u.location) ?? 0) + 1);
+export type SitePlaces = {
+  places: Place[]; // locațiile de pe site + destinațiile populare
+  sitePlaces: Place[]; // doar locațiile în care avem cazări
+  siteCounties: { county: string; count: number }[]; // județele cu cazări, cu numărul de unități
+};
 
-export const places: Place[] = (() => {
+// Locațiile, calculate din unitățile publicate (vin din baza de date)
+export function buildPlaces(list: Unit[]): SitePlaces {
+  const siteCounts = new Map<string, number>();
+  for (const u of list) if (u.location) siteCounts.set(u.location, (siteCounts.get(u.location) ?? 0) + 1);
+
   const map = new Map<string, Place>();
   for (const [label, count] of siteCounts) map.set(normalize(split(label).city), { label, ...split(label), count });
   for (const [city, county] of popular) {
     const key = normalize(city);
     if (!map.has(key)) map.set(key, { label: `${city}, ${county}`, city, county, count: 0 });
   }
-  return [...map.values()];
-})();
+  const places = [...map.values()];
+  const sitePlaces = places.filter((p) => p.count > 0);
 
-export const sitePlaces = places.filter((p) => p.count > 0);
-
-// Județele în care avem cazări, cu numărul de unități
-export const siteCounties: { county: string; count: number }[] = (() => {
-  const map = new Map<string, number>();
-  for (const p of sitePlaces) map.set(p.county, (map.get(p.county) ?? 0) + p.count);
-  return [...map.entries()]
+  const counties = new Map<string, number>();
+  for (const p of sitePlaces) if (p.county) counties.set(p.county, (counties.get(p.county) ?? 0) + p.count);
+  const siteCounties = [...counties.entries()]
     .map(([county, count]) => ({ county, count }))
     .sort((a, b) => b.count - a.count);
-})();
+
+  return { places, sitePlaces, siteCounties };
+}
+
+// Locațiile pentru unitățile de pe pagină
+export function usePlaces(): SitePlaces {
+  const units = useBaseUnits();
+  return useMemo(() => buildPlaces(units), [units]);
+}
 
 // Cuvintele pentru efectul de tastare din căutare: locații de pe site și nume de unități, alternativ.
 // Primește unitățile deja traduse, ca numele să fie în limba curentă.
-export function typewriterWords(list: Unit[] = units): string[] {
+export function typewriterWords(list: Unit[], sitePlaces: Place[]): string[] {
   const cities = sitePlaces.map((p) => p.city);
   const names = list.map((u) => u.name);
   const out: string[] = [];
@@ -100,7 +112,7 @@ function recentBoost(label: string, recent: RecentEntry[], now: number) {
   return hit ? Math.min(frecency(hit, now), 2) : 0;
 }
 
-export function suggestPlaces(query: string, recent: RecentEntry[], now: number, limit = 7) {
+export function suggestPlaces(query: string, recent: RecentEntry[], now: number, limit: number, places: Place[]) {
   return places
     .map((p) => ({ p, s: matchScore(p.label, query) }))
     .filter((x) => x.s > 0)
@@ -115,12 +127,12 @@ export function suggestUnits(
   recent: RecentEntry[],
   now: number,
   limit = 5,
-  list: Unit[] = units, // unitățile în limba curentă
+  list: Unit[], // unitățile în limba curentă
 ): Unit[] {
   return list
     .map((u) => ({ u, s: matchScore(u.name, query) }))
     .filter((x) => x.s > 0)
-    .map((x) => ({ ...x, s: x.s + recentBoost(x.u.name, recent, now) + x.u.rating / 10 }))
+    .map((x) => ({ ...x, s: x.s + recentBoost(x.u.name, recent, now) + (x.u.rating ?? 0) / 10 }))
     .sort((a, b) => b.s - a.s)
     .slice(0, limit)
     .map((x) => x.u);

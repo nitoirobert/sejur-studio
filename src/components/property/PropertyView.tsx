@@ -9,26 +9,27 @@ import {
   ArrowLeft,
   Bath,
   BedDouble,
-  CalendarDays,
   Check,
   CircleCheck,
   Images,
   MapPin,
-  Pencil,
   Ruler,
   Share2,
   Star,
   Users,
 } from "lucide-react";
-import { useFormatter, useTranslations } from "next-intl";
-import { defaultStay, nightly, property, type Unit } from "@/lib/mock-units";
-import { card, iconButton, pill, primaryButton } from "@/components/ui/soft";
+import { useTranslations } from "next-intl";
+import { PLACEHOLDER_PHOTO, type Unit } from "@/lib/mock-units";
+import { card, iconButton, pill } from "@/components/ui/soft";
 import { amenityIcons } from "@/components/browse/icons";
 import { MapCard } from "@/components/browse/MapCard";
 import { ThemeToggle } from "@/components/browse/ThemeToggle";
 import { usePrice } from "@/components/browse/use-price";
 import { useLocalizeUnit } from "@/lib/use-units";
 import { Lightbox } from "./Lightbox";
+import { BookingCard, type BusyRange } from "@/components/booking/BookingCard";
+import { FavoriteButton } from "@/components/booking/FavoriteButton";
+import type { IsoDate } from "@/lib/dates/days";
 
 // Poza deschisă stă în adresă (?foto=n): linkul din panou și cel copiat duc la aceeași poză.
 // history.replaceState e sincronizat de Next cu useSearchParams, fără cerere la server.
@@ -43,7 +44,7 @@ type Tab = "amenities" | "rules" | "location";
 
 // Pagina dedicată a unei cazări, după referința „Homex": bară sus, pozele într-un rând (toate la fel),
 // apoi detaliile în stânga și cardul de preț în dreapta.
-export function PropertyView({ unit: base }: { unit: Unit }) {
+export function PropertyView({ unit: base, booking }: { unit: Unit; booking: { today: IsoDate; busy: BusyRange[] } }) {
   const unit = useLocalizeUnit()(base); // numele și descrierea în limba aleasă
   const t = useTranslations("Property");
   const tDetail = useTranslations("Detail");
@@ -51,6 +52,7 @@ export function PropertyView({ unit: base }: { unit: Unit }) {
   const tAmenity = useTranslations("Amenities");
   const [tab, setTab] = useState<Tab>("amenities");
   const photos = unit.photos;
+  const tabs: Tab[] = unit.lat !== null && unit.lng !== null ? ["amenities", "rules", "location"] : ["amenities", "rules"];
 
   return (
     // Pagina e mai îngustă decât restul site-ului (cerut de Robert): ca panoul din dreapta, doar mai mare.
@@ -62,6 +64,7 @@ export function PropertyView({ unit: base }: { unit: Unit }) {
           {t("back")}
         </Link>
         <div className="flex items-center gap-2">
+          <FavoriteButton unitId={base.id} name={unit.name} />
           <ShareButton />
           <ThemeToggle />
         </div>
@@ -73,7 +76,7 @@ export function PropertyView({ unit: base }: { unit: Unit }) {
           <div className={`${card} flex items-center gap-3 p-4`}>
             <Image src="/logo.png" alt="" width={48} height={48} className="size-12 rounded-full shadow-pill" />
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-ink">{property.name}</p>
+              <p className="truncate text-sm font-semibold text-ink">{unit.propertyName}</p>
               <p className="text-xs text-muted">{t("host")}</p>
             </div>
           </div>
@@ -85,18 +88,22 @@ export function PropertyView({ unit: base }: { unit: Unit }) {
             <p className="mt-2 flex flex-wrap items-center gap-1.5 text-sm text-muted">
               <MapPin className="size-4" />
               {unit.location}
-              <span className="mx-1">·</span>
-              <Star className="size-4 fill-star text-star" aria-hidden />
-              <span className="font-semibold text-ink" aria-label={tUnit("rating", { rating: unit.rating })}>
-                {unit.rating.toFixed(1)}
-              </span>
+              {unit.rating !== null && (
+                <>
+                  <span className="mx-1">·</span>
+                  <Star className="size-4 fill-star text-star" aria-hidden />
+                  <span className="font-semibold text-ink" aria-label={tUnit("rating", { rating: unit.rating })}>
+                    {unit.rating.toFixed(1)}
+                  </span>
+                </>
+              )}
             </p>
 
             {/* Faptele principale, pe un rând, ca în referință */}
             <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2 border-b border-sand pb-5 text-sm text-ink-soft">
               <Fact icon={BedDouble} text={tDetail("beds", { count: unit.beds })} />
               <Fact icon={Bath} text={tDetail("bathrooms", { count: unit.bathrooms })} />
-              <Fact icon={Ruler} text={tDetail("area", { area: unit.area })} />
+              {unit.area !== null && <Fact icon={Ruler} text={tDetail("area", { area: unit.area })} />}
               <Fact icon={Users} text={tUnit("maxGuests", { count: unit.maxGuests })} />
             </ul>
 
@@ -104,7 +111,7 @@ export function PropertyView({ unit: base }: { unit: Unit }) {
 
             {/* File: Facilități / Reguli / Locație, subliniate ca în referință */}
             <div role="tablist" className="mt-8 flex gap-6 border-b border-sand">
-              {(["amenities", "rules", "location"] as const).map((key) => (
+              {tabs.map((key) => (
                 <button
                   key={key}
                   type="button"
@@ -140,8 +147,8 @@ export function PropertyView({ unit: base }: { unit: Unit }) {
               {tab === "rules" && (
                 <ul className="grid gap-3 sm:grid-cols-2">
                   {[
-                    tDetail("rules.checkIn", { time: property.checkIn }),
-                    tDetail("rules.checkOut", { time: property.checkOut }),
+                    tDetail("rules.checkIn", { time: unit.checkIn }),
+                    tDetail("rules.checkOut", { time: unit.checkOut }),
                     tDetail("rules.noSmoking"),
                     tDetail("rules.quiet"),
                   ].map((rule) => (
@@ -153,10 +160,12 @@ export function PropertyView({ unit: base }: { unit: Unit }) {
                 </ul>
               )}
 
-              {tab === "location" && <MapCard location={unit.location} lat={unit.lat} lng={unit.lng} />}
+              {tab === "location" && unit.lat !== null && unit.lng !== null && (
+                <MapCard location={unit.location} lat={unit.lat} lng={unit.lng} />
+              )}
             </div>
           </div>
-          <PriceCard unit={unit} />
+          <PriceCard unit={unit} booking={booking} />
         </div>
       </div>
 
@@ -210,90 +219,34 @@ function Gallery({ photos, name }: { photos: string[]; name: string }) {
           </button>
         ))}
       </div>
-      <button
-        type="button"
-        onClick={() => openPhoto(0)}
-        className={`${pill} absolute right-3 bottom-3 px-4 py-2.5`}
-      >
-        <Images className="size-4" />
-        {t("showAll")} · {photos.length}
-      </button>
+      {/* Fără poze încă (doar imaginea de rezervă): nu promitem o galerie */}
+      {photos[0] !== PLACEHOLDER_PHOTO && (
+        <button
+          type="button"
+          onClick={() => openPhoto(0)}
+          className={`${pill} absolute right-3 bottom-3 px-4 py-2.5`}
+        >
+          <Images className="size-4" />
+          {t("showAll")} · {photos.length}
+        </button>
+      )}
     </motion.section>
   );
 }
 
-// Cardul de preț: prețul pe noapte, sejurul implicit și calculul, apoi butonul de rezervare
-function PriceCard({ unit }: { unit: Unit }) {
+// Cardul de preț: prețul pe noapte, apoi cererea de rezervare (datele, oaspeții, prețul calculat
+// de bază pe nopți, datele de contact)
+function PriceCard({ unit, booking }: { unit: Unit; booking: { today: IsoDate; busy: BusyRange[] } }) {
   const t = useTranslations("Property");
-  const tDetail = useTranslations("Detail");
-  const tUnit = useTranslations("Unit");
   const price = usePrice();
-  const format = useFormatter();
-  const nights = defaultStay.nights;
-  const full = unit.pricePerNight * nights;
-  const total = nightly(unit) * nights;
-  const date = (d: string) => format.dateTime(new Date(d), { day: "numeric", month: "short" });
 
   return (
     <div className={`${card} p-5`}>
       <p className="flex flex-wrap items-baseline gap-x-2">
-        <span className="text-3xl font-bold text-ink">{price(nightly(unit))}</span>
+        <span className="text-3xl font-bold text-ink">{price(unit.pricePerNight)}</span>
         <span className="text-sm text-muted">/ {t("perNight")}</span>
-        {unit.offer && <span className="text-sm text-muted line-through">{price(unit.pricePerNight)}</span>}
       </p>
-      {unit.offer && (
-        <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-star px-2.5 py-1 text-xs font-bold text-ink shadow-pill">
-          {tUnit("discount", { percent: unit.offer.percent })} · {tUnit(`offers.${unit.offer.label}`)}
-        </span>
-      )}
-
-      <Link
-        href={`/?cazare=${unit.id}`}
-        className="mt-4 flex items-center justify-between gap-3 rounded-2xl bg-cream-100 px-4 py-3 text-sm shadow-pressed transition-colors hover:bg-cream-200"
-        aria-label={t("editStay")}
-      >
-        <span className="flex items-center gap-2 text-ink">
-          <CalendarDays className="size-4 text-accent" />
-          <span className="text-muted">{t("stay")}:</span>
-          <span className="font-semibold">
-            {date(defaultStay.from)} – {date(defaultStay.to)}
-          </span>
-        </span>
-        <Pencil className="size-4 text-muted" />
-      </Link>
-
-      <Link href={`/?cazare=${unit.id}`} className={`${primaryButton} mt-4 w-full`}>
-        {t("book")}
-      </Link>
-
-      <div className="mt-5 space-y-2 border-t border-sand pt-4 text-sm">
-        <p className="text-xs font-semibold tracking-wide text-muted uppercase">{t("fees")}</p>
-        <div className="flex justify-between text-ink-soft">
-          <span>
-            {tDetail("booking.nightsTimesPrice", {
-              price: price(unit.pricePerNight),
-              nights: tDetail("booking.nights", { count: nights }),
-            })}
-          </span>
-          <span>{price(full)}</span>
-        </div>
-        {unit.offer && (
-          <div className="flex justify-between font-medium text-accent">
-            <span>
-              {tDetail("booking.discountRow", {
-                label: tUnit(`offers.${unit.offer.label}`),
-                percent: unit.offer.percent,
-              })}
-            </span>
-            <span>−{price(full - total)}</span>
-          </div>
-        )}
-        <div className="flex justify-between border-t border-sand pt-2 font-bold text-ink">
-          <span>{tDetail("booking.total")}</span>
-          <span>{price(total)}</span>
-        </div>
-        <p className="pt-1 text-center text-xs text-muted">{tDetail("booking.noFees")}</p>
-      </div>
+      <BookingCard unitId={unit.id} maxGuests={unit.maxGuests} today={booking.today} busy={booking.busy} />
     </div>
   );
 }

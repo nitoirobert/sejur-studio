@@ -1,13 +1,24 @@
 "use client";
 
-import { useMemo } from "react";
+import { createContext, createElement, useContext, useMemo, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import { units, type Unit } from "@/lib/mock-units";
+import type { Unit } from "@/lib/mock-units";
 
-// Numele și descrierea fiecărei cazări vin din messages/<limbă>.json (UnitText.<id>),
-// ca să urmeze limba aleasă pe site. Restul datelor (preț, poze, coordonate) nu depind de limbă.
-// Când datele vor veni din Supabase, traducerile vor sta într-o coloană per limbă.
+// The published units, loaded on the server (src/lib/catalog/server.ts) and handed to the
+// client components through this context.
+const UnitsContext = createContext<Unit[]>([]);
 
+export function UnitsProvider({ units, children }: { units: Unit[]; children: ReactNode }) {
+  return createElement(UnitsContext.Provider, { value: units }, children);
+}
+
+// Units as stored (no translation): for counts, places and price limits.
+export function useBaseUnits(): Unit[] {
+  return useContext(UnitsContext);
+}
+
+// Names and descriptions come from the database (Romanian). A translation in
+// messages/<lang>.json (UnitText.<id>) wins when it exists.
 export function useLocalizeUnit() {
   const t = useTranslations("UnitText");
   return useMemo(() => {
@@ -18,8 +29,9 @@ export function useLocalizeUnit() {
   }, [t]);
 }
 
-// Toate cazările, în limba curentă
+// All units, in the current language
 export function useUnits(): Unit[] {
+  const units = useBaseUnits();
   const localize = useLocalizeUnit();
-  return useMemo(() => units.map(localize), [localize]);
+  return useMemo(() => units.map(localize), [units, localize]);
 }

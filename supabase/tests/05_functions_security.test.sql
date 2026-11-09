@@ -118,6 +118,57 @@ select is(tests.err($$select public.expire_holds()$$), '42501', 'anon cannot cal
 select is(tests.err($$select public.is_live_booking('confirmed', null)$$), '42501', 'anon cannot call is_live_booking');
 reset role;
 
+-- Brief 07 (0013), check 25: anon still executes exactly the 4 public functions; the new guest / panel
+-- functions are authenticated (plus service_role, Supabase's default like every owner function), never
+-- anon or PUBLIC; the rate-limit counter is service_role only; all pin search_path = ''.
+select is((select array_agg(p.proname::text order by p.proname) from pg_proc p
+            where p.pronamespace = 'public'::regnamespace and has_function_privilege('anon', p.oid, 'execute')),
+  array['create_public_booking', 'public_booking_status', 'public_busy_ranges', 'public_quote'],
+  'anon executes exactly 4 functions (after 0013)');
+select is(
+  (select array_agg(distinct r.rolname::text order by r.rolname::text)
+     from pg_proc p cross join lateral aclexplode(p.proacl) a
+     join pg_roles r on r.oid = a.grantee
+    where p.oid = f and a.privilege_type = 'EXECUTE' and a.grantee <> p.proowner),
+  array['authenticated', 'service_role'],
+  f::text || ': EXECUTE grantees besides the owner are exactly authenticated and service_role (no anon, no PUBLIC)')
+from unnest(array['public.my_bookings(integer, integer)'::regprocedure,
+                  'public.pending_requests(integer, integer)'::regprocedure,
+                  'public.pending_requests_count()'::regprocedure,
+                  'public.is_public_unit(uuid)'::regprocedure]) f;
+select is(
+  (select array_agg(distinct r.rolname::text order by r.rolname::text)
+     from pg_proc p cross join lateral aclexplode(p.proacl) a
+     join pg_roles r on r.oid = a.grantee
+    where p.oid = 'public.rate_limit_hit(text, text, integer, integer)'::regprocedure
+      and a.privilege_type = 'EXECUTE' and a.grantee <> p.proowner),
+  array['service_role'],
+  'rate_limit_hit: EXECUTE grantees besides the owner are exactly service_role');
+select ok(not has_function_privilege('authenticated', 'public.rate_limit_hit(text, text, integer, integer)', 'execute'),
+  'authenticated cannot execute rate_limit_hit');
+select is((select p.proconfig from pg_proc p where p.oid = f), array['search_path=""'],
+  f::text || ': search_path = ''''')
+from unnest(array['public.my_bookings(integer, integer)'::regprocedure,
+                  'public.pending_requests(integer, integer)'::regprocedure,
+                  'public.pending_requests_count()'::regprocedure,
+                  'public.is_public_unit(uuid)'::regprocedure,
+                  'public.rate_limit_hit(text, text, integer, integer)'::regprocedure,
+                  'public.create_public_booking(uuid, date, date, text, text, text, integer, integer)'::regprocedure]) f;
+select is((select string_agg(p.proname || ':' || p.prosecdef, ',' order by p.proname) from pg_proc p
+            where p.oid = any (array['public.my_bookings(integer, integer)'::regprocedure,
+                                     'public.pending_requests(integer, integer)'::regprocedure,
+                                     'public.pending_requests_count()'::regprocedure,
+                                     'public.is_public_unit(uuid)'::regprocedure,
+                                     'public.rate_limit_hit(text, text, integer, integer)'::regprocedure])),
+  'is_public_unit:true,my_bookings:true,pending_requests:false,pending_requests_count:false,rate_limit_hit:true',
+  '0013 security: definer only where RLS must be bypassed (guest reads, policy helper, counter)');
+select tests.login_anon();
+select is(tests.err($$select * from public.my_bookings()$$), '42501', 'anon cannot call my_bookings');
+select is(tests.err($$select * from public.pending_requests()$$), '42501', 'anon cannot call pending_requests');
+select is(tests.err($$select public.is_public_unit(null)$$), '42501', 'anon cannot call is_public_unit');
+select is(tests.err($$select * from public.rate_limit_hit('x', '1.2.3.4')$$), '42501', 'anon cannot call rate_limit_hit');
+reset role;
+
 -- (e) default privileges: future tables and functions created by the migration role
 -- give nothing to anon (probe objects are rolled back with this transaction).
 reset role;

@@ -20,7 +20,7 @@ import {
   X,
 } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
-import { nightly, property, type Unit } from "@/lib/mock-units";
+import { nightly, type Unit } from "@/lib/mock-units";
 import { card, iconButton, primaryButton, sectionTitle } from "@/components/ui/soft";
 import { amenityIcons } from "./icons";
 import { MapCard } from "./MapCard";
@@ -348,9 +348,13 @@ function DetailsView({ unit, onClose }: { unit: Unit; onClose: () => void }) {
           <p className="mt-1 flex items-center gap-1 text-xs text-muted">
             <MapPin className="size-3.5" />
             {unit.location}
-            <span className="mx-1">·</span>
-            <Star className="size-3.5 fill-star text-star" />
-            <span className="font-semibold text-ink">{unit.rating.toFixed(1)}</span>
+            {unit.rating !== null && (
+              <>
+                <span className="mx-1">·</span>
+                <Star className="size-3.5 fill-star text-star" />
+                <span className="font-semibold text-ink">{unit.rating.toFixed(1)}</span>
+              </>
+            )}
           </p>
           {unit.offer && (
             <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-star px-2.5 py-1 text-xs font-bold text-ink shadow-pill">
@@ -396,7 +400,7 @@ function DetailsView({ unit, onClose }: { unit: Unit; onClose: () => void }) {
               <div className="mt-3 flex flex-wrap gap-2">
                 <Fact icon={<BedDouble className="size-4" />} text={t("beds", { count: unit.beds })} />
                 <Fact icon={<Bath className="size-4" />} text={t("bathrooms", { count: unit.bathrooms })} />
-                <Fact icon={<Ruler className="size-4" />} text={t("area", { area: unit.area })} />
+                {unit.area !== null && <Fact icon={<Ruler className="size-4" />} text={t("area", { area: unit.area })} />}
                 <Fact icon={<Users className="size-4" />} text={tUnit("maxGuests", { count: unit.maxGuests })} />
               </div>
             </section>
@@ -420,12 +424,14 @@ function DetailsView({ unit, onClose }: { unit: Unit; onClose: () => void }) {
               </ul>
             </section>
 
-            <section ref={locationRef}>
-              <h3 className={sectionTitle}>{t("location")}</h3>
-              <div className="mt-3">
-                <MapCard location={unit.location} lat={unit.lat} lng={unit.lng} />
-              </div>
-            </section>
+            {unit.lat !== null && unit.lng !== null && (
+              <section ref={locationRef}>
+                <h3 className={sectionTitle}>{t("location")}</h3>
+                <div className="mt-3">
+                  <MapCard location={unit.location} lat={unit.lat} lng={unit.lng} />
+                </div>
+              </section>
+            )}
           </div>
         )}
 
@@ -438,8 +444,8 @@ function DetailsView({ unit, onClose }: { unit: Unit; onClose: () => void }) {
         {tab === "rules" && (
           <ul className="space-y-3 text-sm text-ink-soft">
             {[
-              t("rules.checkIn", { time: property.checkIn }),
-              t("rules.checkOut", { time: property.checkOut }),
+              t("rules.checkIn", { time: unit.checkIn }),
+              t("rules.checkOut", { time: unit.checkOut }),
               t("rules.noSmoking"),
               t("rules.quiet"),
             ].map((rule) => (
@@ -686,11 +692,15 @@ function MiniHeader({ unit, onClose }: { unit: Unit; onClose: () => void }) {
         <p className="mt-0.5 flex items-center gap-1 text-xs text-muted">
           <MapPin className="size-3.5 shrink-0" />
           <span className="truncate">{unit.location}</span>
-          <span className="mx-0.5">·</span>
-          <Star className="size-3.5 shrink-0 fill-star text-star" aria-hidden />
-          <span className="font-semibold text-ink" aria-label={tUnit("rating", { rating: unit.rating })}>
-            {unit.rating.toFixed(1)}
-          </span>
+          {unit.rating !== null && (
+            <>
+              <span className="mx-0.5">·</span>
+              <Star className="size-3.5 shrink-0 fill-star text-star" aria-hidden />
+              <span className="font-semibold text-ink" aria-label={tUnit("rating", { rating: unit.rating })}>
+                {unit.rating.toFixed(1)}
+              </span>
+            </>
+          )}
         </p>
       </div>
       <p className="shrink-0 text-right">

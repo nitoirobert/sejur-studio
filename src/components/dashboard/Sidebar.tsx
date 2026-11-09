@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import { Globe, LogOut, Menu, X } from "lucide-react";
 import { iconButton } from "@/components/ui/soft";
 import { NAV, isActive } from "./nav";
+import { PendingBadge, PendingBadgeProvider, PendingBadgeText, usePendingBadgeId } from "./requests/badge";
 
 /*
   Dashboard navigation.
@@ -73,6 +74,7 @@ export function DashboardNav({ children, account, signOut }: Slots & { children:
 
   return (
     <DrawerContext value={{ open, setOpen, closeForNavigation, claimFocus, triggerRef }}>
+      <PendingBadgeProvider>
       <div className="flex min-h-dvh">
         <aside className="sticky top-0 hidden h-dvh shrink-0 py-4 pl-4 md:block xl:py-6 xl:pl-6">
           <Rail account={account} signOut={signOut} />
@@ -83,6 +85,7 @@ export function DashboardNav({ children, account, signOut }: Slots & { children:
         </div>
       </div>
       <Drawer account={account} signOut={signOut} />
+      </PendingBadgeProvider>
     </DrawerContext>
   );
 }
@@ -112,6 +115,7 @@ function NavList({ variant, onNavigate }: { variant: "rail" | "full"; onNavigate
   const t = useTranslations("Dashboard.nav");
   const pathname = usePathname();
   const rail = variant === "rail";
+  const badgeId = usePendingBadgeId(`pending-badge-${variant}`);
 
   return (
     <ul className="space-y-1.5">
@@ -123,20 +127,23 @@ function NavList({ variant, onNavigate }: { variant: "rail" | "full"; onNavigate
               href={href}
               onClick={onNavigate ? () => onNavigate(href) : undefined}
               aria-current={active ? "page" : undefined}
+              aria-describedby={key === "bookings" ? badgeId : undefined}
               title={rail ? t(key) : undefined}
               className={`group flex items-center gap-3 rounded-[1.1rem] p-1.5 text-[15px] transition-[background-color,color] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
                 rail ? "max-xl:justify-center xl:pr-4" : "pr-4"
               } ${active ? "font-semibold text-ink" : "font-medium text-ink-soft hover:bg-cream-50/60 hover:text-ink"}`}
             >
               <span
-                className={`grid size-11 shrink-0 place-items-center rounded-[0.95rem] transition-[background-color,color,box-shadow,scale] duration-200 group-active:scale-[0.96] ${
+                className={`relative grid size-11 shrink-0 place-items-center rounded-[0.95rem] transition-[background-color,color,box-shadow,scale] duration-200 group-active:scale-[0.96] ${
                   active ? "bg-accent text-cream-50 shadow-accent" : "bg-cream-50/80 text-ink shadow-pill"
                 }`}
               >
                 <Icon className="size-[19px]" strokeWidth={active ? 2.25 : 1.9} aria-hidden />
+                {key === "bookings" && <PendingBadge />}
               </span>
               <span className={rail ? "max-xl:sr-only" : undefined}>{t(key)}</span>
             </Link>
+            {key === "bookings" && <PendingBadgeText id={`pending-badge-${variant}`} />}
           </li>
         );
       })}

@@ -2,10 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useTranslations } from "next-intl";
-import { defaultStay, units as allUnits } from "@/lib/mock-units";
+import { defaultStay, onMap } from "@/lib/mock-units";
 import { useUnits } from "@/lib/use-units";
+import { toggleFavorite, useFavorites } from "@/lib/booking/favorites";
 import { useTheme } from "@/lib/theme";
 import { occupancy } from "@/lib/guests";
 import { backdrop, spring } from "@/components/ui/motion";
@@ -52,6 +54,8 @@ export function PropertyBrowser() {
   const [query, setQuery] = useState("");
   const [place, setPlace] = useState<string | null>(null);
   const [auth, setAuth] = useState<AuthReason | null>(null);
+  const favorites = useFavorites();
+  const router = useRouter();
   const [view, setView] = useState<ViewMode>("grid5");
   const { theme } = useTheme();
   const [stay, setStay] = useState<Stay>({
@@ -83,12 +87,12 @@ export function PropertyBrowser() {
     const authError = url.searchParams.get("auth") === "eroare";
     if (!id && !authError) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (id && allUnits.some((u) => u.id === id)) setSelectedId(id);
+    if (id && units.some((u) => u.id === id)) setSelectedId(id);
     if (authError) setAuth("linkError");
     url.searchParams.delete("cazare");
     url.searchParams.delete("auth");
     window.history.replaceState(null, "", url);
-  }, []);
+  }, [units]);
 
   // Escape închide panoul (dacă nu e deschis popup-ul de autentificare)
   useEffect(() => {
@@ -130,7 +134,7 @@ export function PropertyBrowser() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <SiteHeader {...bar} onFavorites={() => setAuth("favorite")} onLogin={() => setAuth("login")} onHome={goHome} />
+      <SiteHeader {...bar} onFavorites={() => (favorites.signedIn ? router.push("/cont/favorite") : setAuth("favorite"))} onLogin={() => setAuth("login")} onHome={goHome} />
       <Toolbar
         {...bar}
         onOpenFilters={() => setFiltersOpen(true)}
@@ -221,7 +225,7 @@ export function PropertyBrowser() {
                 <UnitsMap
                   key={theme}
                   dark={theme === "dark"}
-                  units={results}
+                  units={results.filter(onMap)}
                   selectedId={selected?.id ?? null}
                   onSelect={setSelectedId}
                   county={place ? (place.includes(",") ? place.split(",")[1].trim() : place) : null}
@@ -245,7 +249,8 @@ export function PropertyBrowser() {
                       index={i}
                       selected={selected?.id === unit.id}
                       onSelect={() => setSelectedId(unit.id)}
-                      onFavorite={() => setAuth("favorite")}
+                      favorite={favorites.ids.has(unit.id)}
+                      onFavorite={() => void toggleFavorite(unit.id).then((ok) => ok || setAuth("favorite"))}
                     />
                   ))}
                 </AnimatePresence>

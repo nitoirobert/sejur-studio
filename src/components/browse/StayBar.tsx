@@ -7,7 +7,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { primaryButton } from "@/components/ui/soft";
 import { popover } from "@/components/ui/motion";
 import { useUnits } from "@/lib/use-units";
-import { matchScore, sitePlaces, suggestUnits, typewriterWords } from "@/lib/search/catalog";
+import { matchScore, suggestUnits, typewriterWords, usePlaces } from "@/lib/search/catalog";
 import { clearRecent, rankRecent, recordRecent, useRecent } from "@/lib/search/recent";
 import { nightsBetween } from "./UnitPanel";
 import { GuestsEditor, useGuestsSummary } from "./GuestsEditor";
@@ -43,7 +43,8 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
   const ref = useRef<HTMLDivElement>(null);
   const recent = useRecent("search");
   const units = useUnits();
-  const words = useMemo(() => typewriterWords(units), [units]);
+  const { sitePlaces } = usePlaces();
+  const words = useMemo(() => typewriterWords(units, sitePlaces), [units, sitePlaces]);
   const typed = useTypewriter(words, focused || query.length > 0);
 
   useDismiss(ref, open !== null, () => setOpen(null));
@@ -80,7 +81,7 @@ export function StayBar({ stay, onStayChange, query, onQueryChange, onOpenUnit, 
           onPick: () => commit(p.city),
         })),
         ...[...units]
-          .sort((a, b) => b.rating - a.rating)
+          .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
           .slice(0, 3)
           .map((u) => ({
             id: `u-${u.id}`,

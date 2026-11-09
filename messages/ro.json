@@ -940,6 +940,39 @@
         "last_night": "Ultima noapte e cel puțin prima, iar sezonul are cel mult 366 de nopți.",
         "alt": "Scrie ce se vede în poză, cel mult 200 de caractere."
       }
+    },
+    "requests": {
+      "title": "De confirmat",
+      "intro": "Cererile venite de pe site. Locul e ținut 24 de ore; dacă nu răspunzi, cererea expiră singură.",
+      "count": "{count, plural, =0 {nicio cerere} one {# cerere} few {# cereri} other {# de cereri}}",
+      "badge": "{count, plural, one {# cerere de confirmat} few {# cereri de confirmat} other {# de cereri de confirmat}}",
+      "empty": "Nicio cerere nouă. Când un oaspete cere o rezervare pe site, apare aici.",
+      "expiresInHours": "expiră în {hours} h {minutes} min",
+      "expiresInMinutes": "expiră în {minutes} min",
+      "expiresAt": "Locul e ținut până la {moment}",
+      "expired": "Expirată",
+      "pending": "În așteptare",
+      "confirm": "Confirmă",
+      "decline": "Refuză",
+      "confirming": "Se confirmă…",
+      "declining": "Se refuză…",
+      "confirmed": "Ai confirmat rezervarea lui {guest}.",
+      "declined": "Ai refuzat cererea lui {guest}.",
+      "call": "Sună: {phone}",
+      "write": "Scrie: {email}",
+      "received": "Primită {moment}",
+      "pager": "Paginile cererilor",
+      "page": "Pagina {page} din {pages}",
+      "prev": "Pagina anterioară",
+      "next": "Pagina următoare",
+      "detailsHint": "Cererea vine de pe site. Confirm-o sau refuz-o înainte să expire.",
+      "errors": {
+        "booking_not_found": "Rezervarea nu mai există sau nu e în contul tău. Am reîncărcat lista.",
+        "hold_expired": "Cererea a expirat. Locul nu mai e ținut pentru oaspete.",
+        "invalid_status": "Cererea are deja un răspuns. Am adus starea ei reală.",
+        "unauthorized": "Sesiunea a expirat. Intră din nou în cont.",
+        "generic": "Nu am putut trimite răspunsul. Verifică legătura la internet și încearcă din nou."
+      }
     }
   },
   "Cookies": {
@@ -963,5 +996,83 @@
       "title": "Marketing",
       "text": "Ne ajută să-ți arătăm oferte Sejur Studio pe Facebook, Instagram, TikTok și Google."
     }
+  },
+  "BookingRequest": {
+    "stayLegend": "Sejurul",
+    "checkIn": "Sosire",
+    "checkOut": "Plecare",
+    "busy": "Ocupat:",
+    "guests": "Oaspeți (cel mult {max})",
+    "priceTitle": "Prețul pe nopți",
+    "quoting": "Calculăm prețul…",
+    "night": "Noaptea de {date}",
+    "total": "Total pentru {count, plural, one {# noapte} few {# nopți} other {# de nopți}}",
+    "contactLegend": "Datele tale",
+    "fullName": "Nume și prenume",
+    "email": "Email",
+    "phone": "Telefon",
+    "requestNote": "Gazda primește cererea și o confirmă în cel mult 24 de ore. Până atunci locul e ținut pentru tine.",
+    "continue": "Rezervă această cazare",
+    "send": "Trimite cererea",
+    "sending": "Se trimite…",
+    "changeStay": "Schimbă datele sau oaspeții",
+    "noPayment": "Nu plătești nimic acum.",
+    "errors": {
+      "unit_not_found": "Cazarea nu mai e disponibilă pe site.",
+      "invalid_dates": "Alege o dată de plecare după data sosirii, de azi încolo, de cel mult 30 de nopți.",
+      "invalid_guest": "Verifică numele, emailul și telefonul (cel puțin 6 cifre).",
+      "too_many_guests": "Cazarea primește cel mult {max} oaspeți.",
+      "no_price": "Gazda nu a pus încă prețul pentru aceste date.",
+      "min_nights": "Pentru aceste date gazda cere un sejur mai lung.",
+      "invalid_amount": "Sejurul ales e prea lung. Alege mai puține nopți.",
+      "unavailable": "Zilele alese sunt deja ocupate. Alege alte date.",
+      "too_many_requests": "Ai deja 3 cereri în așteptare pe acest email. Așteaptă răspunsul gazdei.",
+      "rate_limited": "Prea multe cereri într-o oră. Încearcă din nou mai târziu.",
+      "invalid_request": "Cererea nu a putut fi trimisă. Reîncarcă pagina și încearcă din nou.",
+      "generic": "Nu am putut trimite cererea. Verifică legătura la internet și încearcă din nou."
+    }
+  },
+  "BookingStatus": {
+    "title": "Cererea ta de rezervare",
+    "back": "Înapoi la cazări",
+    "eyebrow": "Cererea ta de rezervare",
+    "status": {
+      "hold": "În așteptare",
+      "confirmed": "Confirmată",
+      "cancelled": "Anulată",
+      "expired": "Expirată"
+    },
+    "explain": {
+      "hold": "Gazda a primit cererea și îți răspunde în cel mult 24 de ore. Locul e ținut pentru tine până atunci.",
+      "confirmed": "Gazda a confirmat rezervarea. Te așteaptă!",
+      "cancelled": "Gazda nu a putut primi această cerere. Poți alege alte date sau altă cazare.",
+      "expired": "Gazda nu a răspuns în 24 de ore, așa că cererea a expirat. Poți trimite una nouă."
+    },
+    "checkIn": "Sosire",
+    "checkOut": "Plecare",
+    "total": "Total",
+    "amount": "{amount} {currency, select, RON {lei} other {{currency}}}",
+    "keepLink": "Păstrează adresa acestei pagini: aici vezi oricând starea cererii.",
+    "notFoundTitle": "Rezervare negăsită",
+    "notFoundBody": "Nu am găsit nicio rezervare la această adresă. Verifică linkul primit.",
+    "home": "Caută o cazare"
+  },
+  "Account": {
+    "title": "Contul meu",
+    "back": "Înapoi la cazări",
+    "bookings": "Rezervări",
+    "favorites": "Favorite",
+    "bookingsTitle": "Rezervările mele",
+    "favoritesTitle": "Favoritele mele",
+    "bookingsEmpty": "Nu ai nicio rezervare încă.",
+    "pageEmpty": "Pagina nu mai are rezervări.",
+    "favoritesEmpty": "Nu ai nicio cazare la favorite. Apasă inima de pe o cazare ca s-o păstrezi aici.",
+    "search": "Caută o cazare",
+    "viewStatus": "Vezi starea cererii",
+    "loadError": "Nu am putut încărca rezervările. Reîncarcă pagina.",
+    "pager": "Paginile rezervărilor",
+    "page": "Pagina {page} din {pages}",
+    "prev": "Pagina anterioară",
+    "next": "Pagina următoare"
   }
 }

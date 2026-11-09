@@ -482,5 +482,83 @@
       "title": "Marketing",
       "text": "Hilft uns, dir Angebote von Sejur Studio auf Facebook, Instagram, TikTok und Google zu zeigen."
     }
+  },
+  "BookingRequest": {
+    "stayLegend": "Dein Aufenthalt",
+    "checkIn": "Anreise",
+    "checkOut": "Abreise",
+    "busy": "Belegt:",
+    "guests": "Gäste (höchstens {max})",
+    "priceTitle": "Preis pro Nacht",
+    "quoting": "Preis wird berechnet…",
+    "night": "Nacht vom {date}",
+    "total": "Gesamt für {count, plural, one {# Nacht} other {# Nächte}}",
+    "contactLegend": "Deine Angaben",
+    "fullName": "Vor- und Nachname",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "requestNote": "Der Gastgeber erhält deine Anfrage und bestätigt sie innerhalb von 24 Stunden. Bis dahin ist die Unterkunft für dich reserviert.",
+    "continue": "Diese Unterkunft buchen",
+    "send": "Anfrage senden",
+    "sending": "Wird gesendet…",
+    "changeStay": "Daten oder Gäste ändern",
+    "noPayment": "Du zahlst jetzt nichts.",
+    "errors": {
+      "unit_not_found": "Diese Unterkunft ist nicht mehr verfügbar.",
+      "invalid_dates": "Wähle eine Abreise nach der Anreise, ab heute, für höchstens 30 Nächte.",
+      "invalid_guest": "Prüfe Name, E-Mail und Telefon (mindestens 6 Ziffern).",
+      "too_many_guests": "Die Unterkunft bietet Platz für höchstens {max} Gäste.",
+      "no_price": "Der Gastgeber hat für diese Daten noch keinen Preis festgelegt.",
+      "min_nights": "Für diese Daten verlangt der Gastgeber einen längeren Aufenthalt.",
+      "invalid_amount": "Der Aufenthalt ist zu lang. Wähle weniger Nächte.",
+      "unavailable": "Diese Tage sind bereits belegt. Wähle andere Daten.",
+      "too_many_requests": "Du hast mit dieser E-Mail bereits 3 offene Anfragen. Warte auf die Antwort des Gastgebers.",
+      "rate_limited": "Zu viele Anfragen in einer Stunde. Versuche es später erneut.",
+      "invalid_request": "Die Anfrage konnte nicht gesendet werden. Lade die Seite neu und versuche es erneut.",
+      "generic": "Die Anfrage konnte nicht gesendet werden. Prüfe deine Verbindung und versuche es erneut."
+    }
+  },
+  "BookingStatus": {
+    "title": "Deine Buchungsanfrage",
+    "back": "Zurück zu den Unterkünften",
+    "eyebrow": "Deine Buchungsanfrage",
+    "status": {
+      "hold": "Ausstehend",
+      "confirmed": "Bestätigt",
+      "cancelled": "Storniert",
+      "expired": "Abgelaufen"
+    },
+    "explain": {
+      "hold": "Der Gastgeber hat deine Anfrage erhalten und antwortet innerhalb von 24 Stunden. Bis dahin ist die Unterkunft für dich reserviert.",
+      "confirmed": "Der Gastgeber hat deine Buchung bestätigt. Bis bald!",
+      "cancelled": "Der Gastgeber konnte diese Anfrage nicht annehmen. Wähle andere Daten oder eine andere Unterkunft.",
+      "expired": "Der Gastgeber hat nicht innerhalb von 24 Stunden geantwortet, die Anfrage ist abgelaufen. Du kannst eine neue senden."
+    },
+    "checkIn": "Anreise",
+    "checkOut": "Abreise",
+    "total": "Gesamt",
+    "amount": "{amount} {currency, select, RON {Lei} other {{currency}}}",
+    "keepLink": "Bewahre die Adresse dieser Seite auf: Hier siehst du jederzeit den Stand deiner Anfrage.",
+    "notFoundTitle": "Buchung nicht gefunden",
+    "notFoundBody": "Unter dieser Adresse gibt es keine Buchung. Prüfe den erhaltenen Link.",
+    "home": "Unterkunft suchen"
+  },
+  "Account": {
+    "title": "Mein Konto",
+    "back": "Zurück zu den Unterkünften",
+    "bookings": "Buchungen",
+    "favorites": "Favoriten",
+    "bookingsTitle": "Meine Buchungen",
+    "favoritesTitle": "Meine Favoriten",
+    "bookingsEmpty": "Du hast noch keine Buchungen.",
+    "pageEmpty": "Auf dieser Seite gibt es keine Buchungen mehr.",
+    "favoritesEmpty": "Noch keine Favoriten. Tippe auf das Herz einer Unterkunft, um sie hier zu speichern.",
+    "search": "Unterkunft suchen",
+    "viewStatus": "Stand der Anfrage ansehen",
+    "loadError": "Die Buchungen konnten nicht geladen werden. Lade die Seite neu.",
+    "pager": "Buchungsseiten",
+    "page": "Seite {page} von {pages}",
+    "prev": "Vorherige Seite",
+    "next": "Nächste Seite"
   }
 }
