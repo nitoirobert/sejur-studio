@@ -243,7 +243,7 @@
     },
     "apple": "Continuă cu Apple",
     "google": "Continuă cu Google",
-    "or": "sau cu email",
+    "or": "sau",
     "name": "Nume",
     "email": "Email",
     "password": "Parolă",
@@ -311,6 +311,10 @@
   },
   "Map": {
     "allCounties": "Toate județele",
+    "panelCounties": "Județe",
+    "panelSearch": "Caută o cazare",
+    "panelEmpty": "Nicio cazare găsită.",
+    "stays": "{count, plural, one {# cazare} few {# cazări} other {# de cazări}}",
     "countyPin": "{county}: {count, plural, one {# cazare} few {# cazări} other {# de cazări}}"
   },
   "Property": {
@@ -1058,6 +1062,34 @@
     "home": "Caută o cazare"
   },
   "Account": {
+    "avatar": {
+      "add": "Adaugă poză de profil",
+      "change": "Schimbă poza",
+      "remove": "Șterge poza",
+      "errors": {
+        "type": "Alege o imagine (JPG, PNG sau WebP).",
+        "size": "Imaginea e prea mare. Alege una sub 15 MB.",
+        "generic": "Nu am putut salva poza. Încearcă din nou."
+      }
+    },
+    "profile": "Profil",
+    "profileTitle": "Profilul meu",
+    "overview": {
+      "memberSince": "membru din {date}",
+      "completeTitle": "Profil completat",
+      "steps": {
+        "name": "Numele complet",
+        "phone": "Numărul de telefon",
+        "avatar": "Poza de profil",
+        "email": "Adresa de email confirmată"
+      },
+      "activity": "Activitatea ta",
+      "nextStay": "Următorul sejur",
+      "noStay": "Nu ai niciun sejur planificat.",
+      "search": "Caută o cazare",
+      "nights": "{count, plural, one {# noapte} few {# nopți} other {# de nopți}}"
+    },
+    "security": "Securitatea contului",
     "title": "Contul meu",
     "back": "Înapoi la cazări",
     "bookings": "Rezervări",
@@ -1073,6 +1105,185 @@
     "pager": "Paginile rezervărilor",
     "page": "Pagina {page} din {pages}",
     "prev": "Pagina anterioară",
-    "next": "Pagina următoare"
+    "next": "Pagina următoare",
+    "nav": {
+      "profile": "Profil",
+      "bookings": "Rezervări",
+      "reviews": "Recenzii",
+      "favorites": "Favorite",
+      "payments": "Plăți și carduri",
+      "notifications": "Notificări"
+    },
+    "upcoming": "Rezervări viitoare",
+    "past": "Rezervări anterioare",
+    "personal": {
+      "title": "Date personale",
+      "hostAlsoGuest": "poți rezerva și ca client",
+      "name": "Nume complet",
+      "phone": "Telefon",
+      "phoneHint": "Îl completăm automat când trimiți o cerere de rezervare.",
+      "save": "Salvează",
+      "saved": "Datele au fost salvate.",
+      "errors": {
+        "nameEmpty": "Scrie-ți numele.",
+        "nameLong": "Numele e prea lung (cel mult 80 de caractere).",
+        "phone": "Numărul de telefon nu pare corect.",
+        "generic": "Nu am putut salva. Încearcă din nou."
+      }
+    },
+    "email": {
+      "title": "Adresa de email",
+      "current": "Adresa actuală:",
+      "new": "Adresa nouă",
+      "submit": "Schimbă emailul",
+      "sent": "Ți-am trimis un link de confirmare la {email}. Adresa se schimbă după ce apeși pe el.",
+      "pending": "Așteptăm confirmarea adresei noi: {email}. Verifică emailul.",
+      "errors": {
+        "invalid": "Adresa de email nu pare corectă.",
+        "same": "Aceasta e deja adresa ta.",
+        "taken": "Există deja un cont cu această adresă.",
+        "rateLimit": "Prea multe încercări. Mai încearcă peste câteva minute.",
+        "generic": "Nu am putut schimba emailul. Încearcă din nou."
+      }
+    },
+    "password": {
+      "title": "Parola",
+      "new": "Parola nouă",
+      "confirm": "Confirmă parola",
+      "hint": "Cel puțin {min} caractere.",
+      "submit": "Schimbă parola",
+      "saved": "Parola a fost schimbată.",
+      "show": "Arată parola",
+      "hide": "Ascunde parola",
+      "social": "Te conectezi cu Google, deci contul nu are o parolă separată.",
+      "errors": {
+        "short": "Parola trebuie să aibă cel puțin {min} caractere.",
+        "long": "Parola poate avea cel mult 72 de caractere.",
+        "mismatch": "Parolele nu coincid.",
+        "same": "Parola nouă trebuie să fie diferită de cea veche.",
+        "weak": "Parola e prea slabă. Alege una mai lungă.",
+        "reauth": "Din motive de siguranță, ieși din cont, intră din nou și reîncearcă.",
+        "generic": "Nu am putut schimba parola. Încearcă din nou."
+      }
+    },
+    "danger": {
+      "signOutText": "Ieși din contul de pe acest dispozitiv.",
+      "section": "Sesiune și cont",
+      "title": "Șterge contul",
+      "text": "Îți ștergem contul, favoritele și recenziile. Rezervările rămân la gazde, fără legătura cu contul tău. Nu se poate anula.",
+      "hostNote": "Ai și un cont de gazdă: proprietățile și rezervările țin de firma ta, deci contul nu se poate șterge de aici. Scrie-ne și te ajutăm.",
+      "open": "Vreau să-mi șterg contul",
+      "confirmWord": "ȘTERGE",
+      "confirmLabel": "Scrie {word} ca să confirmi",
+      "submit": "Șterge definitiv",
+      "cancel": "Renunță",
+      "errors": {
+        "host": "Contul are o firmă de gazdă și nu se poate șterge de aici.",
+        "generic": "Nu am putut șterge contul. Încearcă din nou."
+      }
+    },
+    "notify": {
+      "title": "Notificări",
+      "sub": "Alege ce emailuri primești de la Sejur Studio.",
+      "channel": "Le trimitem la {email}.",
+      "always": "Mereu active",
+      "saved": "Preferința a fost salvată.",
+      "error": "Nu am putut salva. Încearcă din nou.",
+      "booking": {
+        "title": "Rezervările tale",
+        "text": "Cererea primită, confirmarea, anularea și schimbările făcute de gazdă."
+      },
+      "reminders": {
+        "title": "Înainte de sosire",
+        "text": "Adresa, ora de check-in și indicațiile gazdei, cu o zi înainte."
+      },
+      "reviews": {
+        "title": "Cerere de recenzie",
+        "text": "După sejur, te întrebăm cum a fost."
+      },
+      "favorites": {
+        "title": "Noutăți la favorite",
+        "text": "Când o cazare de la favorite are preț mai mic sau date libere."
+      },
+      "offers": {
+        "title": "Oferte și noutăți",
+        "text": "Oferte speciale și cazări noi, cel mult de două ori pe lună."
+      }
+    },
+    "reviews": {
+      "title": "Recenziile mele",
+      "dueTitle": "De evaluat",
+      "dueEmpty": "Nu ai niciun sejur care așteaptă o recenzie.",
+      "doneTitle": "Recenziile tale",
+      "doneEmpty": "Nu ai scris încă nicio recenzie.",
+      "search": "Caută o cazare",
+      "leave": "Lasă o recenzie",
+      "rating": "Nota ta",
+      "stars": "{count, plural, one {# stea} few {# stele} other {# de stele}}",
+      "comment": "Comentariu (opțional)",
+      "placeholder": "Ce ți-a plăcut? Ce ar putea fi mai bine?",
+      "submit": "Trimite recenzia",
+      "update": "Salvează",
+      "edit": "Modifică",
+      "delete": "Șterge",
+      "cancel": "Renunță",
+      "loadError": "Nu am putut încărca recenziile. Reîncarcă pagina.",
+      "errors": {
+        "rating": "Alege o notă de la 1 la 5 stele.",
+        "generic": "Nu am putut salva recenzia. Încearcă din nou."
+      },
+      "soon": "Recenziile se activează în curând. Sejururile încheiate vor apărea aici ca să le poți evalua."
+    },
+    "payments": {
+      "title": "Plăți și carduri",
+      "cardsTitle": "Carduri salvate",
+      "cardsSub": "Plătești avansul mai repede la următoarea rezervare.",
+      "cardsEmpty": "Nu ai niciun card salvat",
+      "cardsSoon": "Plata online cu cardul vine în curând. Vei putea salva un card la prima plată.",
+      "secure": "Datele cardului le păstrează Stripe, procesatorul de plăți. Sejur Studio nu vede și nu salvează numărul cardului.",
+      "historyTitle": "Istoricul plăților",
+      "historyEmpty": "Nu ai făcut încă nicio plată.",
+      "loadError": "Nu am putut încărca plățile. Reîncarcă pagina.",
+      "viewBooking": "Vezi rezervarea",
+      "refunded": "Rambursat: {amount}",
+      "status": {
+        "pending": "În curs",
+        "succeeded": "Plătit",
+        "failed": "Eșuat",
+        "refunded": "Rambursat",
+        "partially_refunded": "Rambursat parțial"
+      }
+    }
+  },
+  "Calendar": {
+    "holidaysTitle": "Următoarele<br></br>zile libere",
+    "prevMonth": "Luna anterioară",
+    "nextMonth": "Luna următoare",
+    "checkIn": "Sosire",
+    "checkOut": "Plecare",
+    "pickCheckOut": "Alege plecarea",
+    "cancel": "Renunță",
+    "apply": "Aplică",
+    "nights": "{count, plural, one {# noapte} few {# nopți} other {# de nopți}}",
+    "holidays": {
+      "newYear": "Revelion",
+      "epiphany": "Boboteaza",
+      "union": "Ziua Unirii",
+      "dragobete": "Dragobete",
+      "easter": "Paște",
+      "labour": "1 Mai",
+      "children": "1 Iunie",
+      "pentecost": "Rusalii",
+      "assumption": "Sfânta Maria",
+      "standrew": "Sf. Andrei și 1 Decembrie",
+      "national": "1 Decembrie",
+      "christmas": "Crăciun"
+    },
+    "more": "Mai multe ({count})",
+    "less": "Mai puține",
+    "leave": "{count, plural, one {+# zi de concediu} few {+# zile de concediu} other {+# de zile de concediu}}",
+    "noLeave": "fără concediu",
+    "leaveDays": "Zile de concediu (punte): {days}",
+    "bridge": "zi de punte, merită luată liberă"
   }
 }

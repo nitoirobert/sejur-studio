@@ -71,10 +71,18 @@ export const PLACEHOLDER_PHOTO =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#efe8dc"/><path d="M160 170v-34l40-30 40 30v34h-26v-24h-28v24z" fill="none" stroke="#b9ad98" stroke-width="6" stroke-linejoin="round"/></svg>`,
   );
 
-// Small preview for the map card: Unsplash takes size parameters, signed Storage URLs do not
-// (adding "?w=" would break the token).
+// Small preview for the map (pins, side list): Unsplash takes size parameters. Signed Storage URLs do
+// not (adding "?w=" would break the token), so they go through the Next image optimizer (allowed in
+// next.config remotePatterns, cached 31 days): a ~20 KB WebP/AVIF instead of the 1600 px original, which
+// made hover previews show up late. Widths must be one of Next's default image / device sizes.
+const NEXT_WIDTHS = [64, 96, 128, 256, 384, 640, 750, 828, 1080];
 export function photoThumb(src: string, width: number) {
-  return src.startsWith("https://images.unsplash.com/") ? `${src}?w=${width}&q=70&auto=format&fit=crop` : src;
+  if (src.startsWith("https://images.unsplash.com/")) return `${src}?w=${width}&q=70&auto=format&fit=crop`;
+  if (/^https:\/\/[a-z0-9]+\.supabase\.co\/storage\/v1\/object\/sign\//.test(src)) {
+    const w = NEXT_WIDTHS.find((n) => n >= width) ?? NEXT_WIDTHS[NEXT_WIDTHS.length - 1];
+    return `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75`;
+  }
+  return src;
 }
 
 // Default stay in the search bar (fixed, so the page does not depend on the current date)

@@ -243,7 +243,7 @@
     },
     "apple": "Weiter mit Apple",
     "google": "Weiter mit Google",
-    "or": "oder per E-Mail",
+    "or": "oder",
     "name": "Name",
     "email": "E-Mail",
     "password": "Passwort",
@@ -311,6 +311,10 @@
   },
   "Map": {
     "allCounties": "Alle Kreise",
+    "panelCounties": "Landkreise",
+    "panelSearch": "Unterkunft suchen",
+    "panelEmpty": "Keine Unterkunft gefunden.",
+    "stays": "{count, plural, one {# Unterkunft} other {# Unterkünfte}}",
     "countyPin": "{county}: {count, plural, one {# Unterkunft} other {# Unterkünfte}}"
   },
   "Property": {
@@ -544,6 +548,34 @@
     "home": "Unterkunft suchen"
   },
   "Account": {
+    "avatar": {
+      "add": "Profilbild hinzufügen",
+      "change": "Bild ändern",
+      "remove": "Bild entfernen",
+      "errors": {
+        "type": "Wähle ein Bild (JPG, PNG oder WebP).",
+        "size": "Das Bild ist zu groß. Wähle eines unter 15 MB.",
+        "generic": "Das Bild konnte nicht gespeichert werden. Versuche es erneut."
+      }
+    },
+    "profile": "Profil",
+    "profileTitle": "Mein Profil",
+    "overview": {
+      "memberSince": "Mitglied seit {date}",
+      "completeTitle": "Profil vollständig",
+      "steps": {
+        "name": "Vollständiger Name",
+        "phone": "Telefonnummer",
+        "avatar": "Profilbild",
+        "email": "Bestätigte E-Mail-Adresse"
+      },
+      "activity": "Deine Aktivität",
+      "nextStay": "Nächster Aufenthalt",
+      "noStay": "Du hast keinen Aufenthalt geplant.",
+      "search": "Unterkunft suchen",
+      "nights": "{count, plural, one {# Nacht} other {# Nächte}}"
+    },
+    "security": "Kontosicherheit",
     "title": "Mein Konto",
     "back": "Zurück zu den Unterkünften",
     "bookings": "Buchungen",
@@ -559,6 +591,185 @@
     "pager": "Buchungsseiten",
     "page": "Seite {page} von {pages}",
     "prev": "Vorherige Seite",
-    "next": "Nächste Seite"
+    "next": "Nächste Seite",
+    "nav": {
+      "profile": "Profil",
+      "bookings": "Buchungen",
+      "reviews": "Bewertungen",
+      "favorites": "Favoriten",
+      "payments": "Zahlungen und Karten",
+      "notifications": "Benachrichtigungen"
+    },
+    "upcoming": "Kommende Buchungen",
+    "past": "Frühere Buchungen",
+    "personal": {
+      "title": "Persönliche Daten",
+      "hostAlsoGuest": "du kannst auch als Gast buchen",
+      "name": "Vollständiger Name",
+      "phone": "Telefon",
+      "phoneHint": "Wir tragen sie automatisch ein, wenn du eine Buchungsanfrage sendest.",
+      "save": "Speichern",
+      "saved": "Deine Daten wurden gespeichert.",
+      "errors": {
+        "nameEmpty": "Gib deinen Namen ein.",
+        "nameLong": "Der Name ist zu lang (höchstens 80 Zeichen).",
+        "phone": "Die Telefonnummer scheint nicht korrekt.",
+        "generic": "Speichern fehlgeschlagen. Versuche es erneut."
+      }
+    },
+    "email": {
+      "title": "E-Mail-Adresse",
+      "current": "Aktuelle Adresse:",
+      "new": "Neue Adresse",
+      "submit": "E-Mail ändern",
+      "sent": "Wir haben einen Bestätigungslink an {email} gesendet. Die Adresse ändert sich nach dem Klick.",
+      "pending": "Die neue Adresse wartet auf Bestätigung: {email}. Prüfe deine E-Mails.",
+      "errors": {
+        "invalid": "Die E-Mail-Adresse scheint nicht korrekt.",
+        "same": "Das ist bereits deine Adresse.",
+        "taken": "Mit dieser Adresse gibt es schon ein Konto.",
+        "rateLimit": "Zu viele Versuche. Versuche es in ein paar Minuten erneut.",
+        "generic": "Die E-Mail konnte nicht geändert werden. Versuche es erneut."
+      }
+    },
+    "password": {
+      "title": "Passwort",
+      "new": "Neues Passwort",
+      "confirm": "Passwort bestätigen",
+      "hint": "Mindestens {min} Zeichen.",
+      "submit": "Passwort ändern",
+      "saved": "Dein Passwort wurde geändert.",
+      "show": "Passwort anzeigen",
+      "hide": "Passwort verbergen",
+      "social": "Du meldest dich mit Google an, daher hat das Konto kein eigenes Passwort.",
+      "errors": {
+        "short": "Das Passwort braucht mindestens {min} Zeichen.",
+        "long": "Das Passwort darf höchstens 72 Zeichen haben.",
+        "mismatch": "Die Passwörter stimmen nicht überein.",
+        "same": "Das neue Passwort muss sich vom alten unterscheiden.",
+        "weak": "Das Passwort ist zu schwach. Wähle ein längeres.",
+        "reauth": "Aus Sicherheitsgründen: abmelden, wieder anmelden und erneut versuchen.",
+        "generic": "Das Passwort konnte nicht geändert werden. Versuche es erneut."
+      }
+    },
+    "danger": {
+      "signOutText": "Auf diesem Gerät vom Konto abmelden.",
+      "section": "Sitzung und Konto",
+      "title": "Konto löschen",
+      "text": "Wir löschen dein Konto, deine Favoriten und Bewertungen. Buchungen bleiben bei den Gastgebern, ohne Verbindung zu deinem Konto. Das kann nicht rückgängig gemacht werden.",
+      "hostNote": "Du hast auch ein Gastgeberkonto: Unterkünfte und Buchungen gehören deinem Unternehmen, daher kann das Konto hier nicht gelöscht werden. Schreib uns, wir helfen dir.",
+      "open": "Ich möchte mein Konto löschen",
+      "confirmWord": "LÖSCHEN",
+      "confirmLabel": "Gib {word} zur Bestätigung ein",
+      "submit": "Endgültig löschen",
+      "cancel": "Abbrechen",
+      "errors": {
+        "host": "Das Konto hat ein Gastgeberunternehmen und kann hier nicht gelöscht werden.",
+        "generic": "Das Konto konnte nicht gelöscht werden. Versuche es erneut."
+      }
+    },
+    "notify": {
+      "title": "Benachrichtigungen",
+      "sub": "Wähle, welche E-Mails du von Sejur Studio bekommst.",
+      "channel": "Wir senden sie an {email}.",
+      "always": "Immer aktiv",
+      "saved": "Einstellung gespeichert.",
+      "error": "Speichern fehlgeschlagen. Versuche es erneut.",
+      "booking": {
+        "title": "Deine Buchungen",
+        "text": "Anfrage erhalten, Bestätigung, Stornierung und Änderungen durch den Gastgeber."
+      },
+      "reminders": {
+        "title": "Vor der Anreise",
+        "text": "Adresse, Check-in-Zeit und Hinweise des Gastgebers, einen Tag vorher."
+      },
+      "reviews": {
+        "title": "Bitte um Bewertung",
+        "text": "Nach dem Aufenthalt fragen wir, wie es war."
+      },
+      "favorites": {
+        "title": "Neues bei Favoriten",
+        "text": "Wenn eine Favoriten-Unterkunft günstiger wird oder freie Tage hat."
+      },
+      "offers": {
+        "title": "Angebote und Neuigkeiten",
+        "text": "Sonderangebote und neue Unterkünfte, höchstens zweimal im Monat."
+      }
+    },
+    "reviews": {
+      "title": "Meine Bewertungen",
+      "dueTitle": "Zu bewerten",
+      "dueEmpty": "Kein Aufenthalt wartet auf eine Bewertung.",
+      "doneTitle": "Deine Bewertungen",
+      "doneEmpty": "Du hast noch keine Bewertung geschrieben.",
+      "search": "Unterkunft suchen",
+      "leave": "Bewertung schreiben",
+      "rating": "Deine Note",
+      "stars": "{count, plural, one {# Stern} other {# Sterne}}",
+      "comment": "Kommentar (optional)",
+      "placeholder": "Was hat dir gefallen? Was könnte besser sein?",
+      "submit": "Bewertung senden",
+      "update": "Speichern",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "cancel": "Abbrechen",
+      "loadError": "Die Bewertungen konnten nicht geladen werden. Lade die Seite neu.",
+      "errors": {
+        "rating": "Wähle eine Note von 1 bis 5 Sternen.",
+        "generic": "Die Bewertung konnte nicht gespeichert werden. Versuche es erneut."
+      },
+      "soon": "Bewertungen werden bald freigeschaltet. Deine beendeten Aufenthalte erscheinen dann hier."
+    },
+    "payments": {
+      "title": "Zahlungen und Karten",
+      "cardsTitle": "Gespeicherte Karten",
+      "cardsSub": "Zahle die Anzahlung bei der nächsten Buchung schneller.",
+      "cardsEmpty": "Keine gespeicherte Karte",
+      "cardsSoon": "Die Online-Kartenzahlung kommt bald. Bei der ersten Zahlung kannst du eine Karte speichern.",
+      "secure": "Die Kartendaten verwahrt Stripe, der Zahlungsdienstleister. Sejur Studio sieht und speichert deine Kartennummer nie.",
+      "historyTitle": "Zahlungsverlauf",
+      "historyEmpty": "Du hast noch keine Zahlung getätigt.",
+      "loadError": "Die Zahlungen konnten nicht geladen werden. Lade die Seite neu.",
+      "viewBooking": "Buchung ansehen",
+      "refunded": "Erstattet: {amount}",
+      "status": {
+        "pending": "Ausstehend",
+        "succeeded": "Bezahlt",
+        "failed": "Fehlgeschlagen",
+        "refunded": "Erstattet",
+        "partially_refunded": "Teilweise erstattet"
+      }
+    }
+  },
+  "Calendar": {
+    "holidaysTitle": "Nächste<br></br>freie Tage",
+    "prevMonth": "Vorheriger Monat",
+    "nextMonth": "Nächster Monat",
+    "checkIn": "Anreise",
+    "checkOut": "Abreise",
+    "pickCheckOut": "Abreise wählen",
+    "cancel": "Abbrechen",
+    "apply": "Übernehmen",
+    "nights": "{count, plural, one {# Nacht} other {# Nächte}}",
+    "holidays": {
+      "newYear": "Silvester",
+      "epiphany": "Dreikönigstag",
+      "union": "Tag der Vereinigung",
+      "dragobete": "Dragobete (Tag der Liebe)",
+      "easter": "Ostern",
+      "labour": "1. Mai",
+      "children": "Kindertag",
+      "pentecost": "Pfingsten",
+      "assumption": "Mariä Himmelfahrt",
+      "standrew": "Hl. Andreas & Nationalfeiertag",
+      "national": "Nationalfeiertag",
+      "christmas": "Weihnachten"
+    },
+    "more": "Mehr ({count})",
+    "less": "Weniger",
+    "leave": "{count, plural, one {+# Urlaubstag} other {+# Urlaubstage}}",
+    "noLeave": "ohne Urlaub",
+    "leaveDays": "Urlaubstage (Brückentag): {days}",
+    "bridge": "Brückentag, lohnt sich freizunehmen"
   }
 }

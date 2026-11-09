@@ -229,6 +229,18 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
       const { units, selectedId, onSelect, price, county } = latest.current;
       const byId = new globalThis.Map(units.map((u) => [u.id, u]));
       const seen = new Set<string>();
+      // Stays at the very same address would stack their price pins exactly on top of each other
+      // (only the top one could be hovered): spread them side by side, centred on the address.
+      const sameSpot = new globalThis.Map<string, string[]>();
+      for (const u of units) {
+        const k = `${u.lat.toFixed(5)},${u.lng.toFixed(5)}`;
+        sameSpot.set(k, [...(sameSpot.get(k) ?? []), u.id]);
+      }
+      const spread = (u: Unit): [number, number] => {
+        const ids = sameSpot.get(`${u.lat.toFixed(5)},${u.lng.toFixed(5)}`) ?? [u.id];
+        const i = ids.indexOf(u.id);
+        return [(i - (ids.length - 1) / 2) * 84, 0];
+      };
 
       if (county) {
         for (const f of m.querySourceFeatures(SOURCE)) {
@@ -296,7 +308,8 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
               root.replaceChildren(wrap);
               root.classList.add("hover:z-30", "focus-within:z-30");
             }
-            const marker = new Marker({ element: root }).setLngLat(coords).addTo(m);
+            const unit = props.cluster ? undefined : byId.get(props.id);
+            const marker = new Marker({ element: root, offset: unit ? spread(unit) : [0, 0] }).setLngLat(coords).addTo(m);
             entry = { marker, el };
             markers.current.set(key, entry);
           }
@@ -311,6 +324,7 @@ export default function UnitsMap({ units, selectedId, onSelect, county, onCounty
               entry.el.dataset.cls = next;
             }
             entry.marker.getElement().style.zIndex = selected ? "10" : "";
+            if (u) entry.marker.setOffset(spread(u)); // the filters may have changed who shares the spot
           }
         }
       }
@@ -566,11 +580,27 @@ function buildPreview(u: Unit, priceText: string, perNight: string, onOpen: () =
   const body = document.createElement("span");
   body.className = "block overflow-hidden rounded-2xl bg-cream-50 shadow-soft ring-1 ring-sand";
 
-  const img = document.createElement("img");
-  img.src = photoThumb(u.photos[0], 480);
-  img.alt = "";
-  img.loading = "lazy";
-  img.className = "block h-32 w-full object-cover";
+  // The photo is fetched as soon as the pin exists (eager), so it is already there on the first hover.
+  // A hidden lazy image is never "near the viewport", so the browser used to skip it until hover, or for good.
+  // No photo / broken link: a neutral tile with the house mark instead of a broken image.
+  const media = document.createElement("span");
+  media.className = "relative block h-32 w-full bg-cream-200";
+  const fallback = document.createElement("span");
+  fallback.className = "absolute inset-0 grid place-items-center text-3xl text-sand-200";
+  fallback.textContent = "⌂";
+  fallback.setAttribute("aria-hidden", "true");
+  media.append(fallback);
+  const src = u.photos.find(Boolean);
+  if (src) {
+    const img = document.createElement("img");
+    img.alt = "";
+    img.loading = "eager";
+    img.decoding = "async";
+    img.className = "absolute inset-0 block size-full object-cover";
+    img.onerror = () => img.remove();
+    img.src = photoThumb(src, 480);
+    media.append(img);
+  }
 
   const text = document.createElement("span");
   text.className = "block px-3 py-2.5";
@@ -592,7 +622,7 @@ function buildPreview(u: Unit, priceText: string, perNight: string, onOpen: () =
   meta.append(place, price);
   text.append(name, meta);
 
-  body.append(img, text);
+  body.append(media, text);
   card.append(body);
   return card;
 }
