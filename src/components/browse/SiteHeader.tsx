@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Heart, House, HousePlus, Phone, User } from "lucide-react";
+import { Heart, House, HousePlus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { iconButton, pill, pillActive } from "@/components/ui/soft";
+import { pill, pillActive } from "@/components/ui/soft";
 import { hostDashboardUrl, hostSignupUrl } from "@/lib/links";
 import { useAccount } from "@/lib/use-host-session";
 import { spring } from "@/components/ui/motion";
@@ -68,24 +68,16 @@ export function SiteHeader({
         className="flex shrink-0 items-center gap-3 2xl:gap-4"
         aria-label={t("home")}
       >
-        <motion.span
-          whileHover={{ rotate: -8, scale: 1.05 }}
-          transition={spring}
-          className="shrink-0"
-        >
+        <motion.span whileHover={{ scale: 1.04 }} transition={spring} className="shrink-0">
           <Image
-            src="/logo.png"
+            src="/logo-wordmark-v2.png"
             alt={t("brand")}
-            width={128}
-            height={128}
+            width={900}
+            height={208}
             priority
-            className="size-14 rounded-full shadow-soft 2xl:size-[4.5rem]"
+            className="h-12 w-auto 2xl:h-16"
           />
         </motion.span>
-        {/* Scris real (nu imagine): același font și stil ca titlul „Unități disponibile" */}
-        <span className="font-brand text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-          {t("brand")}
-        </span>
       </Link>
 
       {/* Centru (doar ≥1536px): Favorite – bară de căutare – Locație */}
@@ -105,14 +97,6 @@ export function SiteHeader({
 
       <div className="ml-auto flex shrink-0 items-center gap-2.5 2xl:ml-0">
         <ThemeToggle />
-        <motion.a
-          {...tap}
-          href="tel:+40700000000"
-          className={`${iconButton} size-12 max-sm:hidden`}
-          aria-label={t("call")}
-        >
-          <Phone className="size-5" />
-        </motion.a>
         <LanguageSwitcher />
 
         {/* Cont: autentificare + avatar (deschid popup-ul de cont) */}
@@ -129,29 +113,30 @@ export function SiteHeader({
             <span className="max-lg:hidden">{hostLabel}</span>
           </a>
         )}
-        <motion.button
-          {...tap}
-          type="button"
-          onClick={onLogin}
-          className={`${pill} h-12 max-w-48 px-6 text-base font-semibold max-sm:hidden`}
-        >
-          <span className="truncate">{firstName ?? t("login")}</span>
-        </motion.button>
-        <motion.button
-          {...tap}
-          type="button"
-          onClick={onLogin}
-          className="grid size-12 shrink-0 place-items-center rounded-full bg-accent-50 text-accent shadow-pill ring-2 ring-cream-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          aria-label={t("account")}
-        >
-          {firstName ? (
+        {/* „Autentificare" doar când nu ești logat; logat, rămâne doar avatarul. */}
+        {!firstName && (
+          <motion.button
+            {...tap}
+            type="button"
+            onClick={onLogin}
+            className={`${pill} h-12 max-w-48 px-6 text-base font-semibold`}
+          >
+            <span className="truncate">{t("login")}</span>
+          </motion.button>
+        )}
+        {firstName && (
+          <motion.button
+            {...tap}
+            type="button"
+            onClick={onLogin}
+            className="grid size-12 shrink-0 place-items-center rounded-full bg-accent-50 text-accent shadow-pill ring-2 ring-cream-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            aria-label={t("account")}
+          >
             <span className="text-lg font-bold">
               {firstName.charAt(0).toUpperCase()}
             </span>
-          ) : (
-            <User className="size-6" />
-          )}
-        </motion.button>
+          </motion.button>
+        )}
       </div>
     </motion.header>
   );

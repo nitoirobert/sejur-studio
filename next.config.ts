@@ -6,7 +6,10 @@ const withNextIntl = createNextIntlPlugin();
 
 // Pozele cazărilor vin din Supabase Storage prin URL-uri semnate (bucket privat „photos")
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const storagePattern = supabaseUrl ? [new URL("/storage/v1/object/sign/**", supabaseUrl)] : [];
+// Obiect (nu URL): un URL are search="" și ar refuza `?token=...` din URL-urile semnate
+const storagePattern = supabaseUrl
+  ? [{ protocol: "https" as const, hostname: new URL(supabaseUrl).hostname, pathname: "/storage/v1/object/sign/**" }]
+  : [];
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
@@ -34,6 +37,9 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // Optimized photos stay cached for 31 days (signed urls are stable for days, see src/lib/catalog/sign.ts)
+    minimumCacheTTL: 60 * 60 * 24 * 31,
+    formats: ["image/avif", "image/webp"],
     // Poze de test de pe Unsplash, până avem upload propriu (Supabase Storage)
     remotePatterns: [new URL("https://images.unsplash.com/**"), ...storagePattern],
   },

@@ -2,13 +2,13 @@ import { cache } from "react";
 import { connection } from "next/server";
 import type { Unit } from "@/lib/mock-units";
 import { anonClient } from "./anon";
+import { signPhotoPaths } from "./sign";
 import { toUnit, UUID_RE, type PropertyRow, type UnitRow } from "./map";
 
 // Published units of active properties, read as anon (RLS decides what is public).
-// Rendered per request: a unit published in the panel shows on the site without a rebuild,
-// and the signed photo URLs are always fresh.
+// Rendered per request: a unit published in the panel shows on the site without a rebuild.
+// Signed photo URLs are cached for days (see sign.ts) so next/image can cache the optimized files.
 
-const SIGNED_URL_SECONDS = 60 * 60;
 const MAX_UNITS = 500;
 
 const UNIT_COLS =
@@ -54,11 +54,7 @@ async function load(unitId?: string): Promise<Unit[]> {
   // A unit shows its own photos; without any, the property's photos (cover first).
   const photoRows = photos.data;
   const paths = [...new Set(photoRows.map((p) => p.storage_path))];
-  const signed = new Map<string, string>();
-  if (paths.length > 0) {
-    const { data } = await sb.storage.from("photos").createSignedUrls(paths, SIGNED_URL_SECONDS);
-    for (const s of data ?? []) if (s.signedUrl && s.path) signed.set(s.path, s.signedUrl);
-  }
+  const signed = await signPhotoPaths(paths);
   const urls = (rows: typeof photoRows) =>
     rows.map((r) => signed.get(r.storage_path)).filter((u): u is string => !!u);
 
