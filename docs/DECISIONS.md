@@ -13,3 +13,6 @@ Numerotate, cu dată, nu se rescriu. O decizie nouă o poate înlocui pe una vec
 9. 7 nov. Planurile și actualizările de structură se pun pe git (`main`) imediat, ca agentul lui Robert să le vadă după `git pull`.
 10. 7 nov. Sejur Studio e proiectul de probă înainte de PMS-ul pentru hoteluri de peste 100 de camere. Lecțiile se notează în `docs/LESSONS.md`.
 11. 8 nov. Pozele se încarcă cu `cacheControl` 300 (5 minute): o poză descărcată cât proprietatea era publică poate rămâne în cache cel mult 5 minute după ascundere; URL-urile semnate noi sunt refuzate imediat.
+12. 9 nov (Taka). Plăți cu **Stripe** (Connect, banii direct la gazdă); emailuri cu **Resend**. Până există firma, Stripe merge doar în modul de test.
+13. 9 nov (Taka). Firma de pe termeni și facturi va fi **Sejur Studio** (încă neînființată): paginile legale se scriu cu datele firmei de completat; facturi reale abia după înființare.
+14. 9 nov (Taka). **O singură bază de date** (proiectul Supabase actual, `enqnxbktjwcqydghvenu`), și pentru sejurstudio.ro. Fără bază separată de producție deocamdată; copiile de rezervare se rezolvă separat (planul gratuit nu are restaurare).

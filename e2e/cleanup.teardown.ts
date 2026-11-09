@@ -28,6 +28,12 @@ teardown("șterge conturile e2e + firmele lor; membru/profil/firmă dispar; owne
     (data ?? []).forEach((m) => seedOrgs.add(m.organization_id as string));
   }
   console.log(`e2e accounts to delete: ${e2e.length}`);
+  // Brief 07 check 4: favorites go with the account (cascade), checked after the loop.
+  const e2eIds = e2e.map((u) => u.id);
+  const { count: favBefore } = e2eIds.length
+    ? await db.from("favorites").select("id", { count: "exact", head: true }).in("user_id", e2eIds)
+    : { count: 0 };
+  console.log(`e2e favorites before delete: ${favBefore ?? 0}`);
 
   for (const u of e2e) {
     const { data: members } = await db.from("organization_members").select("organization_id").eq("user_id", u.id);
@@ -53,6 +59,12 @@ teardown("șterge conturile e2e + firmele lor; membru/profil/firmă dispar; owne
       const { data: o } = await db.from("organizations").select("id").eq("id", orgId);
       expect(o, `organization of ${u.email}`).toEqual([]);
     }
+  }
+
+  if (e2eIds.length) {
+    const { data: favs, error: fe } = await db.from("favorites").select("id").in("user_id", e2eIds);
+    expect(fe).toBeNull();
+    expect(favs, "favorites of deleted e2e accounts (cascade)").toEqual([]);
   }
 
   const { data: after } = await db.auth.admin.listUsers({ perPage: 1000 });
@@ -85,9 +97,35 @@ teardown("șterge proprietățile e2e („E2E …”) cu unități, prețuri, po
 
 // Brief 03: every booking the chart specs create (guest name "E2E ...") is deleted with the admin
 // key, together with its guest; afterwards none is left.
-teardown("șterge rezervările e2e (oaspete „E2E …”) și oaspeții lor", async () => {
+// Brief 07: also the guests created by create_public_booking (name "E2E ...", or an e2e+ address
+// such as the leftover "E2E Web07" / e2e+web07@example.com hold), with their bookings. Seed bookings
+// (no "E2E " guest, no e2e+ email) stay: their count is the same before and after.
+teardown("șterge rezervările e2e (oaspete „E2E …” sau e2e+…@example.com) și oaspeții lor; seed-ul rămâne", async () => {
+  const db = admin();
+  const seedCount = async () => {
+    const { data, error } = await db.from("bookings").select("id, guests(full_name, email)");
+    if (error) throw error;
+    return (data ?? []).filter((b) => {
+      const g = b.guests as unknown as { full_name: string | null; email: string | null } | null;
+      return !(g?.full_name ?? "").startsWith(GUEST_PREFIX) && !/^e2e\+/i.test(g?.email ?? "");
+    }).length;
+  };
+  const before = await seedCount();
+  const { data: byEmail, error } = await db.from("guests").select("id").ilike("email", "e2e+%@example.com");
+  if (error) throw error;
+  const ids = (byEmail ?? []).map((g) => g.id as string);
+  if (ids.length) {
+    expect((await db.from("bookings").delete().in("guest_id", ids)).error).toBeNull();
+    expect((await db.from("guests").delete().in("id", ids)).error).toBeNull();
+  }
   const n = await deleteE2EBookings();
-  console.log(`e2e guests/bookings deleted: ${n}`);
-  const { data } = await admin().from("guests").select("id").like("full_name", `${GUEST_PREFIX}%`);
+  console.log(`e2e guests/bookings deleted: ${n + ids.length}`);
+  const { data } = await db.from("guests").select("id").like("full_name", `${GUEST_PREFIX}%`);
   expect(data).toEqual([]);
+  const { data: left } = await db.from("guests").select("id").ilike("email", "e2e+%@example.com");
+  expect(left).toEqual([]);
+  expect(await seedCount(), "seed bookings untouched").toBe(before);
+  // The IP counter of the booking server action: empty for the next run.
+  const { error: rl } = await db.from("rate_limit_hits").delete().eq("bucket", "public_booking");
+  if (rl) console.log(`rate_limit_hits reset refused: ${rl.code} ${rl.message}`);
 });
